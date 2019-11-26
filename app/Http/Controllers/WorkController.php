@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Work;
 use Illuminate\Http\Request;
+use App\Repositories\WorkRepository;
+use Carbon\Carbon;
 
 class WorkController extends Controller
 {
+    public function __construct(WorkRepository $repo)
+    {
+        $this->repo = $repo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,15 +23,6 @@ class WorkController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +32,22 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validate
+        // $this->validate(request(),[
+        //     'institution'=> 'string',
+        //     'title'=> 'string',
+        //     'country'=> 'string',
+        //     'startdate'=> 'date',
+        //     'enddate'=> 'date'
+        // ]);
+        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+
+        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+
+        $wrk = $this->repo->createWork($request);
+
+        return $wrk;
     }
 
     /**
@@ -44,20 +56,12 @@ class WorkController extends Controller
      * @param  \App\Work  $work
      * @return \Illuminate\Http\Response
      */
-    public function show(Work $work)
+    public function show($work)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Work  $work
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Work $work)
-    {
-        //
+        $work = $this->repo->findWork($work);
+        //return work of specific user
+        return $work;
     }
 
     /**

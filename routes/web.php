@@ -11,9 +11,6 @@
 |
 */
 
-// Default root to load the entire app
-// Route::get('/{any}', 'AppController@index')->where('any','.*');
-
 Route::get('/', function () {
     return view('landing');
 });
@@ -24,6 +21,7 @@ Route::get('/', function () {
 //     'register' => false,
 // ]);
 
-Auth::routes();
+// Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/{any}', 'AppController@index')->where('any', '.*');

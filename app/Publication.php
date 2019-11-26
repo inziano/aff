@@ -15,7 +15,9 @@ class Publication extends Model
         'abstract',
         'tags',
         'pubpath',
-        'user_id'
+        'user_id',
+        'downloads',
+        'views'
     ];
 
     public function user()

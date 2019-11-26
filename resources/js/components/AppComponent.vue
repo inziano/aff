@@ -19,16 +19,19 @@
                     <router-link to="/" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Dashboard</router-link>
                     <router-link to="/profiles" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Profiles</router-link>
                     <router-link to="/message" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Messages</router-link>
-                    <router-link to="/" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Events</router-link>
-                    <router-link to="/" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Vacancies</router-link>
+                    <router-link to="/events" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Events</router-link>
+                    <router-link to="/vacancies" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Vacancies</router-link>
                     <router-link to="/publications" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Publications</router-link>
                     <router-link to="/gallery" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Gallery</router-link>
+                    <router-link to="/forum" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Forum</router-link>
+
                 </div>
                 <div class="text-sm pr-4">
-                    <Dropdown placement="left-end">
+                    <router-link v-if="currentUser === null" to="/login" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Login</router-link>
+                    <Dropdown v-if="currentUser !== null" placement="left-end">
                         <a href="javascript:void(0)" class="inline-block text-sm px-2 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">
                             <Avatar icon="ios-person" />
-                            <span class="inline-block text-sm leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0"> John Doe </span>
+                            <span class="inline-block text-sm leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0"> {{currentUser.username}} </span>
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem>
@@ -51,6 +54,14 @@
 
 <script>
 export default {
+    computed: {
+        currentUser(){
+            // 
+            const user = this.$store.state.current_user
+            // If user is empty return null
+            return Object.keys(user).length ===0 ? null : user
+        }
+    }
     
 }
 </script>

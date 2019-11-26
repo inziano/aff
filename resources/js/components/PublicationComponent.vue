@@ -77,6 +77,11 @@ export default {
             publication: null,
         }
     },
+    computed:{
+        currentUser(){
+            return this.$store.state.current_user
+        }
+    },
     methods: {
         onSubmit(){
             // disable submit button

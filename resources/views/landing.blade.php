@@ -13,5 +13,7 @@
         <app></app>
     </div>
     <script src="{{mix('js/app.js')}}"></script>
+    <script src=//unpkg.com/vue></script>
+    <script src=//unpkg.com/vuetrend></script>
 </body>
 </html>

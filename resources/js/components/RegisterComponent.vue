@@ -84,16 +84,18 @@ export default {
                 url: 'api/user',
                 data: formdata
             }).then( (response)=>{
-                // response object
-                // Push data to store
-                 // Logged in
-                this.$store.dispatch('loggedIn', response)
+                // Payload
+                const payload = response.data
+                // Get the ID
+                const id = payload.id
+                // Logged in
+                this.$store.dispatch('loggedIn', payload)
                 // show notice
                 this.$Notice.success({
                     title: 'Succesfully registered.'
                 })
                 // handle redirect
-                setTimeout(()=>  this.$router.push({path: 'bio'}), 1000)
+                setTimeout(()=>  this.$router.push({name: 'bio', params: {id}}), 1000)
               
             }).catch( (error)=>{
                 // error object

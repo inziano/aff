@@ -12,6 +12,10 @@ import Message from './components/MessageComponent';
 import Invitation from './components/InvitationComponent';
 import ProfilesView from './components/ProfilesViewComponent';
 import PublicationsView from './components/PublicationsViewComponent';
+import Event from './components/EventComponent';
+import Vacancy from './components/VacancyComponent';
+import Forum from './components/ForumComponent';
+import ThreadView from './components/ThreadViewComponent';
 
 // Routes
 const router =  new Router({
@@ -28,7 +32,7 @@ const router =  new Router({
             name: 'bio'
         },
         {
-            path: '/',
+            path: '/login',
             component: Login,
             name: 'login'
         },
@@ -66,6 +70,26 @@ const router =  new Router({
             path: '/profiles',
             component: ProfilesView,
             name: 'profilesviews'
+        },
+        {
+            path: '/events',
+            component: Event,
+            name: 'event'
+        },
+        {
+            path: '/vacancies',
+            component: Vacancy,
+            name: 'vacancy'
+        },
+        {
+            path: '/forum',
+            component: Forum,
+            name: 'forum'
+        },
+        {
+            path: '/thread',
+            component: ThreadView,
+            name: 'thread'
         }
     ]
 })

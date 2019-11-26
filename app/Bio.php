@@ -22,7 +22,8 @@ class Bio extends Model
         'citizenship',
         'residency',
         'qualification',
-        'field_of_study'
+        'field_of_study',
+        'user_id'
     ];
 
     // Relationship

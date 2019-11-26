@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Bio;
+use App\User;
 use Illuminate\Http\Request;
+use App\Repositories\BioRepository;
 
 class BioController extends Controller
 {
+    // Construct
+    public function __construct( BioRepository $repo )
+    {
+        $this->repo = $repo;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -35,7 +32,37 @@ class BioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // //validate
+        // $this->validate(request(), [
+        //     'firstname' => 'string',
+        //     'lastname' => 'string',
+        //     'surname' => 'string',
+        //     'title' => 'string',
+        //     'gender' => 'string',
+        //     'dob' => 'date',
+        //     'phone' => 'integer',
+        //     'altphone' => 'integer',
+        //     'altemail'  => 'string',
+        //     'address' => 'string',
+        //     'citizenship' => 'string',
+        //     'residency' => 'string',
+        //     'qualification' => 'string',
+        //     'field_of_study' => 'string'
+        // ]);
+        // Ensure user id exists
+        if ( User::where('id', $request->input('user_id'))->exists())
+        {
+            // Push to repo
+            $bio = $this->repo->createBio($request);
+
+        } else 
+        {
+            //return error 
+            $bio = abort(404);
+        }
+      
+        // return 
+        return $bio;
     }
 
     /**
@@ -44,9 +71,11 @@ class BioController extends Controller
      * @param  \App\Bio  $bio
      * @return \Illuminate\Http\Response
      */
-    public function show(Bio $bio)
+    public function show($bio)
     {
-        //
+        $bio = $this->repo->findBio($bio);
+        //return bio of specific user
+        return $bio;
     }
 
     /**

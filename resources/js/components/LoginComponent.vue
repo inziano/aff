@@ -53,6 +53,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            loading: false,
             loginForm: {
                 email: '',
                 password: ''
@@ -61,6 +62,7 @@ export default {
     },
     methods: {
         onSubmit() {
+            this.loading = true
             // Dispatch 
             this.$store.dispatch('login');
             // Axios
@@ -69,14 +71,18 @@ export default {
                 url: 'api/user/login',
                 data: this.loginForm
             }).then( (response)=>{
+                // Payload
+                const payload = response.data
+                // Get the ID
+                const id = payload.id
                 // Logged in
-                this.$store.dispatch('loggedIn', response)
+                this.$store.dispatch('loggedIn', payload)
                 // response object
                 this.$Notice.info({
                     title: 'Login Succesful'
                 })
                 // redirect to dashboard
-                setTimeout(()=>  this.$router.push({path: 'bio'}), 1000)
+                setTimeout(()=>  this.$router.push({name: 'bio', params: {id}}), 1000)
             }).catch( (error)=>{
                 // error object
                 this.$Notice.error({

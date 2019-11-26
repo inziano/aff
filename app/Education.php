@@ -13,7 +13,8 @@ class Education extends Model
         'enddate',
         'degree',
         'field_of_study',
-        'description'
+        'description',
+        'user_id'
     ];
 
     /**

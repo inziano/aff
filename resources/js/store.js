@@ -36,7 +36,7 @@ const store = new Vuex.Store({
         },
         loggedIn({commit},payload){
             return new Promise((resolve,reject)=>{
-                const token = payload.data
+                const token = payload
                 localStorage.setItem('token', token)
                 commit('auth_success', payload, token)
 

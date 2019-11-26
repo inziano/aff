@@ -1,6 +1,131 @@
 <template>
     <div class="w-full h-full">
-        <List item-layout="vertical" class="w-2/3 mx-auto my-auto" border>
+        <div class="w-full h-full p-5" >
+            <Modal v-model="pubModal" title="Upload Publication">
+                <Form :model="pubForm" label-position="top" class="w-full">
+                    <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider">
+                        Upload Publication
+                    </h4>
+                    <br>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="Title">
+                                <Input type="text" v-model="pubForm.title" placeholder="Publication Title"></Input>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="12">
+                            <FormItem label="Author">
+                                <Input type="text" v-model="pubForm.author" placeholder="Author"></Input>
+                            </FormItem>
+                        </Col>
+                        <Col span="12">
+                            <FormItem label="Publisher">
+                                <Input type="text" v-model="pubForm.publisher" placeholder="Publisher"></Input>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="Abstract">
+                                <Input type="textarea" v-model="pubForm.abstract" placeholder="Abstract"></Input>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="Publication">
+                                <Upload type="drag" action :before-upload="publicationUpload" :format="['docx','doc','pdf']">
+                                    <div style="padding: 20px 0">
+                                        <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                        <p>Click or drag files here to upload</p>
+                                    </div>
+                                </Upload>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="12">
+                            <Button size="large" @click="onSubmit" :loading="loading">
+                                <span v-if="!loading"> 
+                                    Submit
+                                    <Icon type="ios-checkmark"></Icon>
+                                </span>
+                                <span v-if="loading">
+                                    Submitting...
+                                </span>
+                        
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+                <div slot="footer">
+                    <!-- <Button type="error" size="large" long :loading="modal_loading" @click="del">Delete</Button> -->
+                </div>
+            </Modal>
+            <nav class="w-full flex mb-2">
+                <div class="lg:flex-grow lg:w-auto">
+                    <h3 class="font-semibold text-xl mb-2">
+                        Publications
+                    </h3>
+                    <p class="font-hairline text-xs">
+                        Find publications
+                    </p>
+                </div>
+                <div class="w-2/24 p-3">
+                    <Button icon="ios-add" @click="pubModal = true">
+                        New
+                    </Button>
+                </div>
+            </nav>
+            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
+                <div class="lg:flex-grow lg:w-auto">
+                    <li class="mr-3" @click="changeView()">
+                        <Icon v-if="list" type="ios-list" size="32"/>
+                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
+                    </li> 
+                </div>
+                <div class="w-1/24">
+                    <li class="mr-3 p-2">
+                        <Icon type="ios-search-outline" size="24"/>       
+                    </li>
+                </div>
+            </ul>
+            <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
+                <div class="w-1/4 bg-white shadow-md rounded-3" v-for="item in pubList" :key="item.title">
+                    <div class="border border-white rounded-full p-4 flex flex-col justify-between leading-normal">
+                        <div class="mb-8">
+                            <p class="text-xs text-gray-600 flex items-center mb-1">
+                                {{item.publisher}}
+                            </p>
+                            <div class="text-gray-900 font-medium text-xl mb-2">{{item.title}}</div>
+                            <p class="text-gray-700 text-base">{{item.abstract}}</p>
+                        </div>
+                        <div class="flex items-center">
+                            <img class="w-10 h-10 rounded-full mr-4" src="/images/landing.jpg" alt="Avatar of Jonathan Reinink">
+                            <div class="text-sm">
+                                <p class="text-gray-900 leading-none mb-1">{{item.author}}</p>
+                                <p class="text-gray-600 text-xs">{{item.created_at}}</p>
+                            </div>
+                        </div>
+                        <ul class="w-full mt-5 flex">
+                            <li class="mr-5">
+                                <Icon type="ios-eye-outline" size="18"/><span class="ml-1 font-semibold">{{item.views}}</span>
+                            </li>
+                            <li class="mr-5">
+                                <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full" v-if="list">
+                <Table stripe ref="selection" :columns="publications" :data="pubList"></Table>
+            </div>
+        </div>
+       
+        <!-- <List item-layout="vertical" class="w-2/3 mx-auto my-auto" border>
             <ListItem v-for="item in pubList" :key="item.title" class="w-2/3">
                 <ListItemMeta :title="item.title" :description="item.author" />
                 <p>
@@ -22,8 +147,7 @@
                     </li>
                 </template>
             </ListItem>
-        </List>
-        
+        </List> -->
     </div>
 </template>
 
@@ -32,7 +156,48 @@ import axios from 'axios'
 export default {
     data(){
         return {
-            pubList: []
+            id: this.$route.params.id,
+            loading: false,
+            pubModal: false,
+            list: false,
+            pubList: [],
+            pubs: '',
+            pubForm:{
+                title: '',
+                author: '',
+                publisher: '',
+                abstract: '',
+                user_id: '',
+            },
+            publication: null,
+            publications: [
+                {
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },
+                {
+                    title: 'Title',
+                    key: 'title'
+                },
+                {
+                    title: 'Author',
+                    key: 'author'
+                },
+                {
+                    title: 'Downloads',
+                    key: 'downloads'
+                },
+                {
+                    title: 'Views',
+                    key: 'views'
+                }
+            ]
+        }
+    },
+    computed: {
+        currentUser(){
+            return this.$store.state.current_user
         }
     },
     mounted() {
@@ -42,12 +207,62 @@ export default {
         }).then((response)=>{
             const arr = response.data
             this.pubList = arr.data
+            this.pubs = arr
         }).catch((error)=>{
             this.$Notice.error({
                 title: 'No publications found',
                 desc: error.message
             })
         })
+    },
+    methods: {
+        changeView(){
+           if ( this.list === true ){
+               this.list = false
+           } else{
+               this.list = true
+           }
+        },
+        onSubmit(){
+            // disable submit button
+            this.loading = true
+            // data
+            const data = this.pubForm
+            data['user_id'] = this.id
+
+            let formdata = new FormData()
+
+            // Loop through data and append to formdata
+            Object.keys(data).forEach( key=> formdata.append(key, data[key]))
+            // Append files
+            formdata.append('publication', this.publication)
+            // Push to db
+            axios({
+                method: 'post',
+                url: 'api/publication',
+                data: formdata
+            }).then( (response)=>{
+                // Show notice
+                this.$Notice.success({
+                    title: 'Success',
+                    desc: 'Your publication has been submitted succesfully'
+                })
+                // Loading
+                this.loading = false
+            }).catch( (error)=>{
+                // Loading
+                this.loading = false
+                // Notice
+                this.$Notice.error({
+                    title: 'Error',
+                    desc: 'Error in submitting your publication'
+                })
+            })
+        },
+        publicationUpload(file){
+            this.publication = file
+            return false
+        }
     }
 }
 </script>

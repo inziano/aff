@@ -12,7 +12,9 @@ class Work extends Model
         'title',
         'country',
         'startdate',
-        'enddate'
+        'enddate',
+        'description',
+        'user_id'
     ];
     /**
      * user

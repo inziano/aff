@@ -1,12 +1,33 @@
 <template>
     <div class="w-full h-full">
-        <Layout class="p-2" >
-            <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}" class="flex flex-wrap">
-                <h4 class="mb-4 p-2"> All Members </h4>
-                <div v-for="member in members" :key="member.id" class="w-1/4 overflow-hidden shadow-lg p-2">
-                    <div class="w-full text-center mb-3">
+        <div class="w-full h-full p-5">
+            <h4 class="font-semibold text-xl mb-2"> Members </h4>
+            <p class="font-hairline text-xs">
+                View members
+            </p>
+            <br>
+            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
+                <div class="flex lg:flex-grow lg:w-auto">
+                    <li class="mr-3" @click="changeView()">
+                        <Icon v-if="list" type="ios-list" size="32"/>
+                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
+                    </li>
+                    
+                </div>
+                <div class="flex w-1/24">
+                    <li v-if="!list" class="mr-3 p-2" @click="filter()">
+                        <Icon type="ios-funnel-outline" size="24"/>       
+                    </li>
+                    <li class="mr-3 p-2">
+                        <Icon type="ios-search-outline" size="24"/>       
+                    </li>
+                </div>
+            </ul>
+            <div class="w-full h-full flex p-2 bg-gray-100 justify-center" v-if="!list">
+                <div v-for="member in members" :key="member.id" class="w-1/4 h-64 overflow-hidden shadow-lg p-2 m-2 bg-white rounded">
+                    <div class="w-full text-center mb-3 pt-2">
                         <Avatar :style="{background: '#0A8754'}" size="large"> JD </Avatar>
-                        <p class="text-base font-medium mt-3"> {{member.email}}</p>
+                        <p class="text-base font-medium mt-3 text-gray-500"> {{member.email}}</p>
                         <p class="text-xs font-hairline mt-1"> {{member.status}} </p>
                     </div>
                     <ul class="flex justify-center w-2/3 mx-auto mb-4">
@@ -20,14 +41,47 @@
                             <Icon type="ios-trash" size="20"/>
                         </li>
                     </ul>
+                        <!-- <Divider></Divider>
+                        <div class="w-full flex">
+                        <div class="w-3/5 pl-4">
+                                <trend
+                                :data="[0,0,0]"
+                                :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                                width="180"
+                                height="50"
+                                auto-draw
+                                smooth>
+                                </trend>
+                        </div>
+                        <div class="w-2/5 text-center">
+                                <p class="text-xs uppercase text-gray-400">
+                                    <span class="text-xl font-semibold text-gray-900">0</span> <br>
+                                    Pubs
+                                </p>
+                        </div>
+                        </div> -->
                     <Divider></Divider>
-
-                    <div class="w-full">
-                        
+                    <div class="w-full flex p-0 text-center">
+                        <div class="w-1/2">
+                            <a @click="goToDetail(member.id)" >
+                                <Icon type="ios-person" size="24"/> Profile
+                            </a>
+                           
+                        </div>
+                        <Divider type="vertical"></Divider>
+                        <div class="w-1/2">
+                            <a @click="goToPub(member.id)">
+                                <Icon type="ios-apps" size="24"/> Publications
+                            </a>
+                           
+                        </div>
                     </div>
                 </div>
-            </Content>
-        </Layout>
+            </div>
+            <div class="w-full h-full p-2 bg-gray-100" v-if="list">
+                <Table height="200" stripe ref="selection" :columns="member" :data="members"></Table>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -36,7 +90,46 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            list: false,
             members: [],
+            member: [
+                {
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },
+                {
+                    title: 'Username',
+                    key: 'username'
+                },
+                {
+                    title: 'Email',
+                    key: 'email'
+                },
+                {
+                    title: 'status',
+                    key: 'status',
+                    filters: [
+                            {
+                                label: 'Member',
+                                value: 1
+                            },
+                            {
+                                label: 'Applicant',
+                                value: 2
+                            }
+                        ],
+                        filterMultiple: false,
+                        filterMethod (value, row) {
+                            if (value === 1) {
+                                return row.status === 'member';
+                            } else if (value === 2) {
+                                return row.status === 'applicant';
+                            }
+                        }
+                },
+            ],
+            memberdata: [],
         }
     },
     mounted() {
@@ -47,11 +140,30 @@ export default {
         }).then((response)=>{
             // response
             this.members = response.data.data
+            // Member data
+            this.memberdata = response.data
 
             console.log(response.data.data)
         }).catch((error)=>{
             // error
         })
+    },
+    methods: {
+        changeView(){
+           if ( this.list === true ){
+               this.list = false
+           } else{
+               this.list = true
+           }
+        },
+        // Go
+        goToDetail(id){
+            this.$router.push({name: 'profile', params: {id}})
+        },
+        goToPub(id){
+            this.$router.push({name: 'publication', params: {id}})
+        }
+
     }
     
 }

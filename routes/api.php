@@ -40,3 +40,12 @@ Route::apiResource('message','MessageController');
 
 // Invitation route
 Route::apiResource('invitation', 'InvitationController');
+
+// Event routes
+Route::apiResource('event', 'EventController');
+
+// Thread routes
+Route::apiResource('thread', 'ThreadController');
+
+// Reply routes
+Route::apiResource('reply', 'ReplyController');

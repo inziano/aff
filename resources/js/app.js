@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
+import Trend from 'vuetrend'
 import ViewUI from 'view-design'
 
 // import style
@@ -18,6 +19,7 @@ import App from './components/AppComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(ViewUI,{locale})
+Vue.use(Trend)
 
 // Initiate
 const app = new Vue({
