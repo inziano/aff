@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AFF | African Forest Forum </title>
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('css/app.css')}}">
 </head>
 <body>
     <div id="app" class="h-full w-full" style="height: 100vh;">
