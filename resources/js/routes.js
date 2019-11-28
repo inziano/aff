@@ -16,6 +16,7 @@ import Event from './components/EventComponent';
 import Vacancy from './components/VacancyComponent';
 import Forum from './components/ForumComponent';
 import ThreadView from './components/ThreadViewComponent';
+import Topic from './components/TopicComponent';
 
 // Routes
 const router =  new Router({
@@ -90,6 +91,11 @@ const router =  new Router({
             path: '/thread',
             component: ThreadView,
             name: 'thread'
+        },
+        {
+            path: '/topic',
+            component: Topic,
+            name: 'topic'
         }
     ]
 })

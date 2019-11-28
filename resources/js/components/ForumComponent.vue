@@ -96,8 +96,7 @@
                         </div>
                     </nav>
                     <List class="w-3/4 bg-white shadow-md" item-layout="vertical" border>
-                        <div class=""
-                        <ListItem class="" v-for="thread in threadData" :key="thread.id">
+                        <ListItem v-for="thread in threadData" :key="thread.id">
                             <ListItemMeta :title="thread.subject" />
                             <p>
                                 {{thread.body}}

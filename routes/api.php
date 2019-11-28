@@ -55,3 +55,6 @@ Route::apiResource('thread', 'ThreadController');
 
 // Reply routes
 Route::apiResource('reply', 'ReplyController');
+
+// Topic routes
+Route::apiResource('topic', 'TopicController');

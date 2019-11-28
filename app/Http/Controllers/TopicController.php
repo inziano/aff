@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Topic;
 use Illuminate\Http\Request;
 use App\Http\Resources\Topic as TopicResource;
+use App\Repositories\TopicRepository;
 
 class TopicController extends Controller
 {
+
+    /**
+     * __construct
+     *
+     * @param TopicRepository $repo
+     * @return void
+     */
+    public function __construct(TopicRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -21,16 +34,6 @@ class TopicController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,6 +42,16 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate(request(),[
+            'title'=> 'required|string',
+            'description'=> 'required|string'
+        ]);
+        // 
+
+        $topic = $this->repo->createTopic($request);
+
+        return $topic;
+
     }
 
     /**
