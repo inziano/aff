@@ -317,7 +317,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            id: this.$route.params.id,
+            id:'',
             editing: false,
             val: "personal",
             bioForm: {
@@ -358,6 +358,8 @@ export default {
     },
     computed: {
         currentUser(){
+            console.log(this.$store.state.current_user)
+            this.id = this.$store.state.current_user.id
             return this.$store.state.current_user
         }
     },

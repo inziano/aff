@@ -20,6 +20,12 @@ use Illuminate\Http\Request;
 // Login route
 Route::post('user/login', 'UserController@login');
 
+// Membership route
+Route::patch('user/membership', 'UserController@membership');
+
+// Download publication
+Route::get('publication/download/{id}','PublicationController@download');
+
 // User route
 Route::apiResource('user','UserController');
 

@@ -116,6 +116,9 @@
                             <li class="mr-5">
                                 <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
                             </li>
+                            <li class="mr-5">
+                                <a class="font-sm tracking-wide font-medium font-sans" @click="downloadPub(item)"> Download</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -262,6 +265,33 @@ export default {
         publicationUpload(file){
             this.publication = file
             return false
+        },
+        downloadPub(item){
+            // item
+            const id = item.id
+            const title = item.title
+            axios({
+                method: 'get',
+                url:'api/publication/download/'+id,
+                responseType: 'blob'
+                
+                }).then((response)=>{
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileLink = document.createElement('a');
+                
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', 'file.pdf');
+                    document.body.appendChild(fileLink);
+                
+                    fileLink.click();
+                this.$Notice.success({
+                    title: 'Publication downloaded'
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'File could not be downloaded'
+                })
+            })
         }
     }
 }

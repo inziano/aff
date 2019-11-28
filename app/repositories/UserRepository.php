@@ -21,4 +21,11 @@ class UserRepository {
         return $user;
     }
 
+    public function updateStatus(Request $request)
+    {
+        $ids = $request->input('id');
+        // Check if all users exist
+        return User::whereIn('id', $ids)->update($request->only('status'));
+    }
+
 }

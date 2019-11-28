@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        current_user: {},
+        current_user: JSON.parse(localStorage.getItem('token')) || {},
         token: localStorage.getItem('token') || '',
         members: [],
         members_loading: false
@@ -23,7 +23,7 @@ const store = new Vuex.Store({
             state.status = 'error'
         },
         logout(state){
-            state.status = '',
+            state.current_user = '',
             state.token = ''
         }
     },
@@ -36,7 +36,7 @@ const store = new Vuex.Store({
         },
         loggedIn({commit},payload){
             return new Promise((resolve,reject)=>{
-                const token = payload
+                const token = JSON.stringify(payload)
                 localStorage.setItem('token', token)
                 commit('auth_success', payload, token)
 

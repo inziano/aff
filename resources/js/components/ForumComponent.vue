@@ -112,6 +112,9 @@
                                 <li>
                                     <a @click="viewThread(thread.id)">View</a>
                                 </li>
+                                <li class="p-2 ml-2" v-if="thread.user_id === currentUser.id">
+                                   <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteThread(thread.id)"> Remove </a>
+                                </li>
                             </template>
                         </ListItem>
                     </List>
@@ -153,6 +156,17 @@ export default {
                 title: 'No threads found'
             })
         })
+
+        // Update
+        Echo.channel('threads').listen('ThreadCreated', (e)=>{
+            this.threadData = e.threads
+            console.log(e.threads)
+        })
+         // Update
+        Echo.channel('threads').listen('ThreadDeleted', (e)=>{
+            this.threadData = e.threads
+            console.log(e.threads)
+        })
     },
     methods: {
         // Submit
@@ -180,6 +194,21 @@ export default {
         // Thread
         viewThread(id){
             this.$router.push({name: 'thread', params:{id}})
+        },
+        // Delete thread
+        deleteThread(id){
+            axios({
+                method: 'delete',
+                url: 'api/thread/'+id,
+            }).then((response)=>{
+                this.$Notice.success({
+                    title: 'Thread Deleted'
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Thread not deleted'
+                })
+            })
         }
     }
 }

@@ -85,6 +85,20 @@ class UserController extends Controller
     }
 
     /**
+     * membership
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function membership(Request $request)
+    {
+        $user = $this->repo->updateStatus($request);
+        // Fire event
+        // event( new UserStatusChange($user))
+        return $user;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\User  $user

@@ -13,6 +13,7 @@
                 <h5 class="text-base font-normal leading-loose">
                     Login to your account
                 </h5>
+                <p class="text-xs font-medium tracking-wide"> Dont have an account <router-link to="/register">Register</router-link></p>
                 <br>
                 <Row :gutter="16">
                     <Col span="24">

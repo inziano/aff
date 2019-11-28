@@ -79,7 +79,8 @@
                 </div>
             </div>
             <div class="w-full h-full p-2 bg-gray-100" v-if="list">
-                <Table height="200" stripe ref="selection" :columns="member" :data="members"></Table>
+                <Table height="200" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList"></Table>
+                <Button @click="makeMember" v-if="updateList.length != '0'">Make Member</Button>
             </div>
         </div>
     </div>
@@ -91,12 +92,17 @@ export default {
     data() {
         return {
             list: false,
+            updateList: [],
             members: [],
             member: [
                 {
                     type: 'selection',
                     width: 60,
                     align: 'center'
+                },
+                {
+                    title: 'ID',
+                    key: 'id'
                 },
                 {
                     title: 'Username',
@@ -142,10 +148,13 @@ export default {
             this.members = response.data.data
             // Member data
             this.memberdata = response.data
-
-            console.log(response.data.data)
         }).catch((error)=>{
             // error
+        })
+
+        Echo.channel('members').listen('MemberApproved', (e)=>{
+            this.members = e.members
+            // console.log(e.replies)
         })
     },
     methods: {
@@ -155,6 +164,45 @@ export default {
            } else{
                this.list = true
            }
+        },
+        makeMember(){
+            let formdata = {
+                id: this.updateList,
+                status: 'member'
+            }
+            // push to axios
+            axios({
+                method:'patch',
+                url: 'api/user/membership',
+                data: formdata
+            }).then((response)=>{
+                this.$Notice.success({
+                    title: 'Members Updated',
+                    desc: 'Membership updated'
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Members not updated',
+                    desc: 'Membership not updated'
+                })
+            })
+        },
+        // Select and update status
+        addToList (val) {
+            const id = val.map((resp)=>{
+                return resp.id
+            })
+           this.updateList = id
+           console.log(this.updateList)
+        },
+        removeFromList(val){
+            const id = val.map((resp)=>{
+                return resp.id
+            })
+            this.updateList.filter((resp)=>{
+                !id.includes(resp)
+            })
+            console.log(id)
         },
         // Go
         goToDetail(id){

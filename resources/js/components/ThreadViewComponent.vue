@@ -8,9 +8,6 @@
                     </li>
                 </div>
                 <div class="w-2/24">
-                    <Button icon="ios-close" type="error" @click="deleteModal = true">
-                        Delete
-                    </Button>
                 </div>
             </nav>
             <div class="w-full flex flex-wrap p-2 bg-gray-100">
@@ -61,6 +58,9 @@
                                 <li class="p-2 ml-2">
                                     <Icon type="ios-heart-outline" /><span class="ml-2 font-medium text-sm">0</span>
                                 </li>
+                                <li class="p-2 ml-2" v-if="reply.user_id === currentUser.id">
+                                   <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteReply(reply.id)"> Remove </a>
+                                </li>
                             </template>
                         </ListItem> 
                     </List>
@@ -100,6 +100,11 @@ export default {
                 desc: error
             })
         })
+        Echo.channel('replies').listen('ThreadReplied', (e)=>{
+            this.replies = e.replies
+
+            // console.log(e.replies)
+        })
     },
     computed: {
         currentUser(){
@@ -126,6 +131,20 @@ export default {
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Cannot reply to thread'
+                })
+            })
+        },
+        deleteReply(id){
+            axios({
+                method: 'delete',
+                url: 'api/reply/'+id,
+            }).then((response)=>{
+                this.$Notice.success({
+                    title: 'Reply Deleted'
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Reply not deleted'
                 })
             })
         }

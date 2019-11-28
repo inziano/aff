@@ -22,7 +22,7 @@ class MessageController extends Controller
     public function index()
     {
         //
-        return MessageResource::collection(Message::all()->paginate());
+        return MessageResource::collection(Message::all());
     }
 
     /**

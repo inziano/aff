@@ -1,58 +1,96 @@
 <template>
     <div class="w-full h-full">
-        <Form :model="galleryForm" label-position="top" class="w-3/4 mx-auto">
-            <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider">
-                Upload Image
-            </h4>
-            <br>
-            <Row :gutter="16">
-                <Col span="8">
-                    <FormItem label="Title">
-                        <Input type="text" v-model="galleryForm.title" placeholder="Image Title"></Input>
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="Date">
-                        <Col span="12">
-                            <DatePicker v-model="galleryForm.date" type="date" format="yyyy/MM/DD" placeholder="Select date" style="width: 200px"></DatePicker>
-                        </Col>   
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="16">
-                <Col span="8">
-                    <FormItem label="tags">
-                        <Input type="text" v-model="galleryForm.tags" placeholder="Image tags"></Input>
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="16">
-                <Col span="12">
-                    <FormItem label="Image">
-                        <Upload type="drag" action :before-upload="imageUpload" :format="['png','jpeg']">
-                            <div style="padding: 20px 0">
-                                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                                <p>Click or drag files here to upload</p>
-                            </div>
-                        </Upload>
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="16">
-                <Col span="12">
-                    <Button size="large" @click="onSubmit" :loading="loading">
-                        <span v-if="!loading"> 
-                            Submit
-                            <Icon type="ios-checkmark"></Icon>
-                        </span>
-                        <span v-if="loading">
-                            Submitting...
-                        </span>
-                   
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
+        <div class="w-full h-full">
+            <div class="w-full h-full p-5" >
+                <Modal v-model="galleryModal" title="Upload Publication">
+                    <Form :model="galleryForm" label-position="top" class="w-full">
+                        <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider">
+                            Upload Image
+                        </h4>
+                        <br>
+                        <Row :gutter="16">
+                            <Col span="22">
+                                <FormItem label="Title">
+                                    <Input type="text" v-model="galleryForm.title" placeholder="Image Title"></Input>
+                                </FormItem>
+                            </Col>
+                            
+                        </Row>
+                        <Row :gutter="16">
+                            <Col span="12">
+                                <FormItem label="tags">
+                                    <Input type="text" v-model="galleryForm.tags" placeholder="Image tags"></Input>
+                                </FormItem>
+                            </Col>
+                            <Col span="12">
+                                <FormItem label="Date">
+                                    <Col span="12">
+                                        <DatePicker v-model="galleryForm.date" type="date" format="yyyy/MM/DD" placeholder="Select date" style="width: 200px"></DatePicker>
+                                    </Col>   
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row :gutter="16">
+                            <Col span="24">
+                                <FormItem label="Image">
+                                    <Upload type="drag" action :before-upload="imageUpload" :format="['png','jpeg']">
+                                        <div style="padding: 20px 0">
+                                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                            <p>Click or drag files here to upload</p>
+                                        </div>
+                                    </Upload>
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row :gutter="16">
+                            <Col span="24">
+                                <Button size="large" @click="onSubmit" :loading="loading">
+                                    <span v-if="!loading"> 
+                                        Submit
+                                        <Icon type="ios-checkmark"></Icon>
+                                    </span>
+                                    <span v-if="loading">
+                                        Submitting...
+                                    </span>
+                            
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                    <div slot="footer">
+                        <!-- <Button type="error" size="large" long :loading="modal_loading" @click="del">Delete</Button> -->
+                    </div>
+                </Modal>
+                <nav class="w-full flex mb-2">
+                    <div class="lg:flex-grow lg:w-auto">
+                        <h3 class="font-semibold text-xl mb-2">
+                            Gallery
+                        </h3>
+                        <p class="font-hairline text-xs">
+                            Find images
+                        </p>
+                    </div>
+                    <div class="w-2/24 p-3">
+                        <Button icon="ios-add" @click="galleryModal = true">
+                            New
+                        </Button>
+                    </div>
+                </nav>
+                <ul class="w-full flex flex-wrap bg-gray-200 p-1">
+                    <div class="lg:flex-grow lg:w-auto">
+                        <li class="mr-3" @click="changeView()">
+                            <Icon v-if="list" type="ios-list" size="32"/>
+                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
+                        </li> 
+                    </div>
+                    <div class="w-1/24">
+                        <li class="mr-3 p-2">
+                            <Icon type="ios-search-outline" size="24"/>       
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
         
     </div>
 </template>
@@ -62,6 +100,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+           galleryModal: false,
             galleryForm:{
                 title: '',
                 album: '',
@@ -110,7 +149,14 @@ export default {
         imageUpload(file){
             this.image = file
             return false
-        }
+        },
+        changeView(){
+           if ( this.list === true ){
+               this.list = false
+           } else{
+               this.list = true
+           }
+        },
     }
 }
 </script>

@@ -17,7 +17,8 @@ class Message extends JsonResource
         return [
             'subject' =>$this->subject,
             'body' => $this->body,
-            'recepient' => $this->recepient
+            'recepient' => $this->recepient,
+            'created_at' => $this->created_at->format('Y-m-d')
         ];
     }
 }

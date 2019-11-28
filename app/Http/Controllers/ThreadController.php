@@ -6,6 +6,8 @@ use App\Thread;
 use App\User;
 use App\Topic;
 use Illuminate\Http\Request;
+use App\Events\ThreadCreated;
+use App\Events\ThreadDeleted;
 use App\Http\Resources\Thread as ThreadResource;
 use App\Repositories\ThreadRepository;
 
@@ -55,7 +57,8 @@ class ThreadController extends Controller
         } else {
             $thread = abort(404);
         }
-    
+
+        event( new ThreadCreated());
         return $thread;
     }
 
@@ -102,8 +105,13 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($thread)
     {
         //
+        $thread = $this->repo->deleteThread($thread);
+
+        event(new ThreadDeleted());
+
+        return $thread;
     }
 }

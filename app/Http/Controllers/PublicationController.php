@@ -60,6 +60,28 @@ class PublicationController extends Controller
     }
 
     /**
+     * downloadpub
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function download($id)
+    {
+        if ( Publication::where('id',$id)->exists()){
+            // Get url
+            $path = Publication::where('id',$id)->first()->pubpath;
+            $name = Publication::where('id',$id)->first()->only('title');
+            // return $path;
+            return Storage::cloud()->response($path);
+
+        } else{
+            
+            return abort(404);
+        }
+
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Publication  $publication

@@ -25,6 +25,15 @@ class EventServiceProvider extends ServiceProvider
        'App\Events\MemberApproved'=> [
            'App\Listeners\SendMemberNotification',
        ],
+       'App\Events\ThreadCreated'=>[
+           'App\Listeners\UpdateThreadList'
+       ],
+       'App\Events\ThreadDeleted'=>[
+        'App\Listeners\ThreadDeleteNotification'
+        ],
+       'App\Events\ThreadReplied'=>[
+           'App\Listeners\UpdateReplyList'
+       ]
     ];
 
     /**

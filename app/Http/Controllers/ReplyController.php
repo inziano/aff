@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use Illuminate\Http\Request;
+use App\Events\ThreadReplied;
 use App\Repositories\ReplyRepository;
 use App\Http\Resources\Reply as ReplyResource;
 
@@ -40,6 +41,9 @@ class ReplyController extends Controller
         // push
         $reply = $this->repo->createReply($request);
 
+        // Fire event
+        event( new ThreadReplied($reply->thread_id));
+
         return $reply;
     }
 
@@ -55,17 +59,6 @@ class ReplyController extends Controller
         $reply = $this->repo->showReply($id);
 
         return $reply;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reply $reply)
-    {
-        //
     }
 
     /**
@@ -86,8 +79,15 @@ class ReplyController extends Controller
      * @param  \App\Reply  $reply
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reply $reply)
+    public function destroy($reply)
     {
+        // Thread
+        $thread = Reply::where('id',$reply)->first()->thread_id;
         //
+        $reply = $this->repo->deleteReply($reply);
+
+        event(new ThreadReplied($thread));
+
+        return (string)$reply;
     }
 }

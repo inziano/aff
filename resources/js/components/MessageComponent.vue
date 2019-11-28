@@ -10,7 +10,7 @@
                     <Col span="24">
                         <FormItem label="Recipient">
                             <Select v-model="messageForm.recepient" multiple>
-                                <Option v-for="member in memberList" :key="member" value="member"> {{member}} </Option>
+                                <Option v-for="member in memberList" :key="member.id" :value="member.id"> {{member.username}} </Option>
                             </Select>
                         </FormItem>
                     </Col>
@@ -76,7 +76,7 @@
                 </div>
             </ul>
             <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-56 bg-white m-2" v-for="message in messageData.data" :key="message.title">
+                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-48 bg-white m-2" v-for="message in messages" :key="message.title">
                     <div class="w-full mb-3 ">
                         <p class="font-hairline text-xs tracking-widest text-gray-500">
                             <Badge status="success" />
@@ -103,7 +103,7 @@
                 <!-- Put list in here -->
                 <List>
                     <ListItem v-for="msg in messages" :key="msg.id">
-                        <ListItemMeta title="msg.subject" description="msg.body" />
+                        <ListItemMeta :title="msg.subject" :description="msg.body" />
                     </ListItem>
                 </List>
             </div>
@@ -136,13 +136,18 @@ export default {
         }
     },
     mounted() {
-        axios({
-            method: 'get',
-            url: 'api/message'
-        }).then((response)=>{
-            this.messages = response.data.data
-            this.messageData = response.data
-        }).catch((error)=>{
+        axios.all([
+            axios.get('api/message'),
+            axios.get('api/user')
+        ]).then(axios.spread((message,user)=>{
+            let that = this
+            this.messages = message.data.data.filter((resp)=>{
+                return resp.recepient.includes(that.currentUser.id)
+            })
+            // this.messages = message.data.data
+            this.memberList = user.data.data
+            console.log(this.messages)
+        })).catch((error)=>{
             console.log(error)
             this.$Notice.info({
                 title: 'Messages',
@@ -153,7 +158,7 @@ export default {
     methods: {
         onSubmit(){
             // 
-            const data = this.messageForm
+            let data = this.messageForm
             data['user_id'] = this.currentUser.id
             this.loading = false
             // Push message

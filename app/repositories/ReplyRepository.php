@@ -33,4 +33,16 @@ class ReplyRepository {
 
         return $replies;
     }
+
+    public function deleteReply($id)
+    {
+        if ( Reply::where('id',$id)->exists()){
+
+            $reply = Reply::find($id)->delete();
+        }else{
+            $reply = abort(404);
+        }
+
+        return $reply;
+    }
 }
