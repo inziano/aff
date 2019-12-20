@@ -29,6 +29,9 @@ Route::get('publication/download/{id}','PublicationController@download');
 // User route
 Route::apiResource('user','UserController');
 
+Route::post('user/search', 'UserController@search');
+
+
 // Education route
 Route::apiResource('education', 'EducationController');
 
@@ -41,6 +44,8 @@ Route::apiResource('work', 'WorkController');
 // Publication route
 Route::apiResource('publication', 'PublicationController');
 
+Route::post('publication/search', 'PublicationController@search');
+
 // Messages route
 Route::apiResource('message','MessageController');
 
@@ -50,11 +55,28 @@ Route::apiResource('invitation', 'InvitationController');
 // Event routes
 Route::apiResource('event', 'EventController');
 
+Route::post('event/search', 'EventController@search');
+
+
 // Thread routes
 Route::apiResource('thread', 'ThreadController');
+
+Route::post('thread/filter', 'ThreadController@filter');
+
+Route::post('thread/search', 'ThreadController@search');
 
 // Reply routes
 Route::apiResource('reply', 'ReplyController');
 
 // Topic routes
 Route::apiResource('topic', 'TopicController');
+
+// Vacancy routes
+Route::apiResource('vacancy', 'VacancyController');
+
+Route::post('vacancy/search', 'VacancyController@search');
+
+// Vacancy Application routes
+Route::apiResource('vacancyapplication', 'VacancyApplicationController');
+
+Route::post('vacancyapplication/search', 'VacancyApplicationController@search');

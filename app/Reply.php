@@ -11,6 +11,7 @@ class Reply extends Model
         'body',
         'thread_id',
         'user_id',
+        'reply_id',
         'likes',
     ];
 }

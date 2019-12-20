@@ -6,28 +6,28 @@
             </h4>
             <br>
             <Row :gutter="16">
-                <Col span="8">
+                <Col span="24">
                     <FormItem label="Email">
                         <Input type="text" v-model="invitationForm.email" placeholder="Email addresses"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
-                <Col span="8">
+                <Col span="24">
                     <FormItem label="Subject">
                         <Input type="text" v-model="invitationForm.subject" placeholder="Subject" disabled></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
-                <Col span="8">
+                <Col span="24">
                     <FormItem label="Message">
                         <Input type="textarea" v-model="invitationForm.message" placeholder="Message"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
-                <Col span="12">
+                <Col span="24">
                     <Button @click="onSubmit" :loading="loading">
                         <span v-if="!loading"> 
                             Send Invitation
@@ -47,19 +47,26 @@
 <script>
 import axios from 'axios'
 export default {
+    name: 'invitation',
     data() {
         return {
             invitationForm: {
-                email: '',
+                email: [],
                 subject:'Join me at African Forest Forum',
                 message: ' Hi, I would like to connect with you at the African Forest Forum.'
             }
+        }
+    },
+    computed: {
+        currentUser(){
+            return this.$store.state.current_user
         }
     },
     methods: {
         onSubmit() {
             // data
             const data = this.invitationForm
+            data['user_id'] = this.currentUser.id
 
             // Post
             axios({

@@ -25,7 +25,7 @@ class MemberApproved implements ShouldBroadcast
     public function __construct()
     {
         //
-        $this->users = UserResource::collection(User::with(['bio','education','work'])->paginate(10));
+        $this->users = UserResource::collection(User::with(['bio','education','work'])->paginate(12));
     }
 
     /**

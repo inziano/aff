@@ -76,7 +76,7 @@
                 </div>
             </ul>
             <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-48 bg-white m-2" v-for="message in messages" :key="message.title">
+                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-48 bg-white m-2 rounded" v-for="message in messages" :key="message.title">
                     <div class="w-full mb-3 ">
                         <p class="font-hairline text-xs tracking-widest text-gray-500">
                             <Badge status="success" />
@@ -96,6 +96,12 @@
                         <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
                             Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{message.created_at}}</span>
                         </p>
+                    </div>
+                    <div class="w-full mt-5 ">
+                        <li class="list-none"> 
+                            <Avatar size="small" icon="ios-person" />
+                            <span class="ml-1 font-sans font-thin text-gray-600">{{message.user.username}}</span>
+                        </li>
                     </div>
                 </div>
             </div>

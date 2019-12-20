@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Resources\Reply as ReplyResource;
 use App\Reply;
 
 class ThreadReplied implements ShouldBroadcast
@@ -25,10 +26,8 @@ class ThreadReplied implements ShouldBroadcast
     public function __construct($id)
     {
         //
-        $this->replies = Reply::where('thread_id', $id)->get();
+        $this->replies = ReplyResource::collection(Reply::where('thread_id', $id)->whereNull('reply_id')->get());
 
-        // dd
-        // dd($this->replies);
     }
 
     /**

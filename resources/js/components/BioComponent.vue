@@ -61,12 +61,12 @@
                             Education
                         </h4>
                         <Divider></Divider>
-                        <div class="p-2 border-b border-b-2">
-                            <p class="text-base font-medium text-gray-600 tracking-wider">{{this.eduData.institution}}</p>
-                            <p class="text-sm font-medium text-gray-700 tracking-widest">{{this.eduData.degree}}</p>
-                            <p class="text-xs font-sans mb-2"> {{this.eduData.startdate}} - {{this.eduData.enddate}}</p>
+                        <div class="p-2 border-b border-b-2" v-for="edu in eduData" :key="edu.id">
+                            <p class="text-base font-medium text-gray-600 tracking-wider capitalize">{{edu.institution}}</p>
+                            <p class="text-sm font-medium text-gray-700 tracking-widest">{{edu.degree}}</p>
+                            <p class="text-xs font-sans mb-2"> {{edu.startdate | moment("MMMM Do YYYY") }} - {{edu.enddate| moment("MMMM Do YYYY") }}</p>
                             <p class="text-sm tracking-wider mb-2">
-                                {{this.eduData.description}}
+                                {{edu.description}}
                             </p>
                         </div>
                     </div>
@@ -75,11 +75,11 @@
         <div v-if="!editing" class="w-3/12 pt-0 px-4">
             <h4 class="text-gray-700 text-lg mb-4"> Work </h4>
             <Timeline>
-                    <TimelineItem>
-                        <p class="time">{{this.workData.startdate}} - {{this.workData.enddate}}</p>
-                        <p class="text-gray-600 text-xs">{{this.workData.country}}</p>
-                        <p class="content text-sm">{{this.workData.institution}}</p>
-                        <p class="content text-sm">{{this.workData.description}}</p>
+                    <TimelineItem v-for="work in this.workData" :key="work.id">
+                        <p class="time">{{work.startdate | moment("MMMM Do YYYY")}} - {{work.enddate  | moment("MMMM Do YYYY")}}</p>
+                        <p class="text-gray-600 text-xs">{{work.country}}</p>
+                        <p class="content text-sm">{{work.institution}}</p>
+                        <p class="content text-sm">{{work.description}}</p>
                     </TimelineItem>
             </Timeline>
         </div>
@@ -229,7 +229,21 @@
                                     </FormItem>
                                 </Col>
                             </Row>
-                            <Row :gutter="16">
+                            <Row :gutter="16" class="mb-2">
+                                <Col span="10">
+                                    <ButtonGroup>
+                                        <Button type="primary" @click="addEducation">
+                                            <Icon type="ios-add"></Icon>
+                                            Add
+                                        </Button>
+                                    </ButtonGroup>
+                                </Col> 
+                            </Row>
+                            <Row :gutter="16" class="mb-2 mt-2" v-if="educations.length > 0">
+                                <Table border :columns="educationColumns" :data="educations"></Table>
+                            </Row>
+                           
+                            <Row :gutter="16" v-if="educations.length > 0">
                                 <Col span="10">
                                     <ButtonGroup>
                                         <Button >
@@ -283,13 +297,27 @@
                                 </Col>
                             </Row>
                             <Row :gutter="16">
-                                <Col span="12">
+                                <Col span="24">
                                     <FormItem label="Description">
                                         <Input v-model="workForm.description" placeholder="Description" type="textarea"></Input>
                                     </FormItem>
                                 </Col>
                             </Row>
-                            <Row :gutter="16">
+                           
+                            <Row :gutter="16" class="mb-2">
+                                <Col span="10">
+                                    <ButtonGroup>
+                                        <Button type="primary" @click="addWork">
+                                            <Icon type="ios-add"></Icon>
+                                            Add
+                                        </Button>
+                                    </ButtonGroup>
+                                </Col> 
+                            </Row>
+                            <Row :gutter="16" class="mb-2" v-if="works.length > 0">
+                                <Table border :columns="workcolumns" :data="works"></Table>
+                            </Row>
+                            <Row :gutter="16" v-if="works.length > 0">
                                 <Col span="10">
                                     <ButtonGroup>
                                         <Button>
@@ -317,7 +345,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            id:'',
+            id: '',
             editing: false,
             val: "personal",
             bioForm: {
@@ -345,12 +373,94 @@ export default {
                 description: ''
             },
             workForm: {
-                institution: '',
+                institution:'',
                 title: '',
                 country: '',
                 startdate: '',
-                enddate: ''
+                enddate: '',
             },
+            educationColumns: [
+                {
+                    title: 'Institution',
+                    key: 'institution'
+                },
+                {
+                    title: 'Degree',
+                    key: 'degree'
+                },
+                {
+                    title: 'Field',
+                    key: 'field_of_study'
+                },
+                {
+                    title: 'Start',
+                    key: 'startdate'
+                },
+                {
+                    title: 'Action',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    size: 'small',
+                                    shape: 'circle',
+                                    icon: 'ios-close'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.removeEducation(params.index)
+                                    }
+                                }
+                            }, 'Remove')
+                        ]);
+                    }
+                }
+            ],
+            workcolumns: [
+                {
+                    title: 'Title',
+                    key: 'title'
+                },
+                {
+                    title: 'Institution',
+                    key: 'institution'
+                },
+                {
+                    title: 'Country',
+                    key: 'country'
+                },
+                {
+                    title: 'Start',
+                    key: 'startdate'
+                },
+                {
+                    title: 'Action',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    size: 'small',
+                                    shape: 'circle',
+                                    icon: 'ios-close'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.removeWork(params.index)
+                                    }
+                                }
+                            }, 'Remove')
+                        ]);
+                    }
+                }
+            ],
+            works: [],
+            educations: [],
             bioData: {},
             workData: {},
             eduData: {}
@@ -373,12 +483,11 @@ export default {
             axios.get('api/work/'+id)
         ]).then( axios.spread((bio,edu,work)=>{
             // Bio information
-            console.log(bio.data)
             this.bioData = bio.data
             // Education information
-            this.eduData = edu.data
+            this.eduData = edu.data.data
             // // Work information
-            this.workData = work.data
+            this.workData = work.data.data
         })).catch((error)=>{
             this.editing = true
             // Show information to fill in details
@@ -387,23 +496,6 @@ export default {
                 desc: 'Please fill in your biodata'
             })
         })
-        // axios({
-        //     method: 'get',
-        //     url: 'api/bio/'+id
-        // }).then((response)=>{
-        //     console.log(response)
-        //     // Bio data
-        //     this.bioData = response.data
-        //     console.log(this.bioData.data)
-        // }).catch((error)=>{
-        //     console.log(error)
-        //     this.editing = true
-        //     // Show information to fill in details
-        //     this.$Notice.error({
-        //         title: 'User',
-        //         desc: 'Please fill in your biodata'
-        //     })
-        // })
     },
     methods: {
         isEditing () {
@@ -413,27 +505,58 @@ export default {
                 this.editing = true
             }
         },
+        addEducation(){
+            this.educationForm['user_id'] = this.id
+            this.educations.push(this.educationForm)
+        },
+        removeEducation(idx){
+            this.educations.splice(idx,1)
+        },
+        addWork(){
+            this.workForm['user_id'] = this.id
+            this.works.push(this.workForm)
+        },
+        removeWork(idx){
+            this.works.splice(idx,1)
+        },
+        updateWork(){
+            // Get data
+            let data = this.works
+            // Push to api
+            axios({
+                method: 'post',
+                url: '/api/work',
+                data: data
+            }).then((response)=>{
+                // Show response
+                this.$Notice.info({
+                    title: 'Updated'
+                })
+            }).catch((error)=>{
+                // Show error
+                this.$Notice.error({
+                    title: "Unsuccesful"
+                })
+            })
+        },
         // Push the data to the db
         updateEducation(){
             // Get data
-            const formdata = this.educationForm
-            formdata['user_id'] = this.id
+            let data = this.educations
             // Push to api
             axios({
                 method: 'post',
                 url: '/api/education',
-                data: formdata
+                data: data
             }).then((response)=>{
                 // Show response
                 this.$Notice.info({
-                    title: response.data,
-                    desc: response.message
+                    title: 'Updated'
                 })
             }).catch((error)=>{
                 // Show error
                 this.$Notice.error({
                     title: "Unsuccesful",
-                    desc: error.message
                 })
             })
 
@@ -450,37 +573,12 @@ export default {
             }).then((response)=>{
                 // Show response
                 this.$Notice.info({
-                    title: response.data,
-                    desc: response.message
+                    title: 'Updated'
                 })
             }).catch((error)=>{
                 // Show error
                 this.$Notice.error({
                     title: "Unsuccesful",
-                    desc: error.message
-                })
-            })
-        },
-        updateWork(){
-            // Get data
-            const formdata = this.workForm
-            formdata['user_id'] = this.id
-            // Push to api
-            axios({
-                method: 'post',
-                url: '/api/work',
-                data: formdata
-            }).then((response)=>{
-                // Show response
-                this.$Notice.info({
-                    title: response.data,
-                    desc: response.message
-                })
-            }).catch((error)=>{
-                // Show error
-                this.$Notice.error({
-                    title: "Unsuccesful",
-                    desc: error.message
                 })
             })
         }

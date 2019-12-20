@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\PublicationRepository;
 use App\Http\Resources\Publication as PubResource;
 use Illuminate\Support\Facades\Storage;
+use App\Events\SearchPublications;
 
 class PublicationController extends Controller
 {
@@ -23,7 +24,7 @@ class PublicationController extends Controller
     public function index()
     {
         //display all
-        return PubResource::collection(Publication::all());
+        return PubResource::collection(Publication::paginate(12));
     }
 
    
@@ -51,7 +52,6 @@ class PublicationController extends Controller
 
         // Append to request
         $request->request->add(['pubpath' =>$pubpath]);
-        $request->merge(['user_id'=>1]);
 
         // Store
         $publication = $this->repo->createPublication($request);
@@ -81,6 +81,23 @@ class PublicationController extends Controller
 
     }
 
+    /**
+     * search
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function search(Request $request)
+    {
+        $results = $this->repo->searchPublications($request->input('search'));
+
+        // TODO: Fail gracefully incase of error
+        // Fire event
+        event( new SearchPublications($results));
+
+        // 
+        return $results;
+    }
     /**
      * Display the specified resource.
      *

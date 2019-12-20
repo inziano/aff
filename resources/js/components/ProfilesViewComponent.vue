@@ -1,11 +1,24 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-full p-5">
-            <h4 class="font-semibold text-xl mb-2"> Members </h4>
-            <p class="font-hairline text-xs">
-                View members
-            </p>
-            <br>
+            <Modal v-model="inviteModal" title="Send Invitation">
+                <invitation></invitation>
+            </Modal>
+            <nav class="w-full flex mb-2">
+                <div class="lg:flex-grow lg:w-auto">
+                    <h3 class="font-semibold text-xl mb-2">
+                        Members
+                    </h3>
+                    <p class="font-hairline text-xs">
+                        View Members
+                    </p>
+                </div>
+                <div class="w-2/24 p-3">
+                    <Button icon="ios-add" @click="inviteModal = true">
+                        Send Invitation
+                    </Button>
+                </div>
+            </nav>
             <ul class="w-full flex flex-wrap bg-gray-200 p-1">
                 <div class="flex lg:flex-grow lg:w-auto">
                     <li class="mr-3" @click="changeView()">
@@ -18,13 +31,14 @@
                     <li v-if="!list" class="mr-3 p-2" @click="filter()">
                         <Icon type="ios-funnel-outline" size="24"/>       
                     </li>
-                    <li class="mr-3 p-2">
+                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
+                    <li class="mr-1 p-2">
                         <Icon type="ios-search-outline" size="24"/>       
                     </li>
                 </div>
             </ul>
-            <div class="w-full h-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div v-for="member in members" :key="member.id" class="w-1/4 h-64 overflow-hidden shadow-lg p-2 m-2 bg-white rounded">
+            <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
+                <div v-for="member in members" :key="member.id" class="w-64 h-64 overflow-hidden shadow-lg p-2 m-3 bg-white rounded-lg">
                     <div class="w-full text-center mb-3 pt-2">
                         <Avatar :style="{background: '#0A8754'}" size="large"> JD </Avatar>
                         <p class="text-base font-medium mt-3 text-gray-500"> {{member.email}}</p>
@@ -45,7 +59,7 @@
                         <div class="w-full flex">
                         <div class="w-3/5 pl-4">
                                 <trend
-                                :data="[0,0,0]"
+                                :data="[0,30,3]"
                                 :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                                 width="180"
                                 height="50"
@@ -53,7 +67,7 @@
                                 smooth>
                                 </trend>
                         </div>
-                        <div class="w-2/5 text-center">
+                        <div class="w-1/5 text-center">
                                 <p class="text-xs uppercase text-gray-400">
                                     <span class="text-xl font-semibold text-gray-900">0</span> <br>
                                     Pubs
@@ -79,8 +93,11 @@
                 </div>
             </div>
             <div class="w-full h-full p-2 bg-gray-100" v-if="list">
-                <Table height="200" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList"></Table>
+                <Table height="" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList"></Table>
                 <Button @click="makeMember" v-if="updateList.length != '0'">Make Member</Button>
+            </div>
+            <div class="w-full flex p-0 text-center">
+                <Page class="mx-auto" :current="membermeta.current_page" :total="membermeta.total" :page-size="membermeta.per_page" @on-change="goToPage" />
             </div>
         </div>
     </div>
@@ -88,12 +105,20 @@
 
 <script>
 import axios from 'axios'
+import Invitation from './InvitationComponent'
 export default {
+    components: {
+        'invitation': Invitation
+    },
     data() {
         return {
             list: false,
+            inviteModal: false,
+            searchTerm: '',
             updateList: [],
             members: [],
+            membermeta: '',
+            memberlink: '',
             member: [
                 {
                     type: 'selection',
@@ -146,18 +171,60 @@ export default {
         }).then((response)=>{
             // response
             this.members = response.data.data
+            this.membermeta = response.data.meta,
+            this.memberlink = response.data.link
             // Member data
             this.memberdata = response.data
         }).catch((error)=>{
             // error
         })
 
-        Echo.channel('members').listen('MemberApproved', (e)=>{
-            this.members = e.members
+        Echo.channel('members').listen('UserModified', (e)=>{
+            this.members = e.users
             // console.log(e.replies)
+        })
+        // Search pubs
+        Echo.channel('searches').listen('SearchUsers',(e)=>{
+            this.members = e.users
+            console.log(e)
         })
     },
     methods: {
+        // Search
+        onSearch() {
+            // 
+            let formdata = {
+                search: this.searchTerm
+            }
+            // Search
+            axios({
+                method: 'post',
+                url: 'api/user/search',
+                data: formdata
+            }).then((response)=>{
+                // log response
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
+
+        // goToPage
+        goToPage(number){
+            axios.get(this.membermeta.path + '?page=' + number).then((response)=>{
+                // response
+                this.members = response.data.data
+                this.membermeta = response.data.meta,
+                this.memberlink = response.data.link
+                // Member data
+                this.memberdata = response.data
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         changeView(){
            if ( this.list === true ){
                this.list = false
@@ -209,7 +276,7 @@ export default {
             this.$router.push({name: 'profile', params: {id}})
         },
         goToPub(id){
-            this.$router.push({name: 'publication', params: {id}})
+            this.$router.push({name: 'publications', params: {id}})
         }
 
     }

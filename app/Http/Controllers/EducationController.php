@@ -32,27 +32,27 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {      
-        //Validate
-        // $this->validate(request(),[
-        //     'institution'=> 'string',
-        //     'startdate'=> 'string',
-        //     'enddate'=> 'string',
-        //     'degree'=> 'string',
-        //     'field_of_study'=> 'string',
-        //     'description'=> 'string'
-        // ]);
-        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
-        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+        // Validate
+        $this->validate(request(),[
+            'institution'=> 'string',
+            'startdate'=> 'string',
+            'enddate'=> 'string',
+            'degree'=> 'string',
+            'field_of_study'=> 'string',
+            'description'=> 'string'
+        ]);
 
-        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+        foreach( $request->all() as $req ){
 
-        // Push to repo
-        if ( User::where('id', $request->input('user_id'))->exists())
-        {
-            $edu = $this->repo->createEducation($request);
-        } else
-        {
-            $edu = abort(404);
+            $r = new Request((array)$req);
+
+            $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+
+            $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+
+            $r->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+
+            $edu = $this->repo->createEducation($r);
         }
        
         return $edu;

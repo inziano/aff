@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Work;
 use Illuminate\Http\Request;
 use App\Repositories\WorkRepository;
+use App\Http\Resources\Work as WorkResource;
 use Carbon\Carbon;
 
 class WorkController extends Controller
@@ -33,19 +34,26 @@ class WorkController extends Controller
     public function store(Request $request)
     {
         //Validate
-        // $this->validate(request(),[
-        //     'institution'=> 'string',
-        //     'title'=> 'string',
-        //     'country'=> 'string',
-        //     'startdate'=> 'date',
-        //     'enddate'=> 'date'
-        // ]);
-        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
-        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+        $this->validate(request(),[
+            'institution'=> 'string',
+            'title'=> 'string',
+            'country'=> 'string',
+            'startdate'=> 'date',
+            'enddate'=> 'date'
+        ]);
 
-        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+        foreach( $request->all() as $req ){
 
-        $wrk = $this->repo->createWork($request);
+            $r = new Request((array)$req);
+
+            $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+
+            $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+
+            $r->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+
+            $wrk = $this->repo->createWork($r);
+        }
 
         return $wrk;
     }
@@ -59,7 +67,7 @@ class WorkController extends Controller
     public function show($work)
     {
         //
-        $work = $this->repo->findWork($work);
+        $work = WorkResource::collection($this->repo->findWork($work));
         //return work of specific user
         return $work;
     }

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 use App\Education;
+use App\Http\Resources\Education as EducationResource;
 
 class EducationRepository {
     
@@ -30,7 +31,7 @@ class EducationRepository {
     public function findEducation( $education )
     {
         // Find education
-        $education = Education::where('user_id', $education)->first();
+        $education = EducationResource::collection(Education::where('user_id', $education)->get());
 
         return $education;
     }

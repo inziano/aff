@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Resources\User as UserResource;
 use App\Repositories\UserRepository;
 use App\Events\UserRegistered;
+use App\Events\SearchUsers;
+use App\Events\UserModified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,7 +27,7 @@ class UserController extends Controller
     public function index()
     {
         //Show all the users
-        return UserResource::collection(User::with(['bio','education','work'])->paginate(10));
+        return UserResource::collection(User::with(['bio','education','work'])->paginate(12));
     }
 
     /**
@@ -94,9 +96,29 @@ class UserController extends Controller
     {
         $user = $this->repo->updateStatus($request);
         // Fire event
-        // event( new UserStatusChange($user))
+        event( new UserModified());
         return $user;
     }
+
+      
+    /**
+     * search
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function search(Request $request)
+    {
+        $results = $this->repo->searchUsers($request->input('search'));
+
+        // TODO: Fail gracefully incase of error
+        // Fire event
+        event( new SearchUsers($results));
+
+        // 
+        return $results;
+    }
+
 
     /**
      * Display the specified resource.

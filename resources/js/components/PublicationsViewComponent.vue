@@ -86,21 +86,22 @@
                         <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
                     </li> 
                 </div>
-                <div class="w-1/24">
-                    <li class="mr-3 p-2">
+                <div class="w-1/24 flex">
+                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
+                    <li class="mr-1 p-2">
                         <Icon type="ios-search-outline" size="24"/>       
                     </li>
                 </div>
             </ul>
-            <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/4 bg-white shadow-md rounded-3" v-for="item in pubList" :key="item.title">
+            <div class="w-full flex flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
+                <div class="w-64 h-64 bg-white shadow-md rounded-lg m-1" v-for="item in pubList" :key="item.id">
                     <div class="border border-white rounded-full p-4 flex flex-col justify-between leading-normal">
                         <div class="mb-8">
                             <p class="text-xs text-gray-600 flex items-center mb-1">
                                 {{item.publisher}}
                             </p>
-                            <div class="text-gray-900 font-medium text-xl mb-2">{{item.title}}</div>
-                            <p class="text-gray-700 text-base">{{item.abstract}}</p>
+                            <div class="text-gray-900 font-medium text-xl mb-2">{{item.title | truncate(20)}}</div>
+                            <p class="text-gray-700 text-base">{{item.abstract | truncate(20)}}</p>
                         </div>
                         <div class="flex items-center">
                             <img class="w-10 h-10 rounded-full mr-4" src="/images/landing.jpg" alt="Avatar of Jonathan Reinink">
@@ -121,11 +122,14 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div>           
             </div>
             <div class="w-full" v-if="list">
                 <Table stripe ref="selection" :columns="publications" :data="pubList"></Table>
             </div>
+            <div class="w-full flex p-0 mb-5 text-center">
+                <Page class="mx-auto" :current="pubmeta.current_page" :total="pubmeta.total" :page-size="pubmeta.per_page" @on-change="goToPage" />
+            </div> 
         </div>
        
         <!-- <List item-layout="vertical" class="w-2/3 mx-auto my-auto" border>
@@ -160,10 +164,12 @@ export default {
     data(){
         return {
             id: this.$route.params.id,
+            searchTerm: '',
             loading: false,
             pubModal: false,
             list: false,
             pubList: [],
+            pubmeta: '',
             pubs: '',
             pubForm:{
                 title: '',
@@ -210,15 +216,55 @@ export default {
         }).then((response)=>{
             const arr = response.data
             this.pubList = arr.data
+            this.pubmeta = arr.meta
             this.pubs = arr
+            console.log(arr)
         }).catch((error)=>{
             this.$Notice.error({
                 title: 'No publications found',
                 desc: error.message
             })
         })
+
+        // Search pubs
+        Echo.channel('searches').listen('SearchPublications',(e)=>{
+            this.pubList = e.publications
+
+        })
     },
     methods: {
+        // Search
+        onSearch() {
+            // 
+            let formdata = {
+                search: this.searchTerm
+            }
+            // Search
+            axios({
+                method: 'post',
+                url: 'api/publication/search',
+                data: formdata
+            }).then((response)=>{
+                // log response
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
+        // goToPage
+        goToPage(number){
+            axios.get(this.pubmeta.path + '?page=' + number).then((response)=>{
+                // response
+                this.pubList = response.data.data
+                this.pubmeta = response.data.meta
+                // Pub data
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         changeView(){
            if ( this.list === true ){
                this.list = false
@@ -231,7 +277,7 @@ export default {
             this.loading = true
             // data
             const data = this.pubForm
-            data['user_id'] = this.id
+            data['user_id'] = this.currentUser.id
 
             let formdata = new FormData()
 
@@ -252,6 +298,7 @@ export default {
                 })
                 // Loading
                 this.loading = false
+                this.pubModal = false
             }).catch( (error)=>{
                 // Loading
                 this.loading = false

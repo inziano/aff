@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Reply as ReplyResource;
 use App\Reply;
 use App\Thread;
 
@@ -26,13 +27,33 @@ class ReplyRepository {
     {
         // 
         if ( Thread::where('id',$id)->exists() ){
-            $replies = Reply::where('thread_id', $id)->get();
+            $replies = ReplyResource::collection(Reply::where('thread_id', $id)->get());
         }else{
             $replies = abort(404);
         }
 
         return $replies;
     }
+
+    /**
+     * likeReply
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function likeReply($id) 
+    {
+        // increment like count
+        if ( Reply::where('id', $id)->exists()) {
+            $likes = Reply::find($id)->increment('likes');
+
+            return $likes;
+        } else {
+            return abort(404);
+        }
+
+    }
+
 
     public function deleteReply($id)
     {

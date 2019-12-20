@@ -16,9 +16,9 @@ class CreatePublicationsTable extends Migration
         Schema::create('publications', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('author');
-            $table->string('title');
+            $table->text('title');
             $table->string('publisher');
-            $table->text('abstract');
+            $table->longText('abstract');
             $table->string('pubpath');
             $table->integer('downloads')->default(0);
             $table->integer('views')->default(0);

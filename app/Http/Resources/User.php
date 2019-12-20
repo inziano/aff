@@ -26,7 +26,7 @@ class User extends JsonResource
             'username' => $this->username,
             'bio' => new BioResource($this->bio),
             'education' => EducationResource::collection(Education::where('user_id',$this->id)->get()),
-            'work' => WorkResource::collection(Work::where('user_id',$this->id)->get()),
+            'work' => WorkResource::collection( Work::where('user_id',$this->id)->get()),
             'status' => $this->status
         ];
     }

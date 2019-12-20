@@ -65,7 +65,7 @@ export default {
         onSubmit() {
             this.loading = true
             // Dispatch 
-            this.$store.dispatch('login');
+            this.$store.dispatch('login')
             // Axios
             axios({
                 method: 'post',

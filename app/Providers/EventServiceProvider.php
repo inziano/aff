@@ -33,7 +33,55 @@ class EventServiceProvider extends ServiceProvider
         ],
        'App\Events\ThreadReplied'=>[
            'App\Listeners\UpdateReplyList'
-       ]
+       ],
+       'App\Events\UpdateThreadLikeCount'=>[
+
+       ],
+       'App\Events\UpdateThreadViewCount'=>[
+
+       ],
+       'App\Events\UpdateReplyLikeCount'=>[
+
+       ],
+       'App\Events\UpdateReplyViewCount'=>[
+           
+       ],
+       'App\Events\FilterThreads'=>[
+
+       ],
+       'App\Events\SearchThreads'=>[
+
+       ],
+       'App\Events\SearchUsers'=>[
+
+        ],
+        'App\Events\SearchEvents'=>[
+
+        ],
+        'App\Events\SearchPublications'=>[
+
+        ],
+        'App\Events\UserModified'=>[
+
+        ],
+        'App\Events\EventCreated'=>[
+
+        ],
+        'App\Events\PublicationCreated'=>[
+            
+        ],
+        'App\Events\VacancyApplicationSubmitted'=>[
+            
+        ],
+        'App\Events\VacancyCreated'=>[
+            
+        ],
+        'App\Events\VacancyDeleted'=>[
+            
+        ],
+        'App\Events\EventDeleted'=>[
+
+        ]
     ];
 
     /**

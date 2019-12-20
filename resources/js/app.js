@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import Trend from 'vuetrend'
 import ViewUI from 'view-design'
+import Moment from 'vue-moment'
+import VueTruncate from 'vue-truncate-filter'
 
 // import style
 import 'view-design/dist/styles/iview.css';
@@ -21,6 +23,8 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(ViewUI,{locale})
 Vue.use(Trend)
+Vue.use(Moment)
+Vue.use(VueTruncate)
 
 // Initiate
 const app = new Vue({

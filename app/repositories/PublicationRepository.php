@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Publication as PublicationResource;
 use App\Publication;
 
 class PublicationRepository {
@@ -20,4 +21,24 @@ class PublicationRepository {
 
         return $pub;
     }
+
+    /**
+     * searchPublications
+     *
+     * @param mixed $term
+     * @return void
+     */
+    public function searchPublications($term)
+    {
+        // Search the publication
+        $publications = PublicationResource::collection(
+            Publication::where('author','LIKE', '%'.$term.'%')
+                ->orWhere('title', 'LIKE', '%'.$term.'%')
+                ->orWhere('publisher', 'LIKE', '%'.$term.'%')
+                ->orWhere('abstract', 'LIKE', '%'.$term.'%')->get()
+        );
+
+        return $publications;
+    }
+
 }

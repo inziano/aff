@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Resources\Event as EventResource;
+use App\Events\SearchEvents;
+use App\Events\EventCreated;
+use App\Events\EventDeleted;
 use App\Repositories\EventRepository;
 use Carbon\Carbon;
 
@@ -31,7 +34,7 @@ class EventController extends Controller
     public function index()
     {
         //
-        return EventResource::collection(Event::all());
+        return EventResource::collection(Event::paginate(12));
     }
 
     /**
@@ -59,31 +62,28 @@ class EventController extends Controller
         $event = $this->repo->createEvent($request);
 
         // Fire eventcreated
-        // new event(EventCreated($event));
+        event( new EventCreated());
 
         return $event;
     }
 
+    
     /**
-     * Display the specified resource.
+     * search
      *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function show(Event $event)
+    public function search(Request $request)
     {
-        //
-    }
+        $results = $this->repo->searchEvents($request->input('search'));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
+        // TODO: Fail gracefully incase of error
+        // Fire event
+        event( new SearchEvents($results));
+
+        // 
+        return $results;
     }
 
     /**
@@ -104,8 +104,13 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy($event)
     {
         //
+        $event = $this->repo->deleteEvent($event);
+
+        event(new EventDeleted());
+
+        return (string)$event;
     }
 }

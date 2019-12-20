@@ -79,14 +79,15 @@
                         <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
                     </li> 
                 </div>
-                <div class="w-1/24">
-                    <li class="mr-3 p-2">
+                <div class="w-1/24 flex">
+                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
+                    <li class="mr-1 p-2">
                         <Icon type="ios-search-outline" size="24"/>       
                     </li>
                 </div>
             </ul>
-            <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-56 bg-white m-2" v-for="event in eventData.data" :key="event.title">
+            <div class="w-full flex flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
+                <div class="w-64 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg" v-for="event in events" :key="event.name">
                     <div class="w-full mb-3 ">
                         <p class="font-hairline text-xs tracking-widest text-gray-500">
                             <Badge status="success" />
@@ -117,6 +118,14 @@
                             Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{event.created_at}}</span>
                         </p>
                     </div>
+                    <div class="w-full mt-2 mb-0" v-if="event.user.id === currentUser.id">
+                        <li class="list-none">
+                            <a class="text-xs tracking-wide font-medium text-red-700" @click="deleteEvent(event.id)"> Remove </a>
+                        </li>
+                    </div>
+                </div>
+                <div class="w-full flex p-0 text-center">
+                    <Page class="mx-auto" :current="eventmeta.current_page" :total="eventmeta.total" :page-size="eventmeta.per_page" @on-change="goToPage" />
                 </div>
             </div>
             <div class="w-full p-2 bg-gray-100" v-if="list">
@@ -135,7 +144,9 @@ export default {
             list: false,
             eventModal: false,
             admin: false,
+            searchTerm: '',
             eventData: '',
+            eventmeta:'',
             eventForm: {
                 startdate: '',
                 enddate: '',
@@ -181,6 +192,7 @@ export default {
         }).then((response)=>{
             this.events = response.data.data
             this.eventData = response.data
+            this.eventmeta = response.data.meta
         }).catch((error)=>{
             console.log(error)
             this.$Notice.info({
@@ -188,8 +200,42 @@ export default {
                 desc: 'No events currently registered'
             })
         })
+
+        // Search events
+        Echo.channel('searches').listen('SearchEvents',(e)=>{
+            this.events = e.events
+        })
+
+        // Update
+        Echo.channel('events').listen('EventCreated',(e)=>{
+            this.events = e.events
+        })
+
+        // Update
+        Echo.channel('events').listen('EventDeleted',(e)=>{
+            this.events = e.events
+        })
     },
     methods: {
+        // Search
+        onSearch() {
+            // 
+            let formdata = {
+                search: this.searchTerm
+            }
+            // Search
+            axios({
+                method: 'post',
+                url: 'api/event/search',
+                data: formdata
+            }).then((response)=>{
+                // log response
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         // Submit
         onSubmit(){
             let formdata = this.eventForm
@@ -204,6 +250,7 @@ export default {
                     title: 'Event Created',
                     desc: 'Your event was succesfully created'
                 })
+                this.eventModal = false
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Event not created',
@@ -219,6 +266,21 @@ export default {
                this.list = true
            }
         },
+        // Delete
+        deleteEvent(id){
+            axios({
+                method: 'delete',
+                url: 'api/event/'+id,
+            }).then((response)=>{
+                this.$Notice.success({
+                    title: 'Event Deleted'
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Event not deleted'
+                })
+            })
+        }
     }
 }
 </script>

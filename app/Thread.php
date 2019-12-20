@@ -15,4 +15,9 @@ class Thread extends Model
         'likes',
         'views'
     ];
+
+    public function topic()
+    {
+        return $this->belongsTo(App\Topic::class);
+    }
 }

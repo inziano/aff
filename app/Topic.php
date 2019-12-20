@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Thread;
 
 class Topic extends Model
 {
@@ -11,4 +12,10 @@ class Topic extends Model
         'title',
         'description',
     ];
+
+    // Relationship
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
 }

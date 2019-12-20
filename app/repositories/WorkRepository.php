@@ -30,7 +30,7 @@ class WorkRepository {
     public function findWork( $work )
     {
         // Find work
-        $work = Work::where('user_id', $work)->first();
+        $work = Work::where('user_id', $work)->get();
 
         return $work;
     }

@@ -70,11 +70,11 @@
         <div class="w-3/12 pt-0 px-4">
             <h4 class="text-gray-700 text-lg mb-4"> Work </h4>
             <Timeline>
-                   <TimelineItem>
-                        <p class="time">{{this.workData.startdate}} - {{this.workData.enddate}}</p>
-                        <p class="text-gray-600 text-xs">{{this.workData.country}}</p>
-                        <p class="content text-sm">{{this.workData.institution}}</p>
-                        <p class="content text-sm">{{this.workData.description}}</p>
+                   <TimelineItem v-for="work in this.workData" :key="work.id">
+                        <p class="time">{{work.startdate}} - {{work.enddate}}</p>
+                        <p class="text-gray-600 text-xs">{{work.country}}</p>
+                        <p class="content text-sm">{{work.institution}}</p>
+                        <p class="content text-sm">{{work.description}}</p>
                     </TimelineItem>
             </Timeline>
         </div>
@@ -102,12 +102,12 @@ export default {
             axios.get('api/work/'+id)
         ]).then( axios.spread((bio,edu,work)=>{
             // Bio information
-            console.log(bio.data)
             this.bioData = bio.data
             // Education information
             this.eduData = edu.data
             // // Work information
             this.workData = work.data
+            console.log(work.data)
         })).catch((error)=>{
             this.editing = true
             // Show information to fill in details

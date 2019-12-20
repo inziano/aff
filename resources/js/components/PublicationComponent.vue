@@ -87,7 +87,9 @@ export default {
             // disable submit button
             this.loading = true
             // data
-            const data = this.pubForm
+            let data = this.pubForm
+
+            data['user_id'] = this.currentUser.id
 
             let formdata = new FormData()
 

@@ -94,8 +94,13 @@ class TopicController extends Controller
      * @param  \App\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Topic $topic)
+    public function destroy($topic)
     {
-        //
+        // 
+        $topic = $this->repo->deleteTopic($topic);
+
+        event(new TopicDeleted());
+
+        return $topic;
     }
 }

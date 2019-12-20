@@ -23,7 +23,7 @@ class InvitationController extends Controller
     public function index()
     {
         //
-        return InvitationResource::collection(Invitation::all()->paginate());
+        return InvitationResource::collection(Invitation::all()->paginate(12));
     }
 
     /**
@@ -46,7 +46,7 @@ class InvitationController extends Controller
         $request->merge(['email'=>$emails]);
 
         // Store invite
-        $inivte = $this->repo->createInvitation($request);
+        $invite = $this->repo->createInvitation($request);
 
         // Event 
         // event( new InvitationSent($invite));

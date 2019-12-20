@@ -14,6 +14,7 @@ import ProfilesView from './components/ProfilesViewComponent';
 import PublicationsView from './components/PublicationsViewComponent';
 import Event from './components/EventComponent';
 import Vacancy from './components/VacancyComponent';
+import VacancyApplication from './components/VacancyApplicationComponent';
 import Forum from './components/ForumComponent';
 import ThreadView from './components/ThreadViewComponent';
 import Topic from './components/TopicComponent';
@@ -81,6 +82,11 @@ const router =  new Router({
             path: '/vacancies',
             component: Vacancy,
             name: 'vacancy'
+        },
+        {
+            path: '/vacancyapplication',
+            component: VacancyApplication,
+            name: 'vacancyapplication'
         },
         {
             path: '/forum',

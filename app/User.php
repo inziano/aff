@@ -50,7 +50,7 @@ class User extends Authenticatable
      */
     public function work()
     {
-        return $this->hasOne(Work::class);
+        return $this->hasMany(Work::class);
     }
 
     /**
@@ -75,6 +75,6 @@ class User extends Authenticatable
 
     public function publication()
     {
-        return $this->hasOne(Publication::class);
+        return $this->hasMany(Publication::class);
     }
 }
