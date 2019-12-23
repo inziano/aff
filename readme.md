@@ -30,7 +30,7 @@ Make sure you set the correct database connection information before running the
 Run database migrations
 
 ```bash
-php artisan serve
+php artisan migrate
 ```
 
 Serve application on your local machine
