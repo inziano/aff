@@ -6,6 +6,7 @@ https://laravel.com/docs/6.x/installation
 Clone the repository
 
 ```git
+git clone https://github.com/inziano/aff.git
 ```
 
 Switch to the repo folder
