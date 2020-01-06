@@ -10,6 +10,6 @@ $factory->define(Thread::class, function (Faker $faker) {
         //
         'subject' => $faker->sentence,
         'body' => $faker->paragraph,
-        'user_id' => $faker->randomDigit,
+        'user_id' => $faker->randomDigitNot(0),
     ];
 });
