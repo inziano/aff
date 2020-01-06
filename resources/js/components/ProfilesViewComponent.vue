@@ -38,11 +38,11 @@
                 </div>
             </ul>
             <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
-                <div v-for="member in members" :key="member.id" class="w-64 h-64 overflow-hidden shadow-lg p-2 m-3 bg-white rounded-lg">
+                <div v-for="member in members" :key="member.id" class="w-64 h-64 overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg">
                     <div class="w-full text-center mb-3 pt-2">
-                        <Avatar :style="{background: '#0A8754'}" size="large"> JD </Avatar>
-                        <p class="text-base font-medium mt-3 text-gray-500"> {{member.email}}</p>
-                        <p class="text-xs font-hairline mt-1"> {{member.status}} </p>
+                        <Avatar :style="{background: '#0A8754'}" size=""> JD </Avatar>
+                        <p class="text-base font-medium mt-3 text-gray-600"> {{member.email}}</p>
+                        <p class="text-sm font-medium tracking-wide mt-1 text-gray-600"> {{member.status}} </p>
                     </div>
                     <ul class="flex justify-center w-2/3 mx-auto mb-4">
                         <li class="mx-auto">
@@ -55,37 +55,18 @@
                             <Icon type="ios-trash" size="20"/>
                         </li>
                     </ul>
-                        <!-- <Divider></Divider>
-                        <div class="w-full flex">
-                        <div class="w-3/5 pl-4">
-                                <trend
-                                :data="[0,30,3]"
-                                :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
-                                width="180"
-                                height="50"
-                                auto-draw
-                                smooth>
-                                </trend>
-                        </div>
-                        <div class="w-1/5 text-center">
-                                <p class="text-xs uppercase text-gray-400">
-                                    <span class="text-xl font-semibold text-gray-900">0</span> <br>
-                                    Pubs
-                                </p>
-                        </div>
-                        </div> -->
                     <Divider></Divider>
                     <div class="w-full flex p-0 text-center">
                         <div class="w-1/2">
-                            <a @click="goToDetail(member.id)" >
-                                <Icon type="ios-person" size="24"/> Profile
+                            <a class="text-gray-600" @click="goToDetail(member.id)" >
+                                <Icon type="ios-person" size="18"/> Profile
                             </a>
                            
                         </div>
                         <Divider type="vertical"></Divider>
                         <div class="w-1/2">
-                            <a @click="goToPub(member.id)">
-                                <Icon type="ios-apps" size="24"/> Publications
+                            <a class="text-gray-600" @click="goToPub(member.id)">
+                                <Icon type="ios-apps" size="18"/> Publications
                             </a>
                            
                         </div>
@@ -94,7 +75,7 @@
             </div>
             <div class="w-full h-full p-2 bg-gray-100" v-if="list">
                 <Table height="" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList"></Table>
-                <Button @click="makeMember" v-if="updateList.length != '0'">Make Member</Button>
+                <Button class="mt-3" type="success" @click="makeMember" v-if="updateList.length != '0'">Make Member</Button>
             </div>
             <div class="w-full flex p-0 text-center">
                 <Page class="mx-auto" :current="membermeta.current_page" :total="membermeta.total" :page-size="membermeta.per_page" @on-change="goToPage" />

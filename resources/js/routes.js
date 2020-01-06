@@ -8,6 +8,7 @@ import Login from './components/LoginComponent';
 import Profile from './components/ProfileComponent';
 import Publication from './components/PublicationComponent';
 import Gallery from './components/GalleryComponent';
+import Home from './components/HomeComponent';
 import Message from './components/MessageComponent';
 import Invitation from './components/InvitationComponent';
 import ProfilesView from './components/ProfilesViewComponent';
@@ -18,11 +19,18 @@ import VacancyApplication from './components/VacancyApplicationComponent';
 import Forum from './components/ForumComponent';
 import ThreadView from './components/ThreadViewComponent';
 import Topic from './components/TopicComponent';
+import News from './components/NewsComponent';
+import Article from './components/ArticleComponent';
 
 // Routes
 const router =  new Router({
     mode: 'history',
     routes: [
+        {
+            path: '/',
+            component: Home,
+            name: 'home'
+        },
         {
             path: '/register',
             component: Register,
@@ -102,6 +110,16 @@ const router =  new Router({
             path: '/topic',
             component: Topic,
             name: 'topic'
+        },
+        {
+            path: '/news',
+            component: News,
+            name: 'news'
+        },
+        {
+            path: '/article',
+            component: Article,
+            name: 'article'
         }
     ]
 })

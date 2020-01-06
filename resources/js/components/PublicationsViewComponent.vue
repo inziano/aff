@@ -66,11 +66,11 @@
             </Modal>
             <nav class="w-full flex mb-2">
                 <div class="lg:flex-grow lg:w-auto">
-                    <h3 class="font-semibold text-xl mb-2">
+                    <p class="font-medium font-serif text-3xl tracking-wide">
                         Publications
-                    </h3>
-                    <p class="font-hairline text-xs">
-                        Find publications
+                    </p>
+                    <p class="font-normal font-sans text-lg tracking-tight">
+                        Find Publications
                     </p>
                 </div>
                 <div class="w-2/24 p-3">
@@ -79,7 +79,7 @@
                     </Button>
                 </div>
             </nav>
-            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
+            <ul class="w-full flex flex-wrap bg-gray-300 p-1">
                 <div class="lg:flex-grow lg:w-auto">
                     <li class="mr-3" @click="changeView()">
                         <Icon v-if="list" type="ios-list" size="32"/>
@@ -87,27 +87,27 @@
                     </li> 
                 </div>
                 <div class="w-1/24 flex">
-                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
+                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
                     <li class="mr-1 p-2">
                         <Icon type="ios-search-outline" size="24"/>       
                     </li>
                 </div>
             </ul>
-            <div class="w-full flex flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-64 h-64 bg-white shadow-md rounded-lg m-1" v-for="item in pubList" :key="item.id">
-                    <div class="border border-white rounded-full p-4 flex flex-col justify-between leading-normal">
+            <div class="w-full flex flex-wrap p-2 px-5 bg-gray-200 justify-center" v-if="!list">
+                <div class="w-1/5 h-64 bg-white shadow-lg rounded-sm m-1" v-for="item in pubList" :key="item.id">
+                    <div class="border border-white rounded-sm p-4 flex flex-col justify-between leading-normal">
                         <div class="mb-8">
                             <p class="text-xs text-gray-600 flex items-center mb-1">
                                 {{item.publisher}}
                             </p>
-                            <div class="text-gray-900 font-medium text-xl mb-2">{{item.title | truncate(20)}}</div>
-                            <p class="text-gray-700 text-base">{{item.abstract | truncate(20)}}</p>
+                            <div class="text-gray-900 font-medium text-xl mb-2 font-serif">{{item.title | truncate(20)}}</div>
+                            <p class="text-gray-700 text-base font-sans">{{item.abstract | truncate(50)}}</p>
                         </div>
                         <div class="flex items-center">
-                            <img class="w-10 h-10 rounded-full mr-4" src="/images/landing.jpg" alt="Avatar of Jonathan Reinink">
+                            <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar of Jonathan Reinink">
                             <div class="text-sm">
-                                <p class="text-gray-900 leading-none mb-1">{{item.author}}</p>
-                                <p class="text-gray-600 text-xs">{{item.created_at}}</p>
+                                <p class="text-gray-900 leading-none mb-1 text-xs font-semibold tracking-wider">{{item.author}}</p>
+                                <p class="text-gray-600 text-xs font-medium tracking-tight">{{item.created_at}}</p>
                             </div>
                         </div>
                         <ul class="w-full mt-5 flex">
@@ -118,7 +118,7 @@
                                 <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
                             </li>
                             <li class="mr-5">
-                                <a class="font-sm tracking-wide font-medium font-sans" @click="downloadPub(item)"> Download</a>
+                                <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="downloadPub(item)"> Download</a>
                             </li>
                         </ul>
                     </div>
@@ -127,34 +127,10 @@
             <div class="w-full" v-if="list">
                 <Table stripe ref="selection" :columns="publications" :data="pubList"></Table>
             </div>
-            <div class="w-full flex p-0 mb-5 text-center">
+            <div class="w-full flex p-0 mt-5 mb-5 text-center">
                 <Page class="mx-auto" :current="pubmeta.current_page" :total="pubmeta.total" :page-size="pubmeta.per_page" @on-change="goToPage" />
             </div> 
         </div>
-       
-        <!-- <List item-layout="vertical" class="w-2/3 mx-auto my-auto" border>
-            <ListItem v-for="item in pubList" :key="item.title" class="w-2/3">
-                <ListItemMeta :title="item.title" :description="item.author" />
-                <p>
-                    {{item.publisher}}
-                </p>
-               
-               <p>
-                   {{item.abstract}}
-               </p>
-                <template slot="action">
-                    <li>
-                        <Icon type="ios-star-outline" /> 123
-                    </li>
-                    <li>
-                        <Icon type="ios-thumbs-up-outline" /> 234
-                    </li>
-                    <li>
-                        <Icon type="ios-download-outline" /> 345
-                    </li>
-                </template>
-            </ListItem>
-        </List> -->
     </div>
 </template>
 

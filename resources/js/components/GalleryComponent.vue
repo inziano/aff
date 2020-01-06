@@ -63,11 +63,11 @@
                 </Modal>
                 <nav class="w-full flex mb-2">
                     <div class="lg:flex-grow lg:w-auto">
-                        <h3 class="font-semibold text-xl mb-2">
+                        <p class="font-medium font-serif text-3xl tracking-wide">
                             Gallery
-                        </h3>
-                        <p class="font-hairline text-xs">
-                            Find images
+                        </p>
+                        <p class="font-normal font-sans text-lg tracking-tight">
+                            Upload And View Images 
                         </p>
                     </div>
                     <div class="w-2/24 p-3">
@@ -89,6 +89,12 @@
                         </li>
                     </div>
                 </ul>
+                <div class="w-full h-full">
+                    <div class="mx-auto w-1/3 p-5 m-3 content-center">
+                        <img class="object-center object-contain" src='/images/camera.svg'>
+                        <p class="text-xl font-medium font-sans w-full text-center pt-5"> No Images Found</p>
+                    </div>
+                </div>
             </div>
         </div>
         

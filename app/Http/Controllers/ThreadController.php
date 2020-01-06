@@ -36,7 +36,7 @@ class ThreadController extends Controller
     public function index()
     {
         //
-        return ThreadResource::collection(Thread::paginate(12));
+        return ThreadResource::collection(Thread::whereNotNull('user_id')->paginate(12));
     }
 
     /**

@@ -10,33 +10,34 @@
                 <div class="w-2/24">
                 </div>
             </nav>
-            <div class="w-full flex flex-wrap p-5 bg-gray-100">
-                <div class="w-full overflow-hidden shadow-md p-5 m-2 bg-white rounded" v-for="thread in threadData" :key="thread.id">
-                    <div class="w-full mt-2">
-                        <li class="list-none"> 
-                            <Avatar size="small" icon="ios-person" />
-                            <span class="ml-1 font-sans font-thin text-gray-600">{{thread.user.username}}</span>
-                        </li>
-                        <li class="mt-2 list-none">
-                            <span class="ml-1 font-sans font-thin text-gray-600"> {{thread.created_at | moment("from") }} </span>
-                        </li>
-                    </div>
-                    <h4 class="text-gray-700 text-lg mb-4">
+            <div class="w-full h-full flex flex-wrap p-2 bg-gray-200">
+                <div class="w-full overflow-hidden p-5 m-2 bg-white rounded" v-for="thread in threadData" :key="thread.id">
+                    <li class="mt-2 mb-3 list-none"> 
+                        <Avatar size="small" icon="ios-person" />
+                        <span class="font-sans font-semibold tracking-wide text-gray-600 text-xs">{{thread.user.username}}</span>
+                    </li>
+                    <h4 class="text-gray-600 text-xl font-serif tracking-wide mb-2">
                         {{thread.subject}}
                     </h4>
-                    <p class="text-gray-700 text-sm">
+                    <p class="text-gray-600 text-base tracking-wide font-sans font-normal">
                         {{thread.body}}
                     </p>
+                    <div class="w-full mt-2 mb-2">
+                        <li class="mt-2 mb-2 list-none">
+                            <span class="font-sans font-semibold tracking-wide text-gray-600 text-xs"> {{thread.created_at | moment("from") }} </span>
+                        </li>
+                    </div>
                    
-                    <div class="w-2/5 mt-3">
-                        <a @click="reply = true" v-if="!reply"> Reply</a>
+                    <div class="w-2/5 mt-3 ">
+                        <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="reply = true" v-if="!reply"> Reply</a>
                     </div>
                     <div class="w-2/5 mt-5" v-if="reply">
                         <Form :model="replyForm" label-position="top">
                             <Row :gutter="16">
                                 <Col span="24">
                                     <FormItem label="Reply">
-                                        <Input v-model="replyForm.body" type="textarea" placeholder="Reply"></Input>
+                                        <!-- <Input v-model="replyForm.body" type="textarea" placeholder="Reply"></Input> -->
+                                        <quill  v-model="replyForm.body" :config="config" output="html"></quill>
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -76,6 +77,30 @@ export default {
             replyForm: {
                 body: ''
             },
+            config: {
+                placeholder: 'Compose a reply',
+                theme: 'snow'
+            },
+            modules: {
+                toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'header': 1 }, { 'header': 2 }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'script': 'sub' }, { 'script': 'super' }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                [{ 'direction': 'rtl' }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'font': [] }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                ['clean'],
+                ],
+                syntax: {
+                highlight: text => hljs.highlightAuto(text).value
+                }
+            }
         }
     },
     components:{

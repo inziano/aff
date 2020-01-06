@@ -59,11 +59,11 @@
         <div class="w-full h-full p-5" >
             <nav class="w-full flex mb-2">
                 <div class="lg:flex-grow lg:w-auto">
-                    <h3 class="font-semibold text-xl mb-2">
-                        Events
-                    </h3>
-                    <p class="font-hairline text-xs">
-                        Find events around you
+                    <p class="font-medium font-serif text-3xl tracking-wide">
+                       Events
+                    </p>
+                    <p class="font-normal font-sans text-lg tracking-tight">
+                        Find Events Around You
                     </p>
                 </div>
                 <div class="w-2/24 p-3">
@@ -86,50 +86,54 @@
                     </li>
                 </div>
             </ul>
-            <div class="w-full flex flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-64 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg" v-for="event in events" :key="event.name">
-                    <div class="w-full mb-3 ">
-                        <p class="font-hairline text-xs tracking-widest text-gray-500">
-                            <Badge status="success" />
-                        </p>
-                    </div>
-                    <div class="mb-2">
-                        <p class="font-medium tracking-wide text-lg antialiased">
+            <div class="w-full h-full" v-if="events.length">
+                <div class="w-full flex flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
+                    <div class="w-64 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg" v-for="event in events" :key="event.id">
+                        <div class="mt-3 mb-2">
+                            <p class="font-500 tracking-wider text-lg antialiased">
                             {{event.name}}
-                        </p>
+                            </p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
+                            {{event.description}}
+                            </p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
+                            <Icon type="ios-pin-outline" size="18" />: {{event.location}}
+                            </p>
+                        </div>
+                        <div class="w-full mb-2">
+                            <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
+                                <Icon type="ios-calendar-outline" size="18" /> :{{event.startdate }} - {{ event.enddate}}
+                            </p>
+                        </div>
+                        <div class="w-full mt-5 mb-0">
+                            <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
+                                Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{event.created_at}}</span>
+                            </p>
+                        </div>
+                        <div class="w-full mt-2 mb-0" v-if="event.user.id === currentUser.id">
+                            <li class="list-none">
+                                <a class="text-xs tracking-wide font-medium text-red-700" @click="deleteEvent(event.id)"> Remove </a>
+                            </li>
+                        </div>
                     </div>
-                    <div class="mb-2">
-                        <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
-                           {{event.description}}
-                        </p>
-                    </div>
-                    <div class="mb-2">
-                        <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
-                           {{event.location}}
-                        </p>
-                    </div>
-                     <div class="w-full mb-2">
-                        <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
-                            Dates: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{event.startdate }} to {{ event.enddate}}</span>
-                        </p>
-                    </div>
-                    <div class="w-full mt-5 mb-0">
-                        <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
-                            Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{event.created_at}}</span>
-                        </p>
-                    </div>
-                    <div class="w-full mt-2 mb-0" v-if="event.user.id === currentUser.id">
-                        <li class="list-none">
-                            <a class="text-xs tracking-wide font-medium text-red-700" @click="deleteEvent(event.id)"> Remove </a>
-                        </li>
+                    <div class="w-full flex p-0 text-center">
+                        <Page class="mx-auto" :current="eventmeta.current_page" :total="eventmeta.total" :page-size="eventmeta.per_page" @on-change="goToPage" />
                     </div>
                 </div>
-                <div class="w-full flex p-0 text-center">
-                    <Page class="mx-auto" :current="eventmeta.current_page" :total="eventmeta.total" :page-size="eventmeta.per_page" @on-change="goToPage" />
+                <div class="w-full p-2 bg-gray-100" v-if="list">
+                    <Table height="200" :columns="eventsColumns" :data="events"></Table>
                 </div>
             </div>
-            <div class="w-full p-2 bg-gray-100" v-if="list">
-                <Table height="200" :columns="eventsColumns" :data="events"></Table>
+
+            <div class="w-full h-full" v-else>
+               <div class="mx-auto w-1/3 p-5 m-3 content-center">
+                   <img class="object-center object-contain" src='/images/events.svg'>
+                   <p class="text-xl font-medium font-sans w-full text-center pt-5"> No Events Found</p>
+               </div>
             </div>
         </div>
         
@@ -217,6 +221,20 @@ export default {
         })
     },
     methods: {
+
+        // goToPage
+        goToPage(number){
+            axios.get(this.eventmeta.path + '?page=' + number).then((response)=>{
+                // response
+                this.events = response.data.data
+                this.eventmeta = response.data.meta
+                // Pub data
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         // Search
         onSearch() {
             // 

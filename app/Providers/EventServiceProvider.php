@@ -81,6 +81,15 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\EventDeleted'=>[
 
+        ],
+        'App\Events\SearchNews'=>[
+
+        ],
+        'App\Events\NewsCreated'=>[
+
+        ],
+        'App\Events\NewsDeleted'=>[
+
         ]
     ];
 

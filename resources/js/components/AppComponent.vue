@@ -20,7 +20,8 @@
                     <router-link to="/profiles" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Profiles</router-link>
                     <router-link to="/message" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Messages</router-link>
                     <router-link to="/events" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Events</router-link>
-                    <router-link to="/vacancies" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Vacancies</router-link>
+                    <router-link to="/news" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">News</router-link>
+                    <router-link to="/vacancies" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Vacancies</router-link>                    
                     <router-link to="/publications" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Publications</router-link>
                     <router-link to="/gallery" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Gallery</router-link>
                     <router-link to="/forum" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Forum</router-link>

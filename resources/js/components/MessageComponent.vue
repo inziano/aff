@@ -49,11 +49,11 @@
         <div class="w-full h-full p-5" >
             <nav class="w-full flex mb-2">
                 <div class="lg:flex-grow lg:w-auto">
-                    <h3 class="font-semibold text-xl mb-2">
+                    <p class="font-medium font-serif text-3xl tracking-wide">
                         Messages
-                    </h3>
-                    <p class="font-hairline text-xs">
-                        View your messages
+                    </p>
+                    <p class="font-normal font-sans text-lg tracking-tight">
+                        Send and View Messages 
                     </p>
                 </div>
                 <div class="w-2/24 p-3">
@@ -75,43 +75,52 @@
                     </li>
                 </div>
             </ul>
-            <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-48 bg-white m-2 rounded" v-for="message in messages" :key="message.title">
-                    <div class="w-full mb-3 ">
-                        <p class="font-hairline text-xs tracking-widest text-gray-500">
-                            <Badge status="success" />
-                        </p>
-                    </div>
-                    <div class="mb-2">
-                        <p class="font-medium tracking-wide text-lg antialiased">
-                            {{message.subject}}
-                        </p>
-                    </div>
-                    <div class="mb-2">
-                        <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
-                           {{message.body}}
-                        </p>
-                    </div>
-                    <div class="w-full mt-5 mb-0">
-                        <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
-                            Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{message.created_at}}</span>
-                        </p>
-                    </div>
-                    <div class="w-full mt-5 ">
-                        <li class="list-none"> 
-                            <Avatar size="small" icon="ios-person" />
-                            <span class="ml-1 font-sans font-thin text-gray-600">{{message.user.username}}</span>
-                        </li>
+            <div class="w-full h-full" v-if="messages.length">
+                {{ messages}}
+                <div class="w-full flex p-2 bg-gray-100 justify-center" v-if="!list">
+                    <div class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-48 bg-white m-2 rounded" v-for="message in messages" :key="message.title">
+                        <div class="w-full mb-3 ">
+                            <p class="font-hairline text-xs tracking-widest text-gray-500">
+                                <Badge status="success" />
+                            </p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="font-medium tracking-wide text-lg antialiased">
+                                {{message.subject}}
+                            </p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
+                            {{message.body}}
+                            </p>
+                        </div>
+                        <div class="w-full mt-5 mb-0">
+                            <p class="font-hairline text-xs tracking-widest capitalize text-gray-500">
+                                Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{message.created_at}}</span>
+                            </p>
+                        </div>
+                        <div class="w-full mt-5 ">
+                            <li class="list-none"> 
+                                <Avatar size="small" icon="ios-person" />
+                                <span class="ml-1 font-sans font-thin text-gray-600">{{message.user.username}}</span>
+                            </li>
+                        </div>
                     </div>
                 </div>
+                <div class="w-full p-2 bg-gray-100" v-if="list">
+                    <!-- Put list in here -->
+                    <List>
+                        <ListItem v-for="msg in messages" :key="msg.id">
+                            <ListItemMeta :title="msg.subject" :description="msg.body" />
+                        </ListItem>
+                    </List>
+                </div>
             </div>
-            <div class="w-full p-2 bg-gray-100" v-if="list">
-                <!-- Put list in here -->
-                <List>
-                    <ListItem v-for="msg in messages" :key="msg.id">
-                        <ListItemMeta :title="msg.subject" :description="msg.body" />
-                    </ListItem>
-                </List>
+            <div class="w-full h-full" v-else>
+               <div class="mx-auto w-1/3 p-5 m-3 content-center">
+                   <img class="object-center object-contain" src='/images/empty.svg'>
+                   <p class="text-xl font-medium font-sans w-full text-center pt-5"> No Messages Found</p>
+               </div>
             </div>
         </div>
        
@@ -166,19 +175,20 @@ export default {
             // 
             let data = this.messageForm
             data['user_id'] = this.currentUser.id
-            this.loading = false
+            this.loading = true
             // Push message
             axios({
                 method: 'post',
                 url: 'api/message',
                 data: data
             }).then( (response)=>{
-                this.loading = true
                 // Notice
                 this.$Notice.success({
                     title: 'Message Sent',
                     desc: 'Your message has been delivered'
                 })
+                this.loading = false
+                this.messageModal = false
             }).catch((error)=>{
                 this.loading = false
                 this.$Notice.error({

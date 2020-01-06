@@ -66,43 +66,45 @@
                         <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
                     </li> 
                 </div>
-                <div class="w-1/24 flex">
-                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
-                    <li class="mr-1 p-2">
-                        <Icon type="ios-search-outline" size="24"/>       
-                    </li>
-                </div>
             </ul>
-            <div class="w-full flex p-2 bg-gray-100 justify-center">
-                <p v-if="this.vacancy.length === 0">
-                   No applications 
-                </p> 
-                <div v-for="vac in vacancy" :key="vac.id">
-                    <h4> {{vac.title}}</h4>
-                    <p class="text-gray-600 text-xs">
-                       <Icon type="ios-pin" /><span>{{vac.location}}</span> 
+            <div class="w-full p-2 bg-gray-100" v-if="!list">
+                <div v-for="vac in vacancy" :key="vac.id" class="w-10/12 mx-auto pt-5 pl-5">
+                    <p class="text-2xl font-serif tracking-wide font-medium mb-1"> {{vac.title}}</p>
+                    <p class="text-gray-600 text-xs tracking-wide font-semibold mb-2">
+                        <Icon type="ios-pin" /><span>{{vac.location}}</span> 
                     </p>
-                    <p>{{vac.description}}</p>
+                    <p class="font-normal tracking-wide font-sans text-lg">{{vac.description}}</p>
+
+                    <Button class="mt-5 mb-2 w-1/6" type="success" @click="vacancyApplicationModal = true">
+                        Apply
+                    </Button>
                 </div>
-              
                
             </div>
-            <ul class="w-full flex flex-wrap ">
-                <div class="w-full">
-                    <h4 class="m-2 text-xl tracking-wider"> Applicants </h4>
-                </div>
-                <li class="list-none bg-gray-100 p-3 m-2 w-1/5 rounded-sm" v-for="application in applications" :key="application.id">
+            <div class="w-full p-2 bg-gray-100" v-if="list">
+                <ul class="w-full flex flex-wrap " v-if="applications.length">
                     <div class="w-full">
-                        <li class="list-none"> 
-                            <Avatar size="small" icon="ios-person" />
-                            <span class="ml-1 font-sans font-thin text-gray-600">{{application.user.username}}</span>
-                        </li>
+                        <h4 class="m-2 text-xl tracking-wider"> Applicants </h4>
                     </div>
-                    <p>
-                        {{application.user.email}}
-                    </p>
-                </li>
-            </ul>
+                    <li class="list-none bg-gray-100 p-3 m-2 w-1/5 rounded-sm" v-for="application in applications" :key="application.id">
+                        <div class="w-full">
+                            <li class="list-none"> 
+                                <Avatar size="small" icon="ios-person" />
+                                <span class="ml-1 font-sans font-thin text-gray-600">{{application.user.username}}</span>
+                            </li>
+                        </div>
+                        <p>
+                            {{application.user.email}}
+                        </p>
+                    </li>
+                </ul>
+                <div class="w-full h-full bg-gray-100" v-else>
+                    <div class="mx-auto w-1/3 p-5 m-3 content-center">
+                    <img class="object-center object-contain" src='/images/vacancy.svg'>
+                    <p class="text-xl font-medium font-sans w-full text-center pt-5"> No Applications Found</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
