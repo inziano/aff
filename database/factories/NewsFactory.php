@@ -10,8 +10,8 @@ $factory->define(News::class, function (Faker $faker) {
         // 
         'title' => $faker->sentence,
         'body' => $faker->text,
-        'tags'=> $faker->word,
-        'category'=> json_encode($faker->words, true),
+        'tags'=> json_encode($faker->word, true),
+        'category'=> $faker->word,
         'user_id' => 1
     ];
 });
