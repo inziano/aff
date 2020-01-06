@@ -11,7 +11,7 @@ $factory->define(News::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'body' => $faker->text,
         'tags'=> $faker->word,
-        'category'=> $faker->word,
+        'category'=> json_encode($faker->words, true),
         'user_id' => 1
     ];
 });
