@@ -84,7 +84,7 @@
                                 {{ event.startdate | moment("from")}}
                             </p>
                         </li>
-                        <a class="ml-2 w-full p-1 text-xs tracking-wider text-gray-800 uppercase"> View All</a>
+                        <router-link to="/events" class="ml-2 w-full p-1 text-xs tracking-wider text-gray-800 uppercase"> View All</router-link>
                     </ul>
                     <div class="w-full" v-else>
                         <div class="mx-auto w-1/2 p-5 m-3 content-center">
@@ -111,7 +111,7 @@
                                 {{ vacancy.deadline | moment("from")}}
                             </p>
                         </li>
-                        <a class="ml-2 w-full p-1 text-xs tracking-wider text-gray-800 uppercase"> View All</a>
+                        <router-link to="/vacancies" class="ml-2 w-full p-1 text-xs tracking-wider text-gray-800 uppercase"> View All</router-link>
                     </ul>
                    
                     <div class="w-full" v-else>

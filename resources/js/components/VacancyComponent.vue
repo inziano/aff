@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full">
-        <Modal v-model="vacancyModal">
+        <Modal v-model="vacancyModal" width="700">
             <Form :model="vacancyForm" label-position="top" class="w-full">
                 <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider"> New Vacancy </h4>
                 <br>
@@ -41,7 +41,7 @@
                 <Row :gutter="16">
                     <Col span="24">
                         <ButtonGroup>
-                            <Button>
+                            <Button @click="vacancyModal = false">
                                 <Icon type="ios-cancel"></Icon>
                                 Cancel
                             </Button>
@@ -57,45 +57,94 @@
             <div slot="footer"></div>
         </Modal>
         <div class="w-full h-full p-5" >
-            <nav class="w-full flex mb-2">
-                <div class="lg:flex-grow lg:w-auto">
+            <div class="w-full flex bg-white">
+                <div class="w-1/6 h-10 border-r border-gray-400">
                     <p class="font-medium font-serif text-3xl tracking-wide">
                         Vacancies
-                    </p>
-                    <p class="font-normal font-sans text-lg tracking-tight">
-                        Find Vacancies Around You
-                    </p>
+                    </p> 
                 </div>
-                <div class="w-2/24 p-3">
-                    <Button icon="ios-add" @click="vacancyModal = true">
-                        New
-                    </Button>
+                <div class="w-5/6 flex content-center">
+                    <div class="w-10/24 p-2 ml-3">
+                        <Icon type="ios-search-outline" size="18"/>
+                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
+                    </div>
+                    <div class="flex-grow content-center h-full p-2">
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-calendar-outline" size="20"></Icon>
+                                Year
+                            </a>
+                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
+                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-map-outline" size="20"></Icon>
+                                Country
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-briefcase-outline" size="20"></Icon>
+                                Expertise
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                    <div class="w-2/24 content-center h-full p-2">
+                        <Button icon="ios-add" @click="vacancyModal = true">
+                            New
+                        </Button>
+                    </div>  
                 </div>
-            </nav>
-            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
-                <div class="lg:flex-grow lg:w-auto">
-                    <li class="mr-3" @click="changeView()">
-                        <Icon v-if="list" type="ios-list" size="32"/>
-                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
-                    </li> 
-                </div>
-                <div class="w-1/24">
-                    <li class="mr-3 p-2">
-                        <Icon type="ios-search-outline" size="24"/>       
+               
+            </div>
+            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+                <div class="lg:flex-grow items-center  mr-4 flex content-center">
+                    <li class="list-none h-10 content-center" @click="changeView()">   
+                        <span class="">
+                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>  
+                            <Icon v-if="list" type="ios-list" size="32"/>
+                        </span>     
                     </li>
                 </div>
-            </ul>
+                <div class="w-auto flex content-center">
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{vacancystats.vacancy}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                           Vacancies
+                        </p>
+                    </div>
+                </div>       
+            </div>  
+           
            <div v-if="vacancies.length">
                 <div class="w-full flex  flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
-                    <div class="w-64 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg" v-for="vacancy in vacancies" :key="vacancy.id">
+                    <a class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg text-gray-700 hover:text-gray-900" v-for="vacancy in vacancies" :key="vacancy.id" @click="makeApplication(vacancy.id)">
                         <div class="mt-3 mb-2">
                             <p class="font-500 tracking-wider text-lg antialiased">
                                 {{vacancy.title}}
                             </p>
                         </div>
                         <div class="mb-2">
-                            <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
-                            {{vacancy.description}}
+                            <p class="font-hairline text-sm tracking-widest capitalize text-gray-700" v-html="$options.filters.truncate(vacancy.description)">
+                            <!-- {{vacancy.description | truncate(50)}} -->
                             </p>
                         </div>
                         <div class="mb-2">
@@ -120,12 +169,12 @@
                             <a class="text-xs tracking-wide font-medium text-red-700" v-if="vacancy.user.id === currentUser.id " @click="deleteVacancy(vacancy.id)"> Remove </a>
 
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="w-full p-2 bg-gray-100" v-if="list">
                     <Table height="200" :columns="vacancyColumns" :data="vacancies"></Table>
                 </div>
-                <div class="w-full flex p-0 mb-5 text-center" v-if="vacancymeta.length === 0">
+                <div class="w-full flex p-0 mb-5 text-center" >
                     <Page class="mx-auto" :current="vacancymeta.current_page" :total="vacancymeta.total" :page-size="vacancymeta.per_page" @on-change="goToPage" />
                 </div> 
             </div>
@@ -149,6 +198,7 @@ export default {
             admin: false,
             vacancymeta: '',
             vacancyData: '',
+            vacancystats: '',
             vacancyForm: {
                 title: '',
                 type: '',
@@ -161,11 +211,6 @@ export default {
                 {
                     title: 'Title',
                     key: 'title'
-                },
-                {
-                    title: 'Description',
-                    key: 'description'
-
                 },
                 {
                     title: 'Positions',
@@ -206,6 +251,12 @@ export default {
             },
         }
     },
+    computed: {
+        year(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        },
+    },
     mounted(){
         axios({
             method: 'get',
@@ -231,11 +282,19 @@ export default {
         Echo.channel('vacancies').listen('VacancyDeleted',(e)=>{
             this.vacancies = e.vacancies
         })
+
+        Echo.channel('stats').listen('VacancyStats',(e)=>{
+            this.vacancystats = e.vacancystats
+        })
     },
     computed: {
         currentUser(){
             return this.$store.state.current_user
-        }
+        },
+        year(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        },
     },
     methods:{
         // goToPage

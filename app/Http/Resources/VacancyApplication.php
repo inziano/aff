@@ -20,8 +20,10 @@ class VacancyApplication extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => User::where('id',$this->user_id)->first(),
+            'applicant' => UserResource::collection(User::where('id',$this->user_id)->get()),
             'vacancy'=> Vacancy::where('id',$this->vacancy_id)->first(),
+            'resume'=> $this->resume,
+            'cover_letter'=> $this->cover_letter,
             'created_at' => $this->created_at
         ];
     }

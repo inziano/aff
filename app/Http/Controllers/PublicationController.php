@@ -104,9 +104,12 @@ class PublicationController extends Controller
      * @param  \App\Publication  $publication
      * @return \Illuminate\Http\Response
      */
-    public function show(Publication $publication)
+    public function show($publication)
     {
         //
+        $publication = $this->repo->showPublication($publication);
+        //return publication of specific user
+        return $publication;
     }
 
     /**

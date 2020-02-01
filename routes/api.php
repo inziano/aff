@@ -84,4 +84,4 @@ Route::post('vacancyapplication/search', 'VacancyApplicationController@search');
 // News routes
 Route::apiResource('news', 'NewsController');
 
-Route::apiResource('news/search','NewsController@search');
+Route::post('news/search','NewsController@search');

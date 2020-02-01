@@ -1,97 +1,137 @@
 <template>
     <div class="w-full h-full">
-        <Modal v-model="threadModal" width="700">
-            <Form v-model="threadForm" label-position="top">
-                <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider"> New Thread </h4>
-                <br>
-                <Row :gutter="16">
-                    <Col span="12">
-                        <FormItem label="Category">
-                            <Select v-model="threadForm.topic_id">
-                                <Option v-for="topic in topics" :key="topic.id" :value="topic.id" > {{topic.title}}</Option>
-                            </Select>
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="16">
-                    <Col span="24">
-                        <FormItem label="Topic">
-                            <Input v-model="threadForm.subject" type="text" placeholder="Thread Title"></Input>
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="16">
-                    <Col span="24">
-                        <FormItem label="Discusion Question">
-                            <quill  v-model="threadForm.body" :config="config" output="html"></quill>
-                            <!-- <Input v-model="threadForm.body" type="textarea" placeholder="Description"></Input> -->
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="16">
-                    <Col span="24">
-                        <ButtonGroup>
-                            <Button>
-                                <Icon type="ios-cancel"></Icon>
-                                Cancel
-                            </Button>
-                            <Button type="primary" @click="onSubmit">
-                                <Icon type="ios-checkmark"></Icon>
-                                Create Thread
-                            </Button>
-                        </ButtonGroup>
-                    </Col> 
-                </Row>
-                
-            </Form>
-            <div slot="footer"></div>
-        </Modal>
         <div class="w-full h-full p-5" >
-            <nav class="w-full flex mb-2">
-                <div class="lg:flex-grow lg:w-auto">
+            <Modal v-model="threadModal" width="700">
+                <Form v-model="threadForm" label-position="top">
+                    <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider"> New Thread </h4>
+                    <br>
+                    <Row :gutter="16">
+                        <Col span="12">
+                            <FormItem label="Category">
+                                <Select v-model="threadForm.topic_id">
+                                    <Option v-for="topic in topics" :key="topic.id" :value="topic.id" > {{topic.title}}</Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="Topic">
+                                <Input v-model="threadForm.subject" type="text" placeholder="Thread Title"></Input>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="Discusion Question">
+                                <quill  v-model="threadForm.body" :config="config" output="html"></quill>
+                                <!-- <Input v-model="threadForm.body" type="textarea" placeholder="Description"></Input> -->
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <ButtonGroup>
+                                <Button @click="threadModal = false">
+                                    <Icon type="ios-cancel"></Icon>
+                                    Cancel
+                                </Button>
+                                <Button type="primary" @click="onSubmit">
+                                    <Icon type="ios-checkmark"></Icon>
+                                    Create Thread
+                                </Button>
+                            </ButtonGroup>
+                        </Col> 
+                    </Row>
+                    
+                </Form>
+                <div slot="footer"></div>
+            </Modal>
+            <div class="w-full flex bg-white">
+                <div class="w-1/6 h-10 border-r border-gray-400">
                     <p class="font-medium font-serif text-3xl tracking-wide">
                         Forum
-                    </p>
-                    <p class="font-normal font-sans text-lg tracking-tight">
-                       Discuss Similar Interests
-                    </p>
+                    </p> 
                 </div>
-                <div class="w-2/24 p-3">
-                    <Button icon="ios-add" @click="threadModal = true">
-                        New
-                    </Button>
+                <div class="w-5/6 flex content-center">
+                    <div class="w-10/24 p-2 ml-3">
+                        <Icon type="ios-search-outline" size="18"/>
+                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
+                    </div>
+                    <div class="flex-grow content-center h-full p-2">
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-calendar-outline" size="20"></Icon>
+                                Year
+                            </a>
+                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
+                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click">
+                            <a class="font-sans font-lg tracking-wider text-gray-900 hover:text-gray-900" href="javascript:void(0)">
+                                <Icon type="ios-book-outline" size="20"></Icon>
+                                Topics
+                            </a>
+                            <DropdownMenu slot="list" style="height: 250px; overflow-y:scroll;">
+                                <DropdownItem v-for="topic in topics" :key="topic.id"  >
+                                <a class="font-sans text-sm font-light tracking-wide text-gray-800" @click="showTopic(topic.id)"> {{topic.title}}</a>
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                    <div class="w-2/24 content-center h-full p-2">
+                        <Button icon="ios-add" @click="threadModal = true">
+                            New
+                        </Button>
+                    </div>  
                 </div>
-            </nav>
-            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
-                <div class="flex flex-wrap lg:flex-grow lg:w-auto">
-                    <li class="mr-3" @click="changeView()">
-                        <Icon v-if="list" type="ios-list" size="32"/>
-                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
-                    </li> 
-                </div>
-                <div class="w-1/24 flex">
-                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
-                    <li class="mr-1 p-2">
-                        <Icon type="ios-search-outline" size="24"/>       
+               
+            </div>
+            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+                <div class="lg:flex-grow items-center  mr-4 flex content-center">
+                    <li class="list-none h-10 content-center" @click="changeView()">   
+                        <!-- <span class="">
+                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>  
+                            <Icon v-if="list" type="ios-list" size="32"/>
+                        </span>      -->
                     </li>
                 </div>
-            </ul> 
+                <div class="w-auto flex content-center">
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                           {{threadstats.topics}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                            Topics
+                        </p>
+                    </div>
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                           {{threadstats.threads}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                           Threads
+                        </p>
+                    </div>
+                </div>       
+            </div>            
             <div class="w-full flex flex-wrap pt-5 bg-gray-100 min-h-screen">
                 <div class="w-1/6 border-r border-r-black pt-5">
                     <nav class="w-full flex mb-2 ">
                         <div class="mx-5">
                             <ul class="list-reset">
                                 <li>
-                                    <a class="block p-2 text-gray-600 font-bold tracking-wide text-sm" @click="mostViewedThreads"> Popular All Time</a>
+                                    <a class="block p-2 text-gray-900 font-light tracking-wider text-sm" @click="mostViewedThreads"> Popular All Time</a>
                                 </li>
                                 <li>
-                                    <a class="block p-2 text-gray-600 font-bold tracking-wide text-sm" @click="currentActiveThreads"> Active Threads</a>
+                                    <a class="block p-2 text-gray-900 font-light tracking-wider text-sm" @click="currentActiveThreads"> Active Threads</a>
                                 </li>
                                 <li>
-                                    <a class="block p-2 text-gray-600 font-bold tracking-wide text-sm " @click="mostLikedThreads"> Popular</a>
+                                    <a class="block p-2 text-gray-900 font-light tracking-wider text-sm " @click="mostLikedThreads"> Popular</a>
                                 </li>
                                 <li>
-                                    <a class="block p-2 text-gray-600 font-bold tracking-wide text-sm " @click="mostRecentThreads"> Recent</a>
+                                    <a class="block p-2 text-gray-900 font-light tracking-wider text-sm " @click="mostRecentThreads"> Recent</a>
                                 </li>
                                
                             </ul>
@@ -100,62 +140,52 @@
                     </nav>
                 </div>
                 <div class="w-5/6 px-5">
-                    <nav class="w-full flex mb-5 ">
-                        <div class="w-64">
-                            <Dropdown trigger="click">
-                                <a class="font-sans font-medium text-lg tracking-wide text-gray-800" href="javascript:void(0)">
-                                    Topics
-                                    <Icon type="ios-arrow-down"></Icon>
-                                </a>
-                                <DropdownMenu slot="list" >
-                                    <DropdownItem v-for="topic in topics" :key="topic.id">
-                                    <a class="font-sans text-base tracking-wide text-gray-800" @click="showTopic(topic.id)"> {{topic.title}}</a>
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
-                    </nav>
-                    <div class="w-3/4">
-                        <div v-for="thread in threadData" :key="thread.id" class="bg-white px-4 py-3 rounded-sm mb-2 shadow-md" @click="viewThread(thread.id)">
-                            <div class="w-full mt-2 mb-4">
-                                <li class="list-none"> 
-                                    <Avatar size="small" icon="ios-person" />
-                                    <span class="ml-1 font-sans font-medium tracking-wide text-gray-600">{{thread.user.username}}</span>
-                                </li>
-                                <li class="mt-2 list-none">
-                                    <span class="ml-1 font-sans font-semibold tracking-wide text-gray-600 text-xs"> {{thread.created_at | moment("from") }} </span>
-                                </li>
+                    <div class="w-full">
+                        <div v-for="thread in threadData" :key="thread.id" class="bg-white px-4 py-3 mb-2 flex" @click="viewThread(thread.id)">
+                            <div class="w-3/5">
+                                <div class="">
+                                    <p class="font-serif font-medium text-gray-700 tracking-wide text-xl">
+                                        {{thread.subject}}
+                                    </p>
+                                </div>
+                                <div class="w-full py-1 flex content-center">
+                                    <li class="list-none mr-2"> 
+                                        <span class="ml-1 font-sans font-thin tracking-wide text-gray-600">Posted by: {{thread.user.username}}</span>
+                                    </li>
+                                    <li class="list-none mx-2">
+                                        <span class="mr-1 font-sans font-thin tracking-wide text-gray-600 text-xs"> {{thread.created_at | moment("from") }} </span>
+                                    </li>
+                                </div>
+                                <div>
+                                    <span v-html="thread.body"></span>
+                                </div>
+                                <div class="w-full py-1">
+                                    <a @click="showTopic(thread.topic.id)">
+                                        <Tag color="default" >{{thread.topic.title}}</Tag>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <p class="font-serif font-medium text-gray-700 tracking-wide text-2xl">
-                                    {{thread.subject}}
-                                </p>
+                            <div class="w-2/5 h-auto flex items-center">
+                                <ul class="flex w-full justify-center">
+                                    <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" @click="likeThread(thread.id)">
+                                        <Icon type="ios-heart-outline" class="bg-red"/> {{thread.likes}}
+                                    </li>
+                                    <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
+                                        <Icon type="ios-eye-outline" /> {{thread.views}}
+                                    </li>
+                                    <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
+                                        <Icon type="ios-chatbubbles-outline" /> {{thread.comments}}
+                                    </li>
+                                    <!-- <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
+                                        <a class="text-gray-800" @click="viewThread(thread.id)">View</a>
+                                    </li> -->
+                                    <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" v-if="thread.user_id === currentUser.id">
+                                    <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteThread(thread.id)"> Remove </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div>
-                                <span v-html="thread.body"></span>
-                            </div>
-                            <div class="w-full mt-5 mb-3">
-                                <a @click="showTopic(thread.topic.id)">
-                                    <Tag color="default" >{{thread.topic.title}}</Tag>
-                                </a>
-                            </div>
-                            <ul class="flex">
-                                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" @click="likeThread(thread.id)">
-                                    <Icon type="ios-heart-outline" class="bg-red"/> {{thread.likes}}
-                                </li>
-                                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
-                                    <Icon type="ios-eye-outline" /> {{thread.views}}
-                                </li>
-                                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
-                                    <Icon type="ios-chatbubbles-outline" /> {{thread.comments}}
-                                </li>
-                                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
-                                    <a class="text-gray-800" @click="viewThread(thread.id)">View</a>
-                                </li>
-                                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" v-if="thread.user_id === currentUser.id">
-                                   <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteThread(thread.id)"> Remove </a>
-                                </li>
-                            </ul>
+                           
+                            
                         </div>
                     </div>
                    
@@ -176,6 +206,7 @@ export default {
             list: false,
             threadModal: false,
             threadmeta: '',
+            threadstats: '',
             searchTerm: '',
             threadForm: {
                 topic_id: '',
@@ -220,7 +251,11 @@ export default {
         },
         topics(){
             return this.$store.getters.topics
-        }
+        },
+        year(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        },
     },
     mounted(){
         this.$store.dispatch('login')
@@ -274,6 +309,10 @@ export default {
         // Search threads
         Echo.channel('searches').listen('SearchThreads',(e)=>{
             this.$store.dispatch('loadThreads',e.threads)
+        })
+
+        Echo.channel('stats').listen('ThreadStats',(e)=>{
+            this.threadstats = e.threadstats
         })
     },
     methods: {

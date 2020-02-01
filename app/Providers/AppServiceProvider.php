@@ -5,6 +5,17 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+use App\Publication;
+use App\User;
+use App\Vacancy;
+use App\News;
+use App\Thread;
+use App\Observers\PublicationObserver;
+use App\Observers\UserObserver;
+use App\Observers\VacancyObserver;
+use App\Observers\NewsObserver;
+use App\Observers\ThreadObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,5 +37,16 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+        
+        // Observe publication
+        Publication::observe(PublicationObserver::class);
+        // 
+        User::observe(UserObserver::class);
+        // 
+        Thread::observe(ThreadObserver::class);
+        // 
+        Vacancy::observe(VacancyObserver::class);
+        // 
+        News::observe(NewsObserver::class);
     }
 }

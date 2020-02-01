@@ -1,47 +1,109 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-full p-5">
-            <Modal v-model="inviteModal" title="Send Invitation">
-                <invitation></invitation>
+            <Modal v-model="inviteModal">
+                <invitation class="w-full"></invitation>
+                <div slot="footer"></div>
             </Modal>
-            <nav class="w-full flex mb-2">
-                <div class="lg:flex-grow lg:w-auto">
-                    <h3 class="font-semibold text-xl mb-2">
-                        Members
-                    </h3>
-                    <p class="font-hairline text-xs">
-                        View Members
-                    </p>
+            <div class="w-full flex bg-white">
+                <div class="w-1/6 h-10 border-r border-gray-400">
+                    <p class="font-medium font-serif text-3xl tracking-wide">
+                        Profiles
+                    </p> 
                 </div>
-                <div class="w-2/24 p-3">
-                    <Button icon="ios-add" @click="inviteModal = true">
-                        Send Invitation
-                    </Button>
+                <div class="w-5/6 flex content-center">
+                    <div class="w-10/24 p-2 ml-3">
+                        <Icon type="ios-search-outline" size="18"/>
+                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
+                    </div>
+                    <div class="flex-grow content-center h-full p-2">
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-calendar-outline" size="20"></Icon>
+                                Year
+                            </a>
+                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
+                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-map-outline" size="20"></Icon>
+                                Country
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-briefcase-outline" size="20"></Icon>
+                                Expertise
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                    <div class="w-2/24 content-center h-full p-2">
+                        <Button icon="ios-add" @click="inviteModal = true">
+                            Send Invitation
+                        </Button>
+                    </div>  
                 </div>
-            </nav>
-            <ul class="w-full flex flex-wrap bg-gray-200 p-1">
-                <div class="flex lg:flex-grow lg:w-auto">
-                    <li class="mr-3" @click="changeView()">
-                        <Icon v-if="list" type="ios-list" size="32"/>
-                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
+               
+            </div>
+            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+                <div class="lg:flex-grow items-center  mr-4 flex content-center">
+                    <li class="list-none h-10 content-center" @click="changeView()">   
+                        <span class="">
+                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>  
+                            <Icon v-if="list" type="ios-list" size="32"/>
+                        </span>     
                     </li>
-                    
                 </div>
-                <div class="flex w-1/24">
-                    <li v-if="!list" class="mr-3 p-2" @click="filter()">
-                        <Icon type="ios-funnel-outline" size="24"/>       
-                    </li>
-                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
-                    <li class="mr-1 p-2">
-                        <Icon type="ios-search-outline" size="24"/>       
-                    </li>
-                </div>
-            </ul>
+                <div class="w-auto flex content-center">
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{memberstats.applicants}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                            Applicants
+                        </p>
+                    </div>
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{memberstats.members}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                           Members
+                        </p>
+                    </div>
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{memberstats.total}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                           Total
+                        </p>
+                    </div>
+                </div>       
+            </div>
             <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
-                <div v-for="member in members" :key="member.id" class="w-64 h-64 overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg">
+                <div v-for="member in members" :key="member.id" class="w-1/5 h-auto overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg">
                     <div class="w-full text-center mb-3 pt-2">
-                        <Avatar :style="{background: '#0A8754'}" size=""> JD </Avatar>
-                        <p class="text-base font-medium mt-3 text-gray-600"> {{member.email}}</p>
+                        <Avatar :style="{background: '#0A8754'}" size=""> {{member.bio.firstname.slice(0,1)}}{{member.bio.lastname.slice(0,1)}} </Avatar>
+                        <p class="text-base font-medium text-gray-600"> {{member.bio.firstname}} {{member.bio.lastname}}</p>
+                        <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.citizenship}} | {{member.bio.residency}}</p>
+                        <p class="text-xs font-medium mt-2 text-gray-600"> {{member.email}}</p>
                         <p class="text-sm font-medium tracking-wide mt-1 text-gray-600"> {{member.status}} </p>
                     </div>
                     <ul class="flex justify-center w-2/3 mx-auto mb-4">
@@ -56,14 +118,14 @@
                         </li>
                     </ul>
                     <Divider></Divider>
-                    <div class="w-full flex p-0 text-center">
+                    <div class="w-full flex p-0 pb-3 text-center">
                         <div class="w-1/2">
                             <a class="text-gray-600" @click="goToDetail(member.id)" >
                                 <Icon type="ios-person" size="18"/> Profile
                             </a>
                            
                         </div>
-                        <Divider type="vertical"></Divider>
+                        <Divider type="vertical" style="height: auto;"></Divider>
                         <div class="w-1/2">
                             <a class="text-gray-600" @click="goToPub(member.id)">
                                 <Icon type="ios-apps" size="18"/> Publications
@@ -100,6 +162,7 @@ export default {
             members: [],
             membermeta: '',
             memberlink: '',
+            memberstats: '',
             member: [
                 {
                     type: 'selection',
@@ -144,6 +207,12 @@ export default {
             memberdata: [],
         }
     },
+    computed: {
+        year(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        }
+    },
     mounted() {
         // Pull all the profiles
         axios({
@@ -162,15 +231,25 @@ export default {
 
         Echo.channel('members').listen('UserModified', (e)=>{
             this.members = e.users
-            // console.log(e.replies)
+            // console.log(e)
         })
         // Search pubs
         Echo.channel('searches').listen('SearchUsers',(e)=>{
             this.members = e.users
+            this.membermeta = [],
+            console.log(e)
+        }),
+        Echo.channel('stats').listen('UserStats', (e)=>{
+            this.memberstats = e.userstats
             console.log(e)
         })
     },
     methods: {
+
+        // Clear filter
+        filter() {
+
+        },
         // Search
         onSearch() {
             // 

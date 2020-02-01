@@ -13,6 +13,7 @@ import Message from './components/MessageComponent';
 import Invitation from './components/InvitationComponent';
 import ProfilesView from './components/ProfilesViewComponent';
 import PublicationsView from './components/PublicationsViewComponent';
+import PublicationView from './components/PublicationViewComponent';
 import Event from './components/EventComponent';
 import Vacancy from './components/VacancyComponent';
 import VacancyApplication from './components/VacancyApplicationComponent';
@@ -52,14 +53,14 @@ const router =  new Router({
             name: 'profile'
         },
         {
-            path: '/publication',
-            component: Publication,
-            name: 'publication'
-        },
-        {
             path: '/publications',
             component: PublicationsView,
             name: 'publications'
+        },
+        {
+            path: '/publication',
+            component: PublicationView,
+            name: 'publicationview'
         },
         {
             path: '/gallery',

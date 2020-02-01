@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\News;
 use Illuminate\Http\Request;
-use App\Events\SearchNewss;
+use App\Events\SearchNews;
 use App\Events\NewsCreated;
 use App\Events\NewsDeleted;
 use App\Http\Resources\News as NewsResource;

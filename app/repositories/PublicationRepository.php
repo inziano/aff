@@ -41,4 +41,15 @@ class PublicationRepository {
         return $publications;
     }
 
+     /**
+     * showPublicationapplication
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function showPublication($id)
+    {
+        return PublicationResource::collection(Publication::where('id', $id)->get());
+    }
+
 }

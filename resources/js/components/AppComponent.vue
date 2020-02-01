@@ -31,7 +31,7 @@
                     <router-link v-if="currentUser === null" to="/login" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Login</router-link>
                     <Dropdown v-if="currentUser !== null" placement="left-end">
                         <a href="javascript:void(0)" class="inline-block text-sm px-2 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">
-                            <Avatar icon="ios-person" />
+                            <Avatar> {{currentUser.username.slice(0,1)}}</Avatar>
                             <span class="inline-block text-sm leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0"> {{currentUser.username}} </span>
                         </a>
                         <DropdownMenu slot="list">

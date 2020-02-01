@@ -1,7 +1,7 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-full p-5" >
-            <Modal v-model="pubModal" title="Upload Publication">
+            <Modal v-model="pubModal" width = "700">
                 <Form :model="pubForm" label-position="top" class="w-full">
                     <h4 class="text-lg text-semibold subpixel-antialiased tracking-wider">
                         Upload Publication
@@ -47,16 +47,22 @@
                     </Row>
                     <Row :gutter="16">
                         <Col span="12">
-                            <Button size="large" @click="onSubmit" :loading="loading">
-                                <span v-if="!loading"> 
-                                    Submit
-                                    <Icon type="ios-checkmark"></Icon>
-                                </span>
-                                <span v-if="loading">
-                                    Submitting...
-                                </span>
-                        
-                            </Button>
+                            <ButtonGroup>
+                                <Button @click="pubModal = false">
+                                    <Icon type="ios-cancel"></Icon>
+                                    Cancel
+                                </Button>
+                                <Button type="primary" @click="onSubmit" :loading="loading">
+                                    <span v-if="!loading"> 
+                                        Submit
+                                        <Icon type="ios-checkmark"></Icon>
+                                    </span>
+                                    <span v-if="loading">
+                                        Submitting...
+                                    </span>
+                            
+                                </Button>
+                            </ButtonGroup>
                         </Col>
                     </Row>
                 </Form>
@@ -64,44 +70,96 @@
                     <!-- <Button type="error" size="large" long :loading="modal_loading" @click="del">Delete</Button> -->
                 </div>
             </Modal>
-            <nav class="w-full flex mb-2">
-                <div class="lg:flex-grow lg:w-auto">
+
+            <div class="w-full flex bg-white">
+                <div class="w-1/6 h-10 border-r border-gray-400">
                     <p class="font-medium font-serif text-3xl tracking-wide">
                         Publications
-                    </p>
-                    <p class="font-normal font-sans text-lg tracking-tight">
-                        Find Publications
-                    </p>
+                    </p> 
                 </div>
-                <div class="w-2/24 p-3">
-                    <Button icon="ios-add" @click="pubModal = true">
-                        New
-                    </Button>
+                <div class="w-5/6 flex content-center">
+                    <div class="w-10/24 p-2 ml-3">
+                        <Icon type="ios-search-outline" size="18"/>
+                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
+                    </div>
+                    <div class="flex-grow content-center h-full p-2">
+                        <!-- <p class="h-full text-sm tracking-wider uppercase font-sans font-medium"> Filters :</p> -->
+                        <Dropdown class="ml-4" trigger="click">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-calendar-outline" size="20"></Icon>
+                                Year
+                            </a>
+                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
+                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown class="ml-4" trigger="click" style="">
+                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                                <Icon type="ios-bookmark-outline" size="20"></Icon>
+                                Tag
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                                <DropdownItem></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                    <div class="w-2/24 content-center h-full p-2">
+                        <Button  icon="ios-add" @click="pubModal = true">
+                            New Publication
+                        </Button>
+                    </div>  
                 </div>
-            </nav>
-            <ul class="w-full flex flex-wrap bg-gray-300 p-1">
-                <div class="lg:flex-grow lg:w-auto">
-                    <li class="mr-3" @click="changeView()">
-                        <Icon v-if="list" type="ios-list" size="32"/>
-                        <Icon v-if="!list" type="ios-apps-outline" size="32"/>       
-                    </li> 
-                </div>
-                <div class="w-1/24 flex">
-                    <input v-on:keyup.enter="onSearch" v-model="searchTerm" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Search" ></input>
-                    <li class="mr-1 p-2">
-                        <Icon type="ios-search-outline" size="24"/>       
+               
+            </div>
+            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+                <div class="lg:flex-grow items-center  mr-4 flex content-center">
+                    <li class="list-none h-10 content-center" @click="changeView()">   
+                        <span class="">
+                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>  
+                            <Icon v-if="list" type="ios-list" size="32"/>
+                        </span>     
                     </li>
                 </div>
-            </ul>
-            <div class="w-full flex flex-wrap p-2 px-5 bg-gray-200 justify-center" v-if="!list">
-                <div class="w-1/5 h-64 bg-white shadow-lg rounded-sm m-1" v-for="item in pubList" :key="item.id">
+                <div class="w-auto flex content-center">
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{pubstats.total}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                            Publications
+                        </p>
+                    </div>
+                    <div class="m-2 flex flex-wrap">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                            {{pubstats.downloads}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                            Downloads
+                        </p>
+                    </div>
+                    <div class="m-2 flex flex-wrap ">
+                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
+                           {{pubstats.views}}
+                        </p>
+                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
+                            Views
+                        </p>
+                    </div>
+                </div>       
+            </div>
+            <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
+                <div class="w-1/5 h-64 overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg" v-for="item in pubList" :key="item.id" @click="viewPub(item.id)">
                     <div class="border border-white rounded-sm p-4 flex flex-col justify-between leading-normal">
                         <div class="mb-8">
                             <p class="text-xs text-gray-600 flex items-center mb-1">
                                 {{item.publisher}}
                             </p>
-                            <div class="text-gray-900 font-medium text-xl mb-2 font-serif">{{item.title | truncate(20)}}</div>
-                            <p class="text-gray-700 text-base font-sans">{{item.abstract | truncate(50)}}</p>
+                            <div class="text-gray-900 font-medium text-base mb-2 font-serif">{{item.title | truncate(30)}}</div>
+                            <p class="text-gray-700 font-sans text-sm">{{item.abstract | truncate(50)}}</p>
                         </div>
                         <div class="flex items-center">
                             <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar of Jonathan Reinink">
@@ -146,6 +204,7 @@ export default {
             list: false,
             pubList: [],
             pubmeta: '',
+            pubstats: '',
             pubs: '',
             pubForm:{
                 title: '',
@@ -183,7 +242,12 @@ export default {
     computed: {
         currentUser(){
             return this.$store.state.current_user
+        },
+        year(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
         }
+
     },
     mounted() {
         axios({
@@ -194,7 +258,7 @@ export default {
             this.pubList = arr.data
             this.pubmeta = arr.meta
             this.pubs = arr
-            console.log(arr)
+            console.log(arr.meta)
         }).catch((error)=>{
             this.$Notice.error({
                 title: 'No publications found',
@@ -205,13 +269,21 @@ export default {
         // Search pubs
         Echo.channel('searches').listen('SearchPublications',(e)=>{
             this.pubList = e.publications
+            this.pubmeta = []
 
+        })
+
+        // 
+        Echo.channel('stats').listen('PublicationStats', (e)=>{
+            console.log(e)
+            this.pubstats = e.pubstats
         })
     },
     methods: {
         // Search
         onSearch() {
             // 
+            console.log('search')
             let formdata = {
                 search: this.searchTerm
             }
@@ -240,6 +312,10 @@ export default {
                     title: 'Nothing found'
                 })
             })
+        },
+        // make Application
+        viewPub(id){
+            this.$router.push({name: 'publicationview', params: {id}})
         },
         changeView(){
            if ( this.list === true ){

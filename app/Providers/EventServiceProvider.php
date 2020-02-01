@@ -90,6 +90,24 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NewsDeleted'=>[
 
+        ],
+        'App\Events\PublicationStats'=>[
+
+        ],
+        'App\Events\UserStats'=>[
+
+        ],
+        'App\Events\ThreadStats'=>[
+
+        ],
+        'App\Events\VacancyStats'=>[
+
+        ],
+        'App\Events\MessageStats'=>[
+
+        ],
+        'App\Events\NewsStats'=>[
+            
         ]
     ];
 
