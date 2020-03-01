@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Filters\Filterable;
 
 class Thread extends Model
 {
+    use Filterable;
     // Fillable
     protected $fillable = [
         'subject',

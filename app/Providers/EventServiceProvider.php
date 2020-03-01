@@ -108,6 +108,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NewsStats'=>[
             
+        ],
+        'App\Events\EventStats'=>[
+            
         ]
     ];
 

@@ -56,12 +56,12 @@
                             Education
                         </h4>
                         <Divider></Divider>
-                        <div class="p-2 border-b border-b-2">
-                            <p class="text-base font-medium text-gray-600 tracking-wider">{{this.eduData.institution}}</p>
-                            <p class="text-sm font-medium text-gray-700 tracking-widest">{{this.eduData.degree}}</p>
-                            <p class="text-xs font-sans mb-2"> {{this.eduData.startdate}} - {{this.eduData.enddate}}</p>
+                        <div class="p-2 border-b border-b-2" v-for="edu in eduData" :key="edu.key">
+                            <p class="text-base font-medium text-gray-600 tracking-wider">{{edu.institution}}</p>
+                            <p class="text-sm font-medium text-gray-700 tracking-widest">{{edu.degree}}</p>
+                            <p class="text-xs font-sans mb-2"> {{edu.startdate}} - {{edu.enddate}}</p>
                             <p class="text-sm tracking-wider mb-2">
-                                {{this.eduData.description}}
+                                {{edu.description}}
                             </p>
                         </div>
                     </div>
@@ -104,10 +104,10 @@ export default {
             // Bio information
             this.bioData = bio.data
             // Education information
-            this.eduData = edu.data
+            this.eduData = edu.data.data
             // // Work information
-            this.workData = work.data
-            console.log(work.data)
+            this.workData = work.data.data
+            console.log(edu.data)
         })).catch((error)=>{
             this.editing = true
             // Show information to fill in details

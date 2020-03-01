@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Vacancy;
+use App\Filters\VacancyFilters;
 use Illuminate\Http\Request;
 use App\Events\VacancyCreated;
 use App\Events\VacancyDeleted;
@@ -21,10 +22,10 @@ class VacancyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, VacancyFilters $filters)
     {
         //
-        return VacancyResource::collection( Vacancy::paginate(12));
+        return VacancyResource::collection( Vacancy::filter($filters)->paginate(12));
     }
 
     /**

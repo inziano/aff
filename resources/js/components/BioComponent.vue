@@ -484,10 +484,11 @@ export default {
         ]).then( axios.spread((bio,edu,work)=>{
             // Bio information
             this.bioData = bio.data
+            console.log(bio)
             // Education information
-            this.eduData = edu.data.data
+            this.eduData = edu.data
             // // Work information
-            this.workData = work.data.data
+            this.workData = work.data
         })).catch((error)=>{
             this.editing = true
             // Show information to fill in details

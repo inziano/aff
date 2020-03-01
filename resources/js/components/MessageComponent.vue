@@ -56,7 +56,7 @@
              <div class="w-full flex bg-white">
                 <div class="w-1/6 h-10 border-r border-gray-400">
                     <p class="font-medium font-serif text-3xl tracking-wide">
-                        Vacancies
+                        Messages
                     </p> 
                 </div>
                 <div class="w-5/6 flex content-center">
@@ -203,6 +203,24 @@ export default {
         })
     },
     methods: {
+        onSearch() {
+            // 
+            let term = this.searchTerm
+            // Search
+            axios({
+                method: 'get',
+                url: 'api/message?search='+term,
+            }).then((response)=>{
+                let that = this
+                this.messages = message.data.data.filter((resp)=>{
+                    return resp.recepient.includes(that.currentUser.id)
+                })
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         onSubmit(){
             // 
             let data = this.messageForm

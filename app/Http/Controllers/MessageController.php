@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\Filters\MessageFilters;
 use Illuminate\Http\Request;
 use App\Http\Resources\Message as MessageResource;
 use App\Repositories\MessageRepository;
 
 class MessageController extends Controller
 {
-    public function __construct(MessageRepository $repo)
+    public function __construct(MessageRepository $repo, MessageFilters $filters)
     {
         $this->repo = $repo;
     }
@@ -22,7 +23,7 @@ class MessageController extends Controller
     public function index()
     {
         //
-        return MessageResource::collection(Message::all());
+        return MessageResource::collection(Message::filter($filters)->all());
     }
 
     /**

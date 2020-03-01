@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\Filters\EventFilters;
 use Illuminate\Http\Request;
 use App\Http\Resources\Event as EventResource;
 use App\Events\SearchEvents;
@@ -31,10 +32,10 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, EventFilters $filters)
     {
         //
-        return EventResource::collection(Event::paginate(12));
+        return EventResource::collection(Event::filter($filters)->paginate(12));
     }
 
     /**

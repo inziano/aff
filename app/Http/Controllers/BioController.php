@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Bio;
 use App\User;
+use App\Filters\BioFilters;
 use Illuminate\Http\Request;
 use App\Repositories\BioRepository;
 
 class BioController extends Controller
 {
     // Construct
-    public function __construct( BioRepository $repo )
+    public function __construct( BioRepository $repo, BioFilters $filter )
     {
         $this->repo = $repo;
     }

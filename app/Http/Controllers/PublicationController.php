@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Publication;
+use App\Filters\PublicationFilters;
 use Illuminate\Http\Request;
 use App\Repositories\PublicationRepository;
 use App\Http\Resources\Publication as PubResource;
@@ -21,10 +22,10 @@ class PublicationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, PublicationFilters $filters)
     {
         //display all
-        return PubResource::collection(Publication::paginate(12));
+        return PubResource::collection(Publication::filter($filters)->paginate(12));
     }
 
    

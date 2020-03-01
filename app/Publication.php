@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Filters\Filterable;
 
 class Publication extends Model
 {
+    use Filterable;
     //Fillable
     protected $fillable = [
         'author',
@@ -14,6 +16,7 @@ class Publication extends Model
         'publisher',
         'abstract',
         'tags',
+        'publication_year',
         'pubpath',
         'user_id',
         'downloads',

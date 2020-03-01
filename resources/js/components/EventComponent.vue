@@ -69,28 +69,28 @@
                         <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
                     </div>
                     <div class="flex-grow content-center h-full p-2">
-                        <Dropdown class="ml-4" trigger="click" style="">
+                        <Dropdown class="ml-4" trigger="click" style="" @on-click="filterMethod('year',$event)">
                             <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
                                 <Icon type="ios-calendar-outline" size="20"></Icon>
                                 Year
                             </a>
                             <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
-                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                                <DropdownItem v-for="yr in years" :key="yr" :name="yr">{{yr}}</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        <Dropdown class="ml-4" trigger="click" style="">
+                        <Dropdown class="ml-4" trigger="click" style="" @on-click="filterMethod('location',$event)">
                             <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
                                 <Icon type="ios-pin-outline" size="20"></Icon>
                                 Location
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
+                                <DropdownItem v-for="location in locations" :key="location" :name="location">{{location}}</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
+                        <a @click="clearFilters()" v-if="filtered" size="small" type="text" class="ml-4 p-0 text-gray-900 focus:text-gray-900 hover:border-0 hover:text-gray-900 active:border-0 active:text-gray-900">
+                            <Icon type="ios-close" size="20"></Icon>
+                            Clear Filters
+                        </a>
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
                         <Button icon="ios-add" @click="eventModal = true">
@@ -111,7 +111,7 @@
                 <div class="w-auto flex content-center">
                     <div class="m-2 flex flex-wrap ">
                         <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
-                            3
+                           {{eventstats.events}}
                         </p>
                         <p class="text-center w-full font-sans font-thin tracking-wider text-xs text-gray-500">
                             Events
@@ -182,6 +182,7 @@ export default {
             eventModal: false,
             admin: false,
             searchTerm: '',
+            filtered: false,
             eventData: '',
             eventmeta:'',
             eventForm: {
@@ -221,10 +222,15 @@ export default {
         currentUser(){
             return this.$store.state.current_user
         },
-        year(){
+        years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
         },
+        locations(){
+            return this.events.map((locale)=>{
+                return locale.location
+            })
+        }
     },
     mounted(){
         axios({
@@ -276,19 +282,53 @@ export default {
                 })
             })
         },
+        // clear all filters
+        clearFilters(){
+            axios({
+                method: 'get',
+                url: 'api/event?search=',
+            }).then((response)=>{
+                this.events = response.data.data
+                this.eventData = response.data
+                this.eventmeta = response.data.meta
+                this.filtered = false
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
+        // Clear filter
+        filterMethod(criteria, term) {
+            // call route based on criteria
+            axios({
+                method: 'get',
+                url: 'api/event?'+criteria+'='+term,
+            }).then((response)=>{
+                this.events = response.data.data
+                this.eventData = response.data
+                this.eventmeta = response.data.meta
+                this.filtered = true
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         // Search
         onSearch() {
             // 
-            let formdata = {
-                search: this.searchTerm
-            }
+            let term = this.searchTerm
             // Search
             axios({
                 method: 'post',
-                url: 'api/event/search',
+                url: 'api/event?search='+term,
                 data: formdata
             }).then((response)=>{
-                // log response
+                this.events = response.data.data
+                this.eventData = response.data
+                this.eventmeta = response.data.meta
+                this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Nothing found'

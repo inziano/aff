@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Filters\UserFilters;
 use App\Http\Resources\User as UserResource;
 use App\Repositories\UserRepository;
 use App\Events\UserRegistered;
@@ -24,10 +25,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request, UserFilters $filters)
     {
         //Show all the users
-        return UserResource::collection(User::with(['bio','education','work'])->paginate(12));
+        return UserResource::collection(User::filter($filters)->with(['bio','education','work'])->paginate(12));
     }
 
     /**

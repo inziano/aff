@@ -9,10 +9,12 @@ use App\Bio;
 use App\Education;
 use App\Work;
 use App\Publication;
+use App\Filters\Filterable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\News;
+use App\Filters\NewsFilters;
 use Illuminate\Http\Request;
 use App\Events\SearchNews;
 use App\Events\NewsCreated;
@@ -28,10 +29,10 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, NewsFilters $filters)
     {
         //
-        return NewsResource::collection(News::paginate(12));
+        return NewsResource::collection(News::filter($filters)->paginate(12));
     }
 
 

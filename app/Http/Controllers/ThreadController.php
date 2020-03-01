@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Thread;
 use App\User;
 use App\Topic;
+use App\Filters\ThreadFilters;
 use Illuminate\Http\Request;
 use App\Events\ThreadCreated;
 use App\Events\ThreadDeleted;
@@ -33,10 +34,10 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,ThreadFilters $filters)
     {
         //
-        return ThreadResource::collection(Thread::whereNotNull('user_id')->paginate(12));
+        return ThreadResource::collection(Thread::filter($filters)->whereNotNull('user_id')->paginate(12));
     }
 
     /**

@@ -10,11 +10,13 @@ use App\User;
 use App\Vacancy;
 use App\News;
 use App\Thread;
+use App\Event;
 use App\Observers\PublicationObserver;
 use App\Observers\UserObserver;
 use App\Observers\VacancyObserver;
 use App\Observers\NewsObserver;
 use App\Observers\ThreadObserver;
+use App\Observers\EventObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,5 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Vacancy::observe(VacancyObserver::class);
         // 
         News::observe(NewsObserver::class);
+
+        Event::observe(EventObserver::class);
     }
 }

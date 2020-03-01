@@ -8,9 +8,16 @@
                     </h4>
                     <br>
                     <Row :gutter="16">
-                        <Col span="24">
+                        <Col span="16">
                             <FormItem label="Title">
                                 <Input type="text" v-model="pubForm.title" placeholder="Publication Title"></Input>
+                            </FormItem>
+                        </Col>
+                        <Col span="8">
+                            <FormItem label="Publication Year">
+                                <Select v-model="pubForm.publication_year" placeholder="Year of Publication">
+                                    <Option v-for="yr in years" :value="yr" :key="yr">{{yr}}</Option>
+                                </Select> 
                             </FormItem>
                         </Col>
                     </Row>
@@ -42,6 +49,15 @@
                                         <p>Click or drag files here to upload</p>
                                     </div>
                                 </Upload>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row :gutter="16">
+                        <Col span="24">
+                            <FormItem label="tags">
+                                <Select v-model="pubForm.tags" filterable multiple allow-create>
+                                    <Option v-for="tag in tags" :value="tag" :key="tag">{{ tag }}</Option>
+                                </Select>
                             </FormItem>
                         </Col>
                     </Row>
@@ -84,28 +100,28 @@
                     </div>
                     <div class="flex-grow content-center h-full p-2">
                         <!-- <p class="h-full text-sm tracking-wider uppercase font-sans font-medium"> Filters :</p> -->
-                        <Dropdown class="ml-4" trigger="click">
+                        <Dropdown class="ml-4" trigger="click" @on-click="filterMethod('year',$event)">
                             <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
                                 <Icon type="ios-calendar-outline" size="20"></Icon>
                                 Year
                             </a>
                             <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
-                                <DropdownItem v-for="yr in year" :key="yr">{{yr}}</DropdownItem>
+                                <DropdownItem v-for="yr in years" :key="yr" :name="yr">{{yr}}</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        <Dropdown class="ml-4" trigger="click" style="">
+                        <Dropdown class="ml-4" trigger="click" @on-click="filterMethod('tags',$event)">
                             <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
                                 <Icon type="ios-bookmark-outline" size="20"></Icon>
                                 Tag
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
-                                <DropdownItem></DropdownItem>
+                                <DropdownItem v-for="tag in tags" :key="tag" :name="tag">{{tag}}</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
+                        <a @click="clearFilters()" v-if="filtered" size="small" type="text" class="ml-4 p-0 text-gray-900 focus:text-gray-900 hover:border-0 hover:text-gray-900 active:border-0 active:text-gray-900">
+                            <Icon type="ios-close" size="20"></Icon>
+                            Clear Filters
+                        </a>
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
                         <Button  icon="ios-add" @click="pubModal = true">
@@ -199,6 +215,7 @@ export default {
         return {
             id: this.$route.params.id,
             searchTerm: '',
+            filtered: false,
             loading: false,
             pubModal: false,
             list: false,
@@ -211,6 +228,8 @@ export default {
                 author: '',
                 publisher: '',
                 abstract: '',
+                publication_year: '',
+                tags: '',
                 user_id: '',
             },
             publication: null,
@@ -243,9 +262,14 @@ export default {
         currentUser(){
             return this.$store.state.current_user
         },
-        year(){
+        years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        },
+        tags(){
+            return this.pubList.map((pub)=>{
+                return pub.tags
+            })
         }
 
     },
@@ -280,20 +304,52 @@ export default {
         })
     },
     methods: {
+         // clear all filters
+        clearFilters(){
+            axios({
+                method: 'get',
+                url: 'api/publication?search=',
+            }).then((response)=>{
+                // log response
+               const arr = response.data
+                this.pubList = arr.data
+                this.pubmeta = arr.meta
+                this.filtered = false
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
+        // Clear filter
+        filterMethod(criteria, term) {
+            // call route based on criteria
+            axios({
+                method: 'get',
+                url: 'api/publication?'+criteria+'='+term,
+            }).then((response)=>{
+                const arr = response.data
+                this.pubList = arr.data
+                this.pubmeta = arr.meta
+                this.filtered = true
+            }).catch((error)=>{
+                this.$Notice.error({
+                    title: 'Nothing found'
+                })
+            })
+        },
         // Search
         onSearch() {
             // 
-            console.log('search')
-            let formdata = {
-                search: this.searchTerm
-            }
+            let term = this.searchTerm
             // Search
             axios({
-                method: 'post',
-                url: 'api/publication/search',
-                data: formdata
+                method: 'get',
+                url: 'api/publication?search='+term,
             }).then((response)=>{
-                // log response
+                const arr = response.data
+                this.pubList = arr.data
+                this.pubmeta = arr.meta
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Nothing found'

@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Filters\Filterable;
 
 class Bio extends Model
 {
+    use Filterable;
     //Fillable
     protected $fillable = [
         'firstname',
