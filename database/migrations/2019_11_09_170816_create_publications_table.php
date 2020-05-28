@@ -19,7 +19,7 @@ class CreatePublicationsTable extends Migration
             $table->text('title');
             $table->string('publisher');
             $table->longText('abstract');
-            $table->json('tags');
+            $table->json('tags')->nullable();
             $table->date('publication_year');
             $table->string('pubpath');
             $table->integer('downloads')->default(0);
