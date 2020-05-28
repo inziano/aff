@@ -14,6 +14,8 @@ $factory->define(Publication::class, function (Faker $faker) {
         'abstract'=> $faker->text,
         'pubpath'=> $faker->word,
         'downloads'=> $faker->randomdigit,
-        'views'=> $faker->randomdigit
+        'views'=> $faker->randomdigit,
+        'publication_year'=> $faker->year( $max = 'now'),
+
     ];
 });
