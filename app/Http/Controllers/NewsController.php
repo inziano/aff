@@ -55,7 +55,7 @@ class NewsController extends Controller
         // repo
         $news = $this->repo->createNews($request);
 
-        event( new NewsCreated());
+        event( new NewsCreated($news->id));
 
         return $news;
     }

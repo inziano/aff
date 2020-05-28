@@ -167,49 +167,58 @@
                     </div>
                 </div>       
             </div>
-            <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
-                <div class="w-1/5 h-64 overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg" v-for="item in pubList" :key="item.id" @click="viewPub(item.id)">
-                    <div class="border border-white rounded-sm p-4 flex flex-col justify-between leading-normal">
-                        <div class="mb-8">
-                            <p class="text-xs text-gray-600 flex items-center mb-1">
-                                {{item.publisher}}
-                            </p>
-                            <div class="text-gray-900 font-medium text-base mb-2 font-serif">{{item.title | truncate(30)}}</div>
-                            <p class="text-gray-700 font-sans text-sm">{{item.abstract | truncate(50)}}</p>
-                        </div>
-                        <div class="flex items-center">
-                            <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar of Jonathan Reinink">
-                            <div class="text-sm">
-                                <p class="text-gray-900 leading-none mb-1 text-xs font-semibold tracking-wider">{{item.author}}</p>
-                                <p class="text-gray-600 text-xs font-medium tracking-tight">{{item.created_at}}</p>
+            <div class="w-full" v-if="publications.length">
+                <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
+                    <div class="w-1/5 h-64 overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg" v-for="item in publications" :key="item.id" @click="viewPub(item.id)">
+                        <div class="border border-white rounded-sm p-4 flex flex-col justify-between leading-normal">
+                            <div class="mb-8">
+                                <p class="text-xs text-gray-600 flex items-center mb-1">
+                                    {{item.publisher}}
+                                </p>
+                                <div class="text-gray-900 font-medium text-base mb-2 font-serif">{{item.title | truncate(30)}}</div>
+                                <p class="text-gray-700 font-sans text-sm">{{item.abstract | truncate(50)}}</p>
                             </div>
+                            <div class="flex items-center">
+                                <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar of Jonathan Reinink">
+                                <div class="text-sm">
+                                    <p class="text-gray-900 leading-none mb-1 text-xs font-semibold tracking-wider">{{item.author}}</p>
+                                    <p class="text-gray-600 text-xs font-medium tracking-tight">{{item.created_at}}</p>
+                                </div>
+                            </div>
+                            <ul class="w-full mt-5 flex">
+                                <li class="mr-5">
+                                    <Icon type="ios-eye-outline" size="18"/><span class="ml-1 font-semibold">{{item.views}}</span>
+                                </li>
+                                <li class="mr-5">
+                                    <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
+                                </li>
+                                <li class="mr-5">
+                                    <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="downloadPub(item)"> Download</a>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="w-full mt-5 flex">
-                            <li class="mr-5">
-                                <Icon type="ios-eye-outline" size="18"/><span class="ml-1 font-semibold">{{item.views}}</span>
-                            </li>
-                            <li class="mr-5">
-                                <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
-                            </li>
-                            <li class="mr-5">
-                                <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="downloadPub(item)"> Download</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>           
+                    </div>           
+                </div>
+                <div class="w-full" v-if="list">
+                    <Table stripe ref="selection" :columns="columns" :data="publications"></Table>
+                </div>
+                <div class="w-full flex p-0 mt-5 mb-5 text-center">
+                    <Page class="mx-auto" :current="pubmeta.current_page" :total="pubmeta.total" :page-size="pubmeta.per_page" @on-change="goToPage" />
+                </div> 
             </div>
-            <div class="w-full" v-if="list">
-                <Table stripe ref="selection" :columns="publications" :data="pubList"></Table>
+            <div class="w-full" v-else>
+                <div class="mx-auto w-1/3 p-5 m-3 content-center">
+                    <img class="object-center object-contain" src='/images/events.svg'>
+                    <p class="text-xl font-medium font-sans w-full text-center pt-5"> No Publication Found</p>
+                </div>
             </div>
-            <div class="w-full flex p-0 mt-5 mb-5 text-center">
-                <Page class="mx-auto" :current="pubmeta.current_page" :total="pubmeta.total" :page-size="pubmeta.per_page" @on-change="goToPage" />
-            </div> 
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapState, mapActions } from 'vuex'
 export default {
     data(){
         return {
@@ -219,7 +228,6 @@ export default {
             loading: false,
             pubModal: false,
             list: false,
-            pubList: [],
             pubmeta: '',
             pubstats: '',
             pubs: '',
@@ -232,8 +240,7 @@ export default {
                 tags: '',
                 user_id: '',
             },
-            publication: null,
-            publications: [
+            columns: [
                 {
                     type: 'selection',
                     width: 60,
@@ -259,40 +266,22 @@ export default {
         }
     },
     computed: {
-        currentUser(){
-            return this.$store.state.current_user
-        },
+        ...mapState(['publications', 'current_user']),
         years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
         },
         tags(){
-            return this.pubList.map((pub)=>{
+            return this.publications.map((pub)=>{
                 return pub.tags
             })
         }
 
     },
     mounted() {
-        axios({
-            method: 'get',
-            url: 'api/publication'
-        }).then((response)=>{
-            const arr = response.data
-            this.pubList = arr.data
-            this.pubmeta = arr.meta
-            this.pubs = arr
-            console.log(arr.meta)
-        }).catch((error)=>{
-            this.$Notice.error({
-                title: 'No publications found',
-                desc: error.message
-            })
-        })
-
         // Search pubs
         Echo.channel('searches').listen('SearchPublications',(e)=>{
-            this.pubList = e.publications
+            this.publications = e.publications
             this.pubmeta = []
 
         })
@@ -304,33 +293,23 @@ export default {
         })
     },
     methods: {
+        ...mapActions(['filterPublications', 'fetchPublications']),
          // clear all filters
         clearFilters(){
-            axios({
-                method: 'get',
-                url: 'api/publication?search=',
-            }).then((response)=>{
-                // log response
-               const arr = response.data
-                this.pubList = arr.data
-                this.pubmeta = arr.meta
-                this.filtered = false
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
+            this.fetchPublications().then(()=>{
+               this.filtered = false
+            }).catch(()=>{
+                
             })
         },
         // Clear filter
         filterMethod(criteria, term) {
+            let filter = {
+                criteria: criteria,
+                term: term
+            }
             // call route based on criteria
-            axios({
-                method: 'get',
-                url: 'api/publication?'+criteria+'='+term,
-            }).then((response)=>{
-                const arr = response.data
-                this.pubList = arr.data
-                this.pubmeta = arr.meta
+            this.filterPublications(filter).then(()=>{
                 this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({
@@ -341,15 +320,13 @@ export default {
         // Search
         onSearch() {
             // 
-            let term = this.searchTerm
+            let filter = {
+                criteria: 'search',
+                term: this.searchTerm
+            }
             // Search
-            axios({
-                method: 'get',
-                url: 'api/publication?search='+term,
-            }).then((response)=>{
-                const arr = response.data
-                this.pubList = arr.data
-                this.pubmeta = arr.meta
+            this.filterPublications(filter).then(()=>{
+                this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Nothing found'
@@ -385,7 +362,7 @@ export default {
             this.loading = true
             // data
             const data = this.pubForm
-            data['user_id'] = this.currentUser.id
+            data['user_id'] = this.current_user.id
 
             let formdata = new FormData()
 

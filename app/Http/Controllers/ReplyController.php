@@ -45,7 +45,7 @@ class ReplyController extends Controller
         $reply = $this->repo->createReply($request);
 
         // Fire event
-        event( new ThreadReplied($reply->thread_id));
+        event( new ThreadReplied($reply));
 
         return $reply;
     }

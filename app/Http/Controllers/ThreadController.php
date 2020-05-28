@@ -63,8 +63,9 @@ class ThreadController extends Controller
             $thread = abort(404);
         }
 
-        event( new ThreadCreated());
-        return $thread;
+        event(new ThreadCreated($thread->id));
+
+        return 'ok';
     }
 
     /**

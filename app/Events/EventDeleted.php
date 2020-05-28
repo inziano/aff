@@ -16,17 +16,17 @@ class EventDeleted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $events;
+    public $event;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
         //
-        $this->events =  EventResource::collection(Event::paginate(12));
+        $this->event = $id;
     }
 
     /**

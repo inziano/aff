@@ -17,9 +17,9 @@ import PublicationView from './components/PublicationViewComponent';
 import Event from './components/EventComponent';
 import Vacancy from './components/VacancyComponent';
 import VacancyApplication from './components/VacancyApplicationComponent';
-import Forum from './components/ForumComponent';
-import ThreadView from './components/ThreadViewComponent';
-import Topic from './components/TopicComponent';
+import Forum from './components/Forum/ForumComponent';
+import ThreadView from './components/Forum/ThreadViewComponent';
+import Topic from './components/Forum/TopicComponent';
 import News from './components/NewsComponent';
 import Article from './components/ArticleComponent';
 

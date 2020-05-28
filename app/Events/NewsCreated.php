@@ -23,10 +23,10 @@ class NewsCreated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
         //
-        $this->events =  NewsResource::collection(Event::paginate(12));
+        $this->news =  NewsResource::collection(Event::where('id',$id)->get());
     }
 
     /**

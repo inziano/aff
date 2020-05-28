@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     computed: {
         currentUser(){
@@ -63,7 +64,18 @@ export default {
             return Object.keys(user).length ===0 ? null : user
         }
     },
+    mounted(){
+        // fetch news and publications
+        this.fetchPublications(),
+        this.fetchVacancies(),
+        this.fetchNews(),
+        this.fetchEvents(),
+        this.fetchMembers()
+    },
     methods: {
+        // 
+        ...mapActions(['fetchPublications', 'fetchVacancies', 'fetchEvents', 'fetchNews', 'fetchMembers']),
+
         logout(){
             this.$store.dispatch('logout')
             // Current user

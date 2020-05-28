@@ -121,7 +121,7 @@
                 </div>       
             </div>  
            
-           <div v-if="vacancies.length">
+           <div v-if="vacancies">
                 <div class="w-full flex  flex-wrap p-2 bg-gray-100 justify-center" v-if="!list">
                     <a class="w-1/5 overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg text-gray-700 hover:text-gray-900" v-for="vacancy in vacancies" :key="vacancy.id" @click="makeApplication(vacancy.id)">
                         <div class="mt-3 mb-2">
@@ -153,7 +153,7 @@
                             <a class="mr-2 font-hairline text-xs tracking-widest capitalize text-gray-500" @click="makeApplication(vacancy.id)">
                                 Apply
                             </a>
-                            <a class="text-xs tracking-wide font-medium text-red-700" v-if="vacancy.user.id === currentUser.id " @click="deleteVacancy(vacancy.id)"> Remove </a>
+                            <a class="text-xs tracking-wide font-medium text-red-700" v-if="vacancy.user.id ===current_user.id " @click="deleteVacancy(vacancy.id)"> Remove </a>
 
                         </div>
                     </a>
@@ -177,6 +177,9 @@
 
 <script>
 import axios from 'axios'
+
+import { mapState, mapActions } from 'vuex'
+
 export default {
     data(){
         return {
@@ -195,7 +198,6 @@ export default {
                 deadline: '',
                 positions: ''
             },
-            vacancies: [],
             vacancyColumns: [
                 {
                     title: 'Title',
@@ -241,6 +243,10 @@ export default {
         }
     },
     computed: {
+        // Store values
+        ...mapState(['vacancies', 'current_user']),
+
+        // Year
         year(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
@@ -253,20 +259,6 @@ export default {
         }
     },
     mounted(){
-        axios({
-            method: 'get',
-            url: 'api/vacancy'
-        }).then((response)=>{
-            this.vacancies = response.data.data
-            this.vacancyData = response.data
-            this.vacancymeta = response.data.meta
-        }).catch((error)=>{
-            this.$Notice.info({
-                title: 'Vacancies',
-                desc: 'No vacancies currently'
-            })
-        })
-
         // 
         Echo.channel('vacancies').listen('VacancyCreated',(e)=>{
             this.vacancies = e.vacancies
@@ -282,32 +274,11 @@ export default {
             this.vacancystats = e.vacancystats
         })
     },
-    computed: {
-        currentUser(){
-            return this.$store.state.current_user
-        },
-        year(){
-            const year = new Date().getFullYear()
-            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
-        },
-        locations(){
-            let locale = this.vacancies.map((locale)=>{
-                return locale.location
-            })
-
-            return new Set(locale)
-        }
-    },
     methods:{
+        ...mapActions(['createVacancy', 'newVacancy','fetchVacancies', 'filterVacancies']),
            // clear all filters
         clearFilters(){
-            axios({
-                method: 'get',
-                url: 'api/vacancy?search=',
-            }).then((response)=>{
-                this.vacancies = response.data.data
-                this.vacancyData = response.data
-                this.vacancymeta = response.data.meta
+            this.fetchVacancies().then((response)=>{
                 this.filtered = false
             }).catch((error)=>{
                 this.$Notice.error({
@@ -317,16 +288,14 @@ export default {
         },
         // Clear filter
         filterMethod(criteria, term) {
+            let filter = {
+                criteria: criteria,
+                term: term
+            }
             // call route based on criteria
-            axios({
-                method: 'get',
-                url: 'api/vacancy?'+criteria+'='+term,
-            }).then((response)=>{
-                this.vacancies = response.data.data
-                this.vacancyData = response.data
-                this.vacancymeta = response.data.meta
+            this.filterVacancies(filter).then(()=>{
                 this.filtered = true
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -335,17 +304,14 @@ export default {
         // Search
         onSearch() {
             // 
-            let term = this.searchTerm
+            let filter = {
+                criteria: 'search',
+                term: this.searchTerm
+            }
             // Search
-            axios({
-                method: 'get',
-                url: 'api/vacancy?search='+term,
-            }).then((response)=>{
-                this.vacancies = response.data.data
-                this.vacancyData = response.data
-                this.vacancymeta = response.data.meta
+            this.filterVacancies(filter).then(()=>{
                 this.filtered = true
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -375,13 +341,9 @@ export default {
         // On submit
         onSubmit(){
             let formdata = this.vacancyForm
-            formdata['user_id'] = this.currentUser.id
+            formdata['user_id'] = this.current_user.id
             // Push to db
-            axios({
-                method: 'post',
-                url: 'api/vacancy',
-                data: formdata
-            }).then((response)=>{
+            this.createVacancy(formdata).then((response)=>{
                 this.$Notice.success({
                     title: 'Vacancy Created',
                 })

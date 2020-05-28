@@ -17,9 +17,9 @@ class ThreadRepository {
     public function createThread( Request $request )
     {
         // Create new
-        $pub = Thread::create($request->all());
+        $thread = Thread::create($request->all());
 
-        return $pub;
+        return $thread;
     }
 
     /**

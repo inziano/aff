@@ -7,13 +7,11 @@
         </div>
         <div class="w-1/3 mr-auto p-10 bg-white" style="height: 80%">
             <Form :model="loginForm" @submit="onSubmit" label-position="top">
-                <h4 class="text-xl font-normal leading-loose">
-                    Login
-                </h4>
                 <h5 class="text-base font-normal leading-loose">
                     Login to your account
                 </h5>
-                <p class="text-xs font-medium tracking-wide"> Dont have an account <router-link to="/register">Register</router-link></p>
+
+                <p class="pt-2 text-xs tracking-wide"> Dont have an account <router-link class="text-xs font-semibold text-gray-600" to="/register">Register</router-link></p>
                 <br>
                 <Row :gutter="16">
                     <Col span="24">
@@ -65,31 +63,19 @@ export default {
         onSubmit() {
             this.loading = true
             // Dispatch 
-            this.$store.dispatch('login')
-            // Axios
-            axios({
-                method: 'post',
-                url: 'api/user/login',
-                data: this.loginForm
-            }).then( (response)=>{
-                // Payload
-                const payload = response.data
-                // Get the ID
-                const id = payload.id
-                // Logged in
-                this.$store.dispatch('loggedIn', payload)
+            this.$store.dispatch('login', this.loginForm).then(()=>{
                 // response object
                 this.$Notice.info({
                     title: 'Login Succesful'
                 })
                 // redirect to dashboard
-                setTimeout(()=>  this.$router.push({name: 'bio', params: {id}}), 1000)
-            }).catch( (error)=>{
+                setTimeout(()=>  this.$router.push({name: 'bio'}), 1000)
+            }).catch( ()=>{
                 // error object
                 this.$Notice.error({
-                    title: 'Login Failed'
+                    title: 'Login attempt unsuccesful'
                 })
-
+                // Incase user was logged in before
                 this.$store.dispatch('logout')
             })
         }

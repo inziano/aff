@@ -144,6 +144,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapActions } from 'vuex'
 import Invitation from './InvitationComponent'
 export default {
     components: {
@@ -157,7 +158,6 @@ export default {
             filterTerm: '',
             filtered: false,
             updateList: [],
-            members: [],
             membermeta: '',
             memberlink: '',
             memberstats: '',
@@ -206,6 +206,9 @@ export default {
         }
     },
     computed: {
+        // Members from vuex
+        ...mapState(['members']),
+
         years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
@@ -222,21 +225,6 @@ export default {
         }
     },
     mounted() {
-        // Pull all the profiles
-        axios({
-            method: 'get',
-            url: 'api/user'
-        }).then((response)=>{
-            // response
-            this.members = response.data.data
-            this.membermeta = response.data.meta,
-            this.memberlink = response.data.link
-            // Member data
-            this.memberdata = response.data
-        }).catch((error)=>{
-            // error
-        })
-
         Echo.channel('members').listen('UserModified', (e)=>{
             this.members = e.users
             // console.log(e)
@@ -253,39 +241,23 @@ export default {
         })
     },
     methods: {
+        ...mapActions(['filterMembers', 'fetchMembers']),
         // clear all filters
         clearFilters(){
-            axios({
-                method: 'get',
-                url: 'api/user?search=',
-            }).then((response)=>{
-                // log response
-                // response
-                this.members = response.data.data
-                this.membermeta = response.data.meta,
-                this.memberlink = response.data.link
-                // Member data
-                this.memberdata = response.data
-                this.filtered = false
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
+            this.fetchMembers().then(()=>{
+               this.filtered = false
+            }).catch(()=>{
+                
             })
         },
         // Clear filter
         filterMethod(criteria, term) {
+            let filter = {
+                criteria: criteria,
+                term: term
+            }
             // call route based on criteria
-            axios({
-                method: 'get',
-                url: 'api/user?'+criteria+'='+term,
-            }).then((response)=>{
-                 // response
-                this.members = response.data.data
-                this.membermeta = response.data.meta,
-                this.memberlink = response.data.link
-                // Member data
-                this.memberdata = response.data
+            this.filterMembers(filter).then(()=>{
                 this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({
@@ -296,19 +268,12 @@ export default {
         // Search
         onSearch() {
             // 
-            let term = this.searchTerm
+            let filter = {
+                criteria: 'search',
+                term: this.searchTerm
+            }
             // Search
-            axios({
-                method: 'get',
-                url: 'api/user?search='+term,
-            }).then((response)=>{
-                // log response
-                // response
-                this.members = response.data.data
-                this.membermeta = response.data.meta,
-                this.memberlink = response.data.link
-                // Member data
-                this.memberdata = response.data
+            this.filterMembers(filter).then((response)=>{
                 this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({

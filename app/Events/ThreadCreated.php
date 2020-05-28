@@ -23,10 +23,10 @@ class ThreadCreated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
         //
-        $this->threads = ThreadResource::collection(Thread::all());
+        $this->threads = ThreadResource::collection( Thread::where('id', $id)->get());
     }
 
     /**

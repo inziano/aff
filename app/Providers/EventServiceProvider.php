@@ -37,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
        'App\Events\UpdateThreadLikeCount'=>[
 
        ],
+       'App\Events\ThreadUpdated'=>[
+           
+       ],
        'App\Events\UpdateThreadViewCount'=>[
 
        ],

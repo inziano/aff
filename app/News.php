@@ -14,6 +14,7 @@ class News extends Model
         'body',
         'tags',
         'category',
-        'published'
+        'published',
+        'user_id'
     ];
 }

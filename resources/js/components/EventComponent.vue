@@ -148,9 +148,9 @@
                                 Posted: <span class="font-thin text-xs tracking-wide capitalize text-gray-400"> {{event.created_at}}</span>
                             </p>
                         </div>
-                        <div class="w-full mt-2 mb-0" v-if="event.user.id === currentUser.id">
+                        <div class="w-full mt-2 mb-0" v-if="event.user.id === current_user.id">
                             <li class="list-none">
-                                <a class="text-xs tracking-wide font-medium text-red-700" @click="deleteEvent(event.id)"> Remove </a>
+                                <a class="text-xs tracking-wide font-medium text-red-700" @click="remove(event.id)"> Remove </a>
                             </li>
                         </div>
                     </div>
@@ -175,6 +175,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapActions } from 'vuex'
 export default {
     data(){
         return {
@@ -185,6 +186,7 @@ export default {
             filtered: false,
             eventData: '',
             eventmeta:'',
+            eventstats: '',
             eventForm: {
                 startdate: '',
                 enddate: '',
@@ -192,7 +194,6 @@ export default {
                 location:'',
                 description: ''
             },
-            events: [],
             eventsColumns: [
                 {
                     title: 'Title',
@@ -219,9 +220,9 @@ export default {
         }
     },
     computed: {
-        currentUser(){
-            return this.$store.state.current_user
-        },
+        // map state
+        ...mapState(['events', 'current_user']),
+
         years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
@@ -233,21 +234,6 @@ export default {
         }
     },
     mounted(){
-        axios({
-            method: 'get',
-            url: 'api/event'
-        }).then((response)=>{
-            this.events = response.data.data
-            this.eventData = response.data
-            this.eventmeta = response.data.meta
-        }).catch((error)=>{
-            console.log(error)
-            this.$Notice.info({
-                title: 'Events',
-                desc: 'No events currently registered'
-            })
-        })
-
         // Search events
         Echo.channel('searches').listen('SearchEvents',(e)=>{
             this.events = e.events
@@ -255,7 +241,7 @@ export default {
 
         // Update
         Echo.channel('events').listen('EventCreated',(e)=>{
-            this.events = e.events
+            this.newEvent(e.event)
         })
 
         // Update
@@ -268,6 +254,9 @@ export default {
         })
     },
     methods: {
+
+        // Store actions
+        ...mapActions(['createEvent', 'newEvent', 'deleteEvent','fetchEvents','filterEvents']),
 
         // goToPage
         goToPage(number){
@@ -284,15 +273,9 @@ export default {
         },
         // clear all filters
         clearFilters(){
-            axios({
-                method: 'get',
-                url: 'api/event?search=',
-            }).then((response)=>{
-                this.events = response.data.data
-                this.eventData = response.data
-                this.eventmeta = response.data.meta
+            this.fetchEvents().then(()=>{
                 this.filtered = false
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -300,14 +283,12 @@ export default {
         },
         // Clear filter
         filterMethod(criteria, term) {
+            let filter = {
+                criteria: criteria,
+                term: term
+            }
             // call route based on criteria
-            axios({
-                method: 'get',
-                url: 'api/event?'+criteria+'='+term,
-            }).then((response)=>{
-                this.events = response.data.data
-                this.eventData = response.data
-                this.eventmeta = response.data.meta
+            this.filterEvents(filter).then(()=>{
                 this.filtered = true
             }).catch((error)=>{
                 this.$Notice.error({
@@ -318,18 +299,14 @@ export default {
         // Search
         onSearch() {
             // 
-            let term = this.searchTerm
+            let filter = {
+                criteria: 'search',
+                term: this.searchTerm
+            }
             // Search
-            axios({
-                method: 'post',
-                url: 'api/event?search='+term,
-                data: formdata
-            }).then((response)=>{
-                this.events = response.data.data
-                this.eventData = response.data
-                this.eventmeta = response.data.meta
+            this.filterEvents(filter).then(()=>{
                 this.filtered = true
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -338,19 +315,15 @@ export default {
         // Submit
         onSubmit(){
             let formdata = this.eventForm
-            formdata['user_id'] = this.currentUser.id
+            formdata['user_id'] = this.current_user.id
             // Push to db
-            axios({
-                method: 'post',
-                url: 'api/event',
-                data: formdata
-            }).then((response)=>{
+            this.createEvent(formdata).then(()=>{
                 this.$Notice.success({
                     title: 'Event Created',
                     desc: 'Your event was succesfully created'
                 })
                 this.eventModal = false
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Event not created',
                     desc: 'Your event was not created'
@@ -366,11 +339,8 @@ export default {
            }
         },
         // Delete
-        deleteEvent(id){
-            axios({
-                method: 'delete',
-                url: 'api/event/'+id,
-            }).then((response)=>{
+        remove(id){
+            this.deleteEvent(id).then((response)=>{
                 this.$Notice.success({
                     title: 'Event Deleted'
                 })

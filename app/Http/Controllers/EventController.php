@@ -63,7 +63,7 @@ class EventController extends Controller
         $event = $this->repo->createEvent($request);
 
         // Fire eventcreated
-        event( new EventCreated());
+        event( new EventCreated($event->id));
 
         return $event;
     }
@@ -110,7 +110,7 @@ class EventController extends Controller
         //
         $event = $this->repo->deleteEvent($event);
 
-        event(new EventDeleted());
+        event(new EventDeleted($event));
 
         return (string)$event;
     }

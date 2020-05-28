@@ -7,9 +7,6 @@
         </div>
         <div class="w-1/3 mr-auto p-10 bg-white" style="height: 80%">
             <Form :model="registerForm" @submit="onSubmit" label-position="top">
-                <h4 class="text-xl font-normal leading-loose">
-                    Register
-                </h4>
                 <h5 class="text-base font-normal leading-loose">
                     Register to be an AFF member
                 </h5>
@@ -38,7 +35,8 @@
                 <Row :gutter="16" v-if="registerForm.password">
                     <Col span="24">
                         <FormItem label="Confirm Password">
-                            <Input placeholder="confirm password" type="password"> </Input>
+                            <Input v-model="confirmPassword" placeholder="confirm password" type="password" @input="validatePasswordMatch"> </Input>
+    
                         </FormItem>
                     </Col>
                 </Row>
@@ -49,7 +47,7 @@
                                 <Icon type="ios-cancel"></Icon>
                                 Cancel
                             </Button>
-                            <Button size="large" type="primary" @click="onSubmit">
+                            <Button size="large" type="primary" :disabled = "disabled" @click="onSubmit">
                                 <Icon type="ios-checkmark"></Icon>
                                 Login
                             </Button>
@@ -67,6 +65,8 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            disabled: true,
+            confirmPassword: null,
             registerForm: {
                 email: '',
                 password: null,
@@ -75,36 +75,25 @@ export default {
         }
     },
     methods: {
+        // validate password match
+        validatePasswordMatch(event){
+            // Check if passwords match
+            this.registerForm.password === event ? this.disabled = false : this.disabled = true
+        },
         onSubmit(){
-            // Data
-            const formdata = this.registerForm
-            // Push to api
-            axios({
-                method: 'post',
-                url: 'api/user',
-                data: formdata
-            }).then( (response)=>{
-                // Payload
-                const payload = response.data
-                // Get the ID
-                const id = payload.id
-                // Logged in
-                this.$store.dispatch('loggedIn', payload)
-                // show notice
+            this.$store.dispatch('register', this.registerForm).then(()=>{
                 this.$Notice.success({
-                    title: 'Succesfully registered.'
+                    title: 'Succesfully registered and Logged in'
                 })
                 // handle redirect
-                setTimeout(()=>  this.$router.push({name: 'bio', params: {id}}), 1000)
+                setTimeout(()=>  this.$router.push({name: 'bio'}), 1000)
               
-            }).catch( (error)=>{
-                // error object
-                // handle redirect
-                // show notice
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Failed to register user.',
-                    desc: error.message
                 })
+                // Incase user was logged in before
+                this.$store.dispatch('logout')
             })
         }
     }

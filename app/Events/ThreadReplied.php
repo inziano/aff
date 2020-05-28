@@ -9,25 +9,28 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Resources\Thread as ThreadResource;
 use App\Http\Resources\Reply as ReplyResource;
+use App\Thread;
 use App\Reply;
 
 class ThreadReplied implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $replies;
+    public $reply;
+    public $thread;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($reply)
     {
         //
-        $this->replies = ReplyResource::collection(Reply::where('thread_id', $id)->whereNull('reply_id')->get());
-
+        $this->reply = ReplyResource::collection(Reply::where('id', $reply->id)->get());
+        $this->thread = ThreadResource::collection(Thread::where('id', $reply->thread_id)->get());
     }
 
     /**

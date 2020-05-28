@@ -7,16 +7,17 @@
                 </li>
             </div>
         </ul>
+        
         <div class="w-3/12 border-r border-r-gray-100 mt-0">
             <div class="bg-white rounded-lg p-6">
                 <img class="h-20 w-20 rounded-full mx-auto" src="images/landing.jpg">
                 <div class="mt-5 text-center">
-                    <h2 class="text-lg">{{currentUser.username}}</h2>
-                    <p class="mb-5 text-gray-600">{{currentUser.email}}</p>
-                    <p class="mb-2 text-gray-600">{{this.bioData.qualification}}</p>
-                    <p class="mb-2 text-gray-600">{{this.bioData.field_of_study}}</p>
+                    <h2 class="text-lg">{{current_user.username}}</h2>
+                    <p class="mb-5 text-gray-600">{{current_user.email}}</p>
+                    <p class="mb-2 text-gray-600">{{dets.qualification}}</p>
+                    <p class="mb-2 text-gray-600">{{dets.field_of_study}}</p>
                     <p class="text-gray-600 text-xs">
-                       <Icon type="ios-pin" /><span>{{this.bioData.residency}}</span> 
+                       <Icon type="ios-pin" /><span>{{dets.residency}}</span> 
                     </p>
                     <p class="pt-3 mt-5 text-gray-700 hover:text-green-500" @click="isEditing">
                         <span v-if="editing"> View Profile</span>
@@ -53,7 +54,7 @@
                             Summary
                         </h4>
                         <p class="text-gray-700 text-sm">
-                           {{this.bioData.summary}}
+                           {{dets.summary}}
                         </p>
                     </div>
                     <div class="w-full overflow-hidden shadow-md p-5 m-2 bg-white rounded">
@@ -61,7 +62,7 @@
                             Education
                         </h4>
                         <Divider></Divider>
-                        <div class="p-2 border-b border-b-2" v-for="edu in eduData" :key="edu.id">
+                        <div class="p-2 border-b border-b-2" v-for="edu in education" :key="edu.id">
                             <p class="text-base font-medium text-gray-600 tracking-wider capitalize">{{edu.institution}}</p>
                             <p class="text-sm font-medium text-gray-700 tracking-widest">{{edu.degree}}</p>
                             <p class="text-xs font-sans mb-2"> {{edu.startdate | moment("MMMM Do YYYY") }} - {{edu.enddate| moment("MMMM Do YYYY") }}</p>
@@ -75,7 +76,7 @@
         <div v-if="!editing" class="w-3/12 pt-0 px-4">
             <h4 class="text-gray-700 text-lg mb-4"> Work </h4>
             <Timeline>
-                    <TimelineItem v-for="work in this.workData" :key="work.id">
+                    <TimelineItem v-for="work in work" :key="work.id">
                         <p class="time">{{work.startdate | moment("MMMM Do YYYY")}} - {{work.enddate  | moment("MMMM Do YYYY")}}</p>
                         <p class="text-gray-600 text-xs">{{work.country}}</p>
                         <p class="content text-sm">{{work.institution}}</p>
@@ -341,6 +342,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex';
 
 export default {
     data() {
@@ -459,23 +461,30 @@ export default {
                     }
                 }
             ],
-            works: [],
-            educations: [],
-            bioData: {},
-            workData: {},
-            eduData: {}
         }
     },
     computed: {
-        currentUser(){
-            console.log(this.$store.state.current_user)
-            this.id = this.$store.state.current_user.id
-            return this.$store.state.current_user
+        ...mapState(['current_user','members']),
+        // Member
+        profile(){
+            let curr_id = this.current_user.id
+            return this.members.filter( (member)=>{
+                return member.id == curr_id
+            })
+        },
+        education(){
+            return this.profile[0].education
+        },
+        work(){
+            return this.profile[0].work
+        },
+        dets(){
+            return this.profile[0].bio
         }
     },
     mounted(){
         // Fetch specific details
-        const id = this.id
+        const id = this.$store.state.current_user.id
 
         axios.all([
             axios.get('api/bio/'+id),
@@ -486,9 +495,9 @@ export default {
             this.bioData = bio.data
             console.log(bio)
             // Education information
-            this.eduData = edu.data
+            this.education = edu.data
             // // Work information
-            this.workData = work.data
+            work = work.data
         })).catch((error)=>{
             this.editing = true
             // Show information to fill in details

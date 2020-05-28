@@ -14,12 +14,11 @@
             </li>
             <div class="w-full h-56 p-1 mx-auto flex mb-5">
                 <a class="w-1/3 m-1 h-auto mb-5" v-for="article in otherNews" :key="article.id" @click="viewArticle(article.id)">
-                    <div class="w-full" style="height: 60%; background: url(https://picsum.photos/1000/400)">
-                    </div>
-                    <p class="m-1 w-2/3 text-lg font-semibold text-gray-800 capitalize">
-                        {{article.title}}
+                    <div class="w-full" style="height: 60%; background: url(https://picsum.photos/1000/400)"> </div>
+                    <p class="m-1 w-full text-base font-medium text-gray-800 capitalize">
+                        {{article.title | truncate(50)}}
                     </p>
-                    <div class="m-1 w-4/5 text-base font-normal text-gray-800" v-html="$options.filters.truncate(article.body)"></div>
+                    <div class="m-1 w-4/5 text-sm font-normal text-gray-800" v-html="$options.filters.truncate(article.body)"></div>
                     <p class="m-1 w-2/3 text-xs font-medium text-gray-800">
                         {{ article.created_at  | moment("from")}}
                     </p>
@@ -33,13 +32,13 @@
                     </div>
                 </div>
                 <div class="w-full p-1 mx-auto flex ">
-                    <div class="w-1/4 h-64 bg-white shadow-md rounded-lg m-1" v-for="item in topPubs" :key="item.id">
+                    <div class="w-1/4 h-64 bg-white shadow-md rounded-lg m-1" v-for="item in topPubs" :key="item.id" @click="viewPublication(item.id)">
                         <div class="border border-white rounded-full p-4 flex flex-col justify-between leading-normal">
                             <div class="mb-8">
                                 <p class="text-xs text-gray-600 flex items-center mb-1">
                                     {{item.publisher}}
                                 </p>
-                                <div class="text-gray-900 font-medium text-xl mb-2">{{item.title | truncate(20)}}</div>
+                                <div class="text-gray-900 font-medium text-lg mb-2">{{item.title | truncate(20)}}</div>
                                 <p class="text-gray-700 text-base">{{item.abstract | truncate(20)}}</p>
                             </div>
                             <div class="flex items-center">
@@ -127,57 +126,43 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapState } from 'vuex'
+
 export default {
-    data() {
-        return {
-            events: '',
-            publications: '',
-            news: '',
-            vacancies: '',
-        }
-    },
     computed: {
-        topPubs() {
-            return this.publications.slice(0,4)
-        },
-        topEvents() {
-            return this.events.slice(0,2)
-        },
-        topVacancies() {
+        // Pull values from store
+        ...mapState(['vacancies', 'publications', 'events', 'news']),
+
+        // Top news
+        topVacancies(){
             return this.vacancies.slice(0,2)
         },
-        topNews() {
+
+        topNews(){
             return this.news.slice(0,1)
         },
-        otherNews() {
+
+        otherNews(){
             return this.news.slice(1,4)
-        }
-    },
-    mounted(){
-        // Axios
-        axios.all([
-            axios.get('api/publication'),
-            axios.get('api/event'),
-            axios.get('api/news'),
-            axios.get('api/vacancy')
-        ]).then( axios.spread((publications,events,news,vacancies)=>{
-            this.events = events.data.data
-            this.news = news.data.data
-            this.publications = publications.data.data
-            this.vacancies = vacancies.data.data
-        })).catch((error)=>{
-            // show error
-            this.$Notice.error({
-                title: 'Error occurred',
-            })
-        })
+        },
+
+        topPubs(){
+            return this.publications.slice(0,4)
+        },
+
+        topEvents(){
+            return this.events.slice(0,2)
+        },
     },
     methods:{
         // Article
         viewArticle(id){
             this.$router.push({name: 'article', params:{id}})
         },
+        // View publication
+        viewPublication(id){
+            this.$router.push({name: 'publicationview', params: {id}})
+        }
     }
 }
 </script>

@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
     data(){
         return{
@@ -143,7 +144,6 @@ export default {
             updateList: [],
             searchTerm: '',
             filtered: false,
-            news: '',
             newsMeta: '',
             newsData: '',
             newsstats: '',
@@ -201,23 +201,16 @@ export default {
             },
         }
     },
+    computed: {
+        // store values
+        ...mapState(['news','current_user']),
+        // Years
+        years(){
+            const year = new Date().getFullYear()
+            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
+        },
+    },
     mounted(){
-        axios({
-            method: 'get',
-            url: 'api/news'
-        }).then((response)=>{
-            this.news = response.data.data
-            this.newsData = response.data
-            this.newsMeta = response.data.meta
-            console.log(this.news)
-        }).catch((error)=>{
-            console.log(error)
-            this.$Notice.info({
-                title: 'News',
-                desc: 'No news currently'
-            })
-        })
-
         // Search news
         Echo.channel('searches').listen('SearchNews',(e)=>{
             this.news = e.news
@@ -226,7 +219,7 @@ export default {
 
         // Update
         Echo.channel('news').listen('NewsCreated',(e)=>{
-            this.news = e.news
+            this.newArticle(e.news)
         })
 
         // Update
@@ -238,16 +231,9 @@ export default {
             this.newsstats = e.newsstats
         })
     },
-    computed: {
-        currentUser(){
-            return this.$store.state.current_user
-        },
-        years(){
-            const year = new Date().getFullYear()
-            return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
-        },
-    },
+  
     methods: {
+        ...mapActions(['createArticle','newArticle','filterArticles','fetchNews']),
         // Publish
         publishArticle(){
             let formdata = {
@@ -299,15 +285,9 @@ export default {
         },
           // clear all filters
         clearFilters(){
-            axios({
-                method: 'get',
-                url: 'api/news?search=',
-            }).then((response)=>{
-                this.news = response.data.data
-                this.newsData = response.data
-                this.newsMeta = response.data.meta
+            this.fetchNews().then(()=>{
                 this.filtered = false
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -315,16 +295,14 @@ export default {
         },
         // Clear filter
         filterMethod(criteria, term) {
+            let filter = {
+                criteria: criteria,
+                term: term
+            }
             // call route based on criteria
-            axios({
-                method: 'get',
-                url: 'api/news?'+criteria+'='+term,
-            }).then((response)=>{
-                this.news = response.data.data
-                this.newsData = response.data
-                this.newsMeta = response.data.meta
+            this.filterArticles(filter).then(()=>{
                 this.filtered = true
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -332,18 +310,15 @@ export default {
         },
         // Search
         onSearch() {
-            // 
-            let term = this.searchTerm
+             // 
+            let filter = {
+                criteria: 'search',
+                term: this.searchTerm
+            }
             // Search
-            axios({
-                method: 'get',
-                url: 'api/news?search='+term,
-            }).then((response)=>{
-                this.news = response.data.data
-                this.newsData = response.data
-                this.newsMeta = response.data.meta
+           this.filterArticles(filter).then(()=>{
                 this.filtered = true
-            }).catch((error)=>{
+            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -352,13 +327,9 @@ export default {
         // Submit
         onSubmit(){
             let formdata = this.newsForm
-            formdata['user_id'] = this.currentUser.id
+            formdata['user_id'] = this.current_user.id
             // Push to db
-            axios({
-                method: 'post',
-                url: 'api/news',
-                data: formdata
-            }).then((response)=>{
+            this.createArticle(formdata).then((response)=>{
                 this.$Notice.success({
                     title: 'News Created',
                     desc: 'Your news was succesfully created'
