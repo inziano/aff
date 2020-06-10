@@ -36,7 +36,7 @@
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem>
-                                <router-link to="/bio" class="inline-block text-sm px-4 py-2 leading-none text-gray-900  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Settings</router-link>
+                                <router-link :to="{name: 'profile', params: {id: currentUser.id}}" class="inline-block text-sm px-4 py-2 leading-none text-gray-900  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Settings</router-link>
                             </DropdownItem>
                             <DropdownItem>
                                 <a @click="logout" class="inline-block text-sm px-4 py-2 leading-none text-gray-900  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Logout</a>

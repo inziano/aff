@@ -1,28 +1,9 @@
 <template>
     <div class="w-full h-full bg-white p-2 flex">
-        <div class="w-3/4 h-full p-1">
-            <li  v-for="article in topNews" :key="article.id" @click="viewArticle(article.id)" class="w-full list-none " style="min-height: 400px; background: url(https://picsum.photos/3000/400) no-repeat">
-                <div class="relative w-full opacity-50 bg-black p-5" style="min-height: 400px;">
-                    <p class="relative ml-20 mt-10 text-3xl font-thin subpixel-antialiased text-white capitalize" style="top: 30%">
-                        {{article.title}}
-                    </p>
-                    <div class="ml-20 w-2/3 text-xl font-hairline text-white" v-html="$options.filters.truncate(article.body)"></div>
-                    <p class="ml-20 mt-4 w-2/3 text-sm font-medium text-white">
-                        {{ article.created_at | moment("from")}}
-                    </p>
-                </div>
-            </li>
-            <div class="w-full h-56 p-1 mx-auto flex mb-5">
-                <a class="w-1/3 m-1 h-auto mb-5" v-for="article in otherNews" :key="article.id" @click="viewArticle(article.id)">
-                    <div class="w-full" style="height: 60%; background: url(https://picsum.photos/1000/400)"> </div>
-                    <p class="m-1 w-full text-base font-medium text-gray-800 capitalize">
-                        {{article.title | truncate(50)}}
-                    </p>
-                    <div class="m-1 w-4/5 text-sm font-normal text-gray-800" v-html="$options.filters.truncate(article.body)"></div>
-                    <p class="m-1 w-2/3 text-xs font-medium text-gray-800">
-                        {{ article.created_at  | moment("from")}}
-                    </p>
-                </a>
+        <div class="w-3/4 h-full p-1 relative">
+            <news-item v-for="article in topNews" :key="article.id" :article = article ></news-item>
+            <div class="w-full flex mb-5">
+                <newslist-item class="w-1/3" v-for="article in otherNews" :key="article.id" :article = article ></newslist-item>
             </div>
             <div class="w-full">
                 <div class="w-full bg-teal-100 p-5" style="">
@@ -32,47 +13,18 @@
                     </div>
                 </div>
                 <div class="w-full p-1 mx-auto flex ">
-                    <div class="w-1/4 h-64 bg-white shadow-md rounded-lg m-1" v-for="item in topPubs" :key="item.id" @click="viewPublication(item.id)">
-                        <div class="border border-white rounded-full p-4 flex flex-col justify-between leading-normal">
-                            <div class="mb-8">
-                                <p class="text-xs text-gray-600 flex items-center mb-1">
-                                    {{item.publisher}}
-                                </p>
-                                <div class="text-gray-900 font-medium text-lg mb-2">{{item.title | truncate(20)}}</div>
-                                <p class="text-gray-700 text-base">{{item.abstract | truncate(20)}}</p>
-                            </div>
-                            <div class="flex items-center">
-                                <img class="w-10 h-10 rounded-full mr-4" src="/images/landing.jpg" alt="Avatar of Jonathan Reinink">
-                                <div class="text-sm">
-                                    <p class="text-gray-900 leading-none mb-1">{{item.author}}</p>
-                                    <p class="text-gray-600 text-xs">{{item.created_at}}</p>
-                                </div>
-                            </div>
-                            <ul class="w-full mt-5 flex">
-                                <li class="mr-5">
-                                    <Icon type="ios-eye-outline" size="18"/><span class="ml-1 font-semibold">{{item.views}}</span>
-                                </li>
-                                <li class="mr-5">
-                                    <Icon type="ios-download-outline" size="18"/><span class="ml-1 font-semibold">{{item.downloads}}</span>
-                                </li>
-                                <li class="mr-5">
-                                    <a class="font-sm tracking-wide font-medium font-sans" @click="downloadPub(item)"> Download</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>   
+                    <publist-item  v-for="publication in topPubs" :publication = publication :key = publication.id ></publist-item>  
                 </div>
             </div>
           
         </div>
         <div class="w-1/4 h-full p-2">
-            <div class="w-full relative" style="height: 45%">
+            <div class="w-full relative mb-2" style="height: 45%">
                 <div class="w-full bg-teal-100 p-5" style="height: 25%;">
                     <div class="w-full h-full flex">
                         <p class="flex-grow width-3/4 text-xl font-semibold subpixel-antialiased tracking-wide"> Events </p>
                         <img class=" w-1/4 object-contain" src="/images/events.svg">
                     </div>
-                  
                 </div>
                 <div class="w-full bg-gray-100" style="height: 73%">
                     <ul class="w-full p-1" v-if="topEvents.length">
@@ -127,8 +79,15 @@
 
 <script>
 import { mapState } from 'vuex'
-
+import PublicationListItem from './Publication/PublicationListItemComponent'
+import NewsItem from './News/NewsItemComponent'
+import NewsListItem from './News/NewsListItemComponent'
 export default {
+    components: {
+        'publist-item' : PublicationListItem,
+        'newslist-item' : NewsListItem,
+        'news-item' : NewsItem
+    },
     computed: {
         // Pull values from store
         ...mapState(['vacancies', 'publications', 'events', 'news']),

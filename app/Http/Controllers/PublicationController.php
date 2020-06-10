@@ -9,6 +9,7 @@ use App\Repositories\PublicationRepository;
 use App\Http\Resources\Publication as PubResource;
 use Illuminate\Support\Facades\Storage;
 use App\Events\SearchPublications;
+use Carbon\Carbon; 
 
 class PublicationController extends Controller
 {
@@ -44,7 +45,11 @@ class PublicationController extends Controller
             'title' => 'required',
             'publisher' => 'required',
             'abstract' => 'required',
+            'publication_year' => 'required'
         ]);
+
+        // Publication year
+        $newpubyear = Carbon::parse(strtotime($request->input('publication_year')))->toDate();
 
         // Title
         $title = $request->input('title');
@@ -53,6 +58,8 @@ class PublicationController extends Controller
 
         // Append to request
         $request->request->add(['pubpath' =>$pubpath]);
+
+        $request->merge(['publication_year'=>$newpubyear]);
 
         // Store
         $publication = $this->repo->createPublication($request);
