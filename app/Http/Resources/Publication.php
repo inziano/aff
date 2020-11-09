@@ -24,6 +24,7 @@ class Publication extends JsonResource
             'pubpath'=> $this->pubpath,
             'downloads'=> $this->downloads,
             'views'=> $this->views,
+            'tags' => $this->tags,
             'created_at'=> $this->created_at->format('Y-m-d')
         ];
     }

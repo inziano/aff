@@ -26,7 +26,7 @@ class NewsCreated implements ShouldBroadcast
     public function __construct($id)
     {
         //
-        $this->news =  NewsResource::collection(Event::where('id',$id)->get());
+        $this->news =  NewsResource::collection(News::where('id',$id)->get());
     }
 
     /**

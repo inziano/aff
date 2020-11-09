@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div class="h-auto overflow-hidden shadow-lg p-2 m-1 bg-white rounded-lg">
+        <div class="h-auto overflow-hidden shadow-sm p-2 m-1 bg-white">
             <div class="w-full text-center mb-3 pt-2">
-                <Avatar :style="{background: '#0A8754'}" size=""> {{member.bio.firstname.slice(0,1)}}{{member.bio.lastname.slice(0,1)}} </Avatar>
+                <Avatar :style="{background: '#0A8754'}"> {{member.bio.firstname.slice(0,1)}}{{member.bio.lastname.slice(0,1)}} </Avatar>
                 <p class="text-base font-medium text-gray-600"> {{member.bio.firstname}} {{member.bio.lastname}}</p>
-                <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.citizenship}} | {{member.bio.residency}}</p>
+                <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.title}}</p>
+                <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.citizenship}}</p>
                 <p class="text-xs font-medium mt-2 text-gray-600"> {{member.email}}</p>
                 <p class="text-sm font-medium tracking-wide mt-1 text-gray-600"> {{member.status}} </p>
             </div>

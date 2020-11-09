@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Invitation;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Invitation as InvitationResource;
 use App\Repositories\InvitationRepository;
 use App\Events\InvitationSent;
+
 
 class InvitationController extends Controller
 {
@@ -34,6 +36,7 @@ class InvitationController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::where('id',$request->input('user_id'))->first();
         //
         $this->validate(request(),[
             'email'=> 'required',
@@ -49,7 +52,7 @@ class InvitationController extends Controller
         $invite = $this->repo->createInvitation($request);
 
         // Event 
-        // event( new InvitationSent($invite));
+        event( new InvitationSent($user, $invite));
 
         return $invite;
     }

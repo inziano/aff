@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
     data(){
         return {
@@ -81,7 +81,8 @@ export default {
         }
     },
     computed: {
-        ...mapState(['topics', 'current_user']),
+        ...mapGetters('AuthModule',['current_user']),
+        ...mapGetters('TopicModule',['topics'])
     },
     methods:{
         // Submit
@@ -90,7 +91,7 @@ export default {
             formdata['user_id'] = this.current_user.id
 
             // Create
-            this.$store.dispatch('createThread', formdata).then(()=>{
+            this.$store.dispatch('ThreadModule/create', formdata).then(()=>{
                 this.$Notice.success({
                     title: 'Thread Created',
                     desc: 'Your thread was succesfully created'

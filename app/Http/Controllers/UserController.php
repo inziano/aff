@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Keygen\Keygen;
 use App\User;
 use App\Filters\UserFilters;
 use App\Http\Resources\User as UserResource;
@@ -9,8 +10,11 @@ use App\Repositories\UserRepository;
 use App\Events\UserRegistered;
 use App\Events\SearchUsers;
 use App\Events\UserModified;
+use App\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 
 class UserController extends Controller
 {
@@ -28,7 +32,7 @@ class UserController extends Controller
     public function index( Request $request, UserFilters $filters)
     {
         //Show all the users
-        return UserResource::collection(User::filter($filters)->with(['bio','education','work'])->paginate(12));
+        return UserResource::collection(User::filter($filters)->with(['bio','education','work'])->paginate(24));
     }
 
     /**
@@ -42,10 +46,10 @@ class UserController extends Controller
         // Check if account exists
         if ( User::where('email',$request->input('email'))->exists() )
         {
-            // 
-            // return $request;
             // Get the user
-            $user = User::where('email', $request->input('email'))->first();
+            $user = User::with('roles:name')->where('email', $request->input('email'))->first();
+            $userDets = UserResource::collection(User::where('email', $request->input('email'))->get());
+            
             // Check password
             $pwd= Hash::check($request->input('password'), $user->password) ? $user: \abort(400, 'Password mismatch');
 
@@ -56,6 +60,62 @@ class UserController extends Controller
             return abort(404,'User does not exist');
         }
     }
+
+    /**
+     * Password reset
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+    */
+    public function resetPassword( Request $request )
+    {
+        // Check if account exists 
+        if ( User::where('email', $request->input('email'))->exists() )
+        {
+            // User
+            $user = User::where('email',$request->input('email'))->first();
+
+            // Generate unique reset token.
+            $reset_code = Keygen::alphanum()->generate();
+
+            // Store token in database
+            DB::table('password_resets')->insert(['email'=> $user->email, 'token'=> $reset_code]);
+
+            // Send email notification with token
+            event( new PasswordReset( $user, $reset_code ));
+
+            return 'okay';
+
+        } else {
+            // Abort
+            return abort(404, 'User does not exist');
+        }
+    }
+
+    /**
+     * Match token
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response 
+     * 
+     */
+    public function verifyResetToken( Request $request)
+    {
+        $reset = DB::table('password_resets')->where('token', $request->input('token'))->exists();
+
+        // Check token matches existing reset token
+        if ( $reset )
+        {
+            $email = DB::table('password_resets')->where('token', $request->input('token'))->first()->email;
+
+            // Return okay
+            return User::where('email',$email)->first();
+        } else {
+            // Abort
+            return abort(404, 'Bad token');
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -81,10 +141,10 @@ class UserController extends Controller
         $user = $this->repo->createUser($request);
 
         // Fire event
-        // event( new UserRegistered($user));
+        event( new UserRegistered($user));
 
         // Return 
-        return $user;
+        return User::with('roles:name')->where('email', $user->email)->first();
     }
 
     /**
@@ -120,6 +180,14 @@ class UserController extends Controller
         return $results;
     }
 
+    public function statistics()
+    {
+        $members = User::where('status', 'member')->count();
+        $applicants = User::whereHas('bio', function(Builder $query){ 
+            $query->whereNull('firstname');
+        })->count();
+    }
+
 
     /**
      * Display the specified resource.
@@ -130,6 +198,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
+        return UserResource::collection(User::where('id', $user->id)->with(['bio','education','work','roles:name'])->get());
     }
 
     /**
@@ -141,7 +210,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        // Password
+        if ( $request->has('password') ){
+            // Hash password
+            $pswd = Hash::make($request->input('password'));
+
+            $request->merge(['password'=>$pswd]);
+
+            // Update
+            $this->repo->updateUser($user, $request);
+
+            return 'okay';
+        } else {
+            $this->repo->updateUser($user, $request);
+
+            return 'okay';
+        }
     }
 
     /**

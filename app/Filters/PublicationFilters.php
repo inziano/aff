@@ -34,6 +34,12 @@ class PublicationFilters extends QueryFilters
         return $this->builder->where('publications.author','LIKE', "%$term%");
     }
 
+    // Owner
+    public function owner($term)
+    {
+        return $this->builder->where('publications.user_id', '=',"$term");
+    }
+
     // tags
     public function tags($term)
     {

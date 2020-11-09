@@ -7,7 +7,7 @@
                         <div class="w-auto lg:flex-grow">
                             <li class="list-none lg:flex-grow"> 
                                 <Avatar size="default" class="mx-2"> {{ pub.author.slice(0,2)}}</Avatar>
-                                <span class="font-sans font-medium tracking-wide text-gray-600 text-lg">{{pub.author}}</span>
+                                <p class="font-sans font-medium tracking-wide text-gray-600 text-lg">{{pub.author}}</p>
                             </li>
                         </div>
                         <div class="w-6/24">
@@ -20,7 +20,7 @@
                     <h4 class="text-gray-900 font-normal text-2xl font-sans tracking-wide mb-2">
                         {{pub.title}}
                     </h4>
-                    <p class="text-gray-900 font-sans text-base">{{pub.abstract}}</p>
+                    <div class="text-gray-900 font-sans text-base"><span v-html="pub.abstract"></span></div>
                 </div>
                 <div class="w-3/12 p-5 ml-3">
                     <div class="flex items-center px-5 pt-5">

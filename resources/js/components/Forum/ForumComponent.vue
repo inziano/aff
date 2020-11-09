@@ -12,71 +12,37 @@
                     </p> 
                 </div>
                 <div class="w-5/6 flex content-center">
-                    <div class="w-10/24 p-2 ml-3">
-                        <Icon type="ios-search-outline" size="18"/>
-                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
-                    </div>
-                    <div class="flex-grow content-center h-full p-2" > 
-                        <Dropdown class="ml-4" trigger="click" style="" @on-click="filterMethod('year',$event)">
-                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
-                                <Icon type="ios-calendar-outline" size="20"></Icon>
-                                Year
-                            </a>
-                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
-                                <DropdownItem v-for="yr in years" :key="yr" :name="yr">{{yr}}</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                        <Dropdown class="ml-4" trigger="click" @on-click="filterMethod('topic',$event)">
-                            <a class="font-sans font-lg tracking-wider text-gray-900 hover:text-gray-900" href="javascript:void(0)">
-                                <Icon type="ios-book-outline" size="20"></Icon>
-                                Topics
-                            </a>
-                            <DropdownMenu slot="list" style="height: 250px; overflow-y:scroll;">
-                                <DropdownItem v-for="topic in topics" :key="topic.id" :name="topic.title">{{topic.title}}</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                    <!-- Search component -->
+                    <search class="w-10/24" :module-name="moduleName" @items-filtered="filtered = true"></search>
+                    <div class="flex-grow content-center h-full p-2">
+                        <filter-a class="ml-4" :module-name="moduleName" :filter-items="years" :filter-type="typeA" @items-filtered="filtered = true" >
+                            <Icon type="ios-calendar-outline" size="16"></Icon>
+                        </filter-a>
+                        <filter-a class="ml-4" :module-name="moduleName" :filter-items="topic" :filter-type="typeB" @items-filtered="filtered = true" >
+                            <Icon type="ios-book-outline" size="16"></Icon>
+                        </filter-a>
                         <a @click="clearFilters()" v-if="filtered" size="small" type="text" class="ml-4 p-0 text-gray-900 focus:text-gray-900 hover:border-0 hover:text-gray-900 active:border-0 active:text-gray-900">
                             <Icon type="ios-close" size="20"></Icon>
                             Clear Filters
                         </a>
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
-                        <Button icon="ios-add" @click="threadModal = true">
-                            New
-                        </Button>
+                        <modal-btn @modalbtn-clicked="threadModal = true">
+                            New Thread
+                        </modal-btn>
                     </div>  
                 </div>
                
             </div>
             <div class="w-full flex flex-wrap bg-white p-2 flex ">
                 <div class="lg:flex-grow items-center  mr-4 flex content-center">
-                    <li class="list-none h-10 content-center" @click="changeView()">   
-                        <!-- <span class="">
-                            <Icon v-if="!list" type="ios-apps-outline" size="32"/>  
-                            <Icon v-if="list" type="ios-list" size="32"/>
-                        </span>      -->
-                    </li>
                 </div>
                 <div class="w-auto flex content-center">
-                    <div class="m-2 flex flex-wrap">
-                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
-                           {{threadstats.topics}}
-                        </p>
-                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
-                            Topics
-                        </p>
-                    </div>
-                    <div class="m-2 flex flex-wrap">
-                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
-                           {{threadstats.threads}}
-                        </p>
-                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
-                           Threads
-                        </p>
-                    </div>
+                    <stats :figure="threadstats.topics" :title="statsA"></stats>
+                    <stats :figure="threadstats.threads" :title="statsB"></stats>
                 </div>       
             </div>            
-            <div class="w-full flex flex-wrap pt-5 bg-gray-100 min-h-screen">
+            <div class="w-full flex flex-wrap pt-5 min-h-screen">
                 <div class="w-1/6 border-r border-r-black pt-5">
                     <nav class="w-full flex mb-2 ">
                         <div class="mx-5">
@@ -101,13 +67,18 @@
                 </div>
                 <div class="w-5/6 px-5">
                     <div class="w-full">
-                        <thread-list-item v-for="thread in threads" :thread = thread :key = thread.id ></thread-list-item>
+                        <div v-if="threads">
+                            <thread-list-item  v-for="thread in threads"  :key = thread.id :thread = thread :user = current_user ></thread-list-item>
+                        </div>
+                        <div v-else>
+                            <p> No discussions </p>
+                        </div>
                     </div>
                    
                 </div>
-                <div class="w-full flex p-0 mb-5 text-center">
-                    <Page class="mx-auto" :current="threadmeta.current_page" :total="threadmeta.total" :page-size="threadmeta.per_page" @on-change="goToPage" />
-                </div> 
+                <div class="w-full m-2 p-2 flex justify-center" v-if="meta">
+                    <pagination :curr = meta.curr :total = meta.total :size = meta.per_page :module-name="moduleName" ></pagination>
+                </div>
             </div>
         </div>
     </div>
@@ -115,14 +86,24 @@
 
 <script>
 import axios from 'axios'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import NewThread from './NewThreadComponent.vue'
 import ThreadListItem from './ThreadListItemComponent'
+import Pagination from '../Widgets/PaginationComponent'
+import Search from '../Widgets/SearchComponent'
+import Filter from '../Widgets/FilterComponent'
+import Stats from '../Widgets/StatsComponent'
+import Modalbtn from '../Widgets/ModalbtnComponent'
 
 export default {
     components: {
         'new-thread': NewThread,
-        'thread-list-item': ThreadListItem
+        'thread-list-item': ThreadListItem,
+        'pagination': Pagination,
+        'search': Search,
+        'filter-a': Filter,
+        'stats': Stats,
+        'modal-btn': Modalbtn,
     },
     data (){
         return {
@@ -132,6 +113,11 @@ export default {
             threadstats: '',
             searchTerm: '',
             filtered: false,
+            typeA: 'year',
+            typeB: 'topic',
+            statsA: 'topics',
+            statsB: 'threads',
+            moduleName: 'ThreadModule',
         }
     },
     created(){
@@ -141,16 +127,25 @@ export default {
     },
     computed: {
         // Store values
-        ...mapState(['current_user', 'threads', 'topics', 'replies']),
+        ...mapGetters('AuthModule',['current_user']),
+        ...mapGetters('TopicModule',['topics']),
+        ...mapGetters('ReplyModule',['replies']),
+        ...mapGetters('ThreadModule',['threads','meta','links']),
+
         years(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
         },
+        topic(){
+            return [...new Set(this.topics.map((topic)=>{
+                return topic.title
+            }))]
+        }
     },
     mounted(){
         // Update
         Echo.channel('threads').listen('ThreadCreated', (e)=>{
-            this.$store.dispatch('newThread',e.threads)
+            this.$store.dispatch('ThreadModule/newThread',e.threads)
         })
          // Deleted thread
         Echo.channel('threads').listen('ThreadDeleted', (e)=>{
@@ -161,20 +156,20 @@ export default {
         // Thread like count
         Echo.channel('threads').listen('UpdateThreadLikeCount', (e)=>{
             // Find index
-            let idx = this.threadData.findIndex( elem=> elem.id === e.thread[0].id)
+            let idx = this.threads.findIndex( elem=> elem.id === e.thread[0].id)
             // Splice and replace array
-            this.threadData.splice(idx, 1, e.thread[0])
+            this.threads.splice(idx, 1, e.thread[0])
             // console.log(e.thread[0].id)
         })
 
         // Filter threads
         Echo.channel('filters').listen('FilterThreads', (e)=>{
-           this.$store.dispatch('loadThreads',e.threads)
+           this.$store.dispatch('ThreadModule/fetch',e.threads)
         })
 
         // Search threads
         Echo.channel('searches').listen('SearchThreads',(e)=>{
-            this.$store.dispatch('loadThreads',e.threads)
+            this.$store.dispatch('ThreadModule/fetch',e.threads)
         })
 
         Echo.channel('stats').listen('ThreadStats',(e)=>{
@@ -183,57 +178,15 @@ export default {
     },
     methods: {
         // Store actions
-        ...mapActions(['fetchThreads','fetchTopics','fetchReplies','filterThreads']),
-        // goToPage
-        goToPage(number){
-            axios.get(this.pubmeta.path + '?page=' + number).then((response)=>{
-                // response
-                let threads = response.data.data
-                this.$store.dispatch('loadThreads',threads)
-                this.threadmeta = response.data.meta
-                // Pub data
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
-         // clear all filters
+        ...mapActions('ThreadModule',{ fetchThreads: 'fetch',filterThreads: 'filter'}),
+        ...mapActions('ReplyModule',{ fetchTopics: 'fetch'}),
+        ...mapActions('TopicModule',{ fetchReplies: 'fetch'}),
+
+        // clear all filters
         clearFilters(){
             this.fetchThreads().then(()=>{
                 this.filtered = false
             }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
-        // Clear filter
-        filterMethod(criteria, term) {
-            let filter = {
-                criteria: criteria,
-                term: term
-            }
-            // call route based on criteria
-            this.filterThreads(filter).then(()=>{
-                this.filtered = true
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
-        // Search
-        onSearch() {
-            // 
-            let filter = {
-                criteria: 'search',
-                term: this.searchTerm
-            }
-            // Search
-            this.filterThreads(filter).then(()=>{
-                this.filtered = true
-            }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'
                 })
@@ -260,90 +213,26 @@ export default {
                 })
             })
         },
-        // Thread
-        viewThread(id){
-            this.$router.push({name: 'thread', params:{id}})
-        },
-
-        // Toggle likes 
-        likeThread(id){
-            let data = {
-                likes: 1
-            }
-            // axios
-            axios({
-                method: 'patch',
-                url: 'api/thread/'+id,
-                data: data
-            }).then((response)=>{
-                this.$Notice.success({
-                    title: 'You liked this'
-                })
-                }).catch((error)=>{
-                    this.$Notice.error({
-                        title: 'Error'
-                })
-            })
-        },
-
         // Recent threads
         mostRecentThreads(){
-            // Check the most recent threads
-            let recent = this.threadData.filter((elem)=>{
-                let time = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-
-                return new Date(elem.created_at) > time
-            })
-
-           this.$store.dispatch('loadThreads',recent)
+            this.filterThreads({'criteria': 'recent','term':'recent'})
         },
         // Top popular threads
         mostLikedThreads(){
             // Loop through thread return the top threads
-            let sorted = this.threadData.sort( (a,b)=> (a.likes > b.likes) ? -1: 1)
-
-            this.$store.dispatch('loadThreads',sorted)
+            this.filterThreads({'criteria': 'popular','term':'popular'})
         },
         // Top viewed threads
         mostViewedThreads(){
             // Loop through thread return top thread
-            let sorted = this.threadData.sort( (a,b)=> (a.views > b.views) ? -1: 1)
-            // 
-            this.$store.dispatch('loadThreads',sorted)
+            this.filterThreads({'criteria': 'mostViewed','term':'mostviewed'})
         },
         // active threads
         // TODO: fix bug, double click to fetch data
         currentActiveThreads(){
             // Top recent comments
-            let sorted = this.replies.sort( (a,b)=> (a.created_at > b.created_at) ? -1: 1).slice(0, 5)
-
-            // Most recently commented threads
-            let threadIds = sorted.map((elem)=>{
-                return elem.thread_id
-            })
-            // get the recently commented threads
-            let data = this.threadData.filter((elem)=>{
-                return threadIds.includes(elem.id)
-            })
-
-            this.$store.dispatch('loadThreads',data)
-
+            this.filterThreads({'criteria': 'active','term':'active'})
         },
-        // Delete thread
-        deleteThread(id){
-            axios({
-                method: 'delete',
-                url: 'api/thread/'+id,
-            }).then((response)=>{
-                this.$Notice.success({
-                    title: 'Thread Deleted'
-                })
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Thread not deleted'
-                })
-            })
-        }
     }
 }
 </script>

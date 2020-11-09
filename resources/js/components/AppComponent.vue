@@ -4,7 +4,8 @@
             <div class="flex items-center flex-shrink-0 text-white mr-6">
                <!-- <object height="60" width="60" type="image/svg+xml" data="/images/icraf.svg">
                </object> -->
-               <router-link  class="flex items-center flex-shrink-0 text-white mr-6 hover:text-teal-300" to="/">
+               <router-link  class="flex items-center flex-shrink-0 text-white mr-6 hover:text-teal-300" to="/home">
+                    <img class=" w-1/4 object-contain" src="/images/afflogo.png">
                     <span class="font-semibold text-sm tracking-wider subpixel-antialiased">African Forest Forum</span>
                </router-link>
                
@@ -17,10 +18,10 @@
             <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div class="text-sm lg:flex-grow">
                     <router-link to="/" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Dashboard</router-link>
+                    <router-link to="/news" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">News Feed</router-link>
                     <router-link to="/profiles" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Profiles</router-link>
                     <router-link to="/message" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Messages</router-link>
                     <router-link to="/events" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Events</router-link>
-                    <router-link to="/news" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">News</router-link>
                     <router-link to="/vacancies" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Vacancies</router-link>                    
                     <router-link to="/publications" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Publications</router-link>
                     <router-link to="/gallery" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Gallery</router-link>
@@ -31,7 +32,8 @@
                     <router-link v-if="currentUser === null" to="/login" class="inline-block text-sm px-4 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">Login</router-link>
                     <Dropdown v-if="currentUser !== null" placement="left-end">
                         <a href="javascript:void(0)" class="inline-block text-sm px-2 py-2 leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0">
-                            <Avatar> {{currentUser.username.slice(0,1)}}</Avatar>
+                            <Avatar v-if="currentUser.username"> {{currentUser.username.slice(0,1) }}</Avatar>
+                            <Avatar v-else> -- </Avatar>
                             <span class="inline-block text-sm leading-none text-white  hover:border-transparent hover:text-teal-500 mt-4 lg:mt-0"> {{currentUser.username}} </span>
                         </a>
                         <DropdownMenu slot="list">
@@ -54,34 +56,47 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     computed: {
+        ...mapGetters('AuthModule', ['current_user']),
+        
         currentUser(){
             // 
-            const user = this.$store.state.current_user
+            const user = this.current_user
+
             // If user is empty return null
-            return Object.keys(user).length ===0 ? null : user
+            return Object.keys(user).length === 0 ? null : user
         }
     },
-    mounted(){
+    created(){
         // fetch news and publications
         this.fetchPublications(),
         this.fetchVacancies(),
         this.fetchNews(),
         this.fetchEvents(),
-        this.fetchMembers()
+        this.fetchMembers(),
+        this.fetchAnalytics(),
+        this.fetchImages()
     },
     methods: {
-        // 
-        ...mapActions(['fetchPublications', 'fetchVacancies', 'fetchEvents', 'fetchNews', 'fetchMembers']),
+        // Map actions 
+        ...mapActions('AuthModule',{logoutUser: 'logout'}),
+        ...mapActions('UserModule', { fetchMembers: 'fetch'}),
+        ...mapActions('PublicationModule', { fetchPublications : 'fetch' }),
+        ...mapActions('NewsModule', { fetchNews : 'fetch' }),
+        ...mapActions('EventModule', { fetchEvents : 'fetch' }),
+        ...mapActions('VacancyModule', { fetchVacancies : 'fetch' }),
+        ...mapActions('AnalyticsModule', { fetchAnalytics : 'fetch' }),
+        ...mapActions('GalleryModule', { fetchImages : 'fetch' }),
 
         logout(){
-            this.$store.dispatch('logout')
+            this.logoutUser()
             // Current user
             this.currentUser
             // redirect to dashboard
-            setTimeout(()=> this.$router.push({path: 'login' }), 1000)
+            setTimeout(()=> this.$router.push({path: '/login' }), 1000)
         }
     }
     

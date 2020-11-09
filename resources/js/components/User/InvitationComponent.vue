@@ -46,6 +46,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 export default {
     name: 'invitation',
     data() {
@@ -59,8 +60,10 @@ export default {
         }
     },
     computed: {
+        ...mapGetters('AuthModule', ['current_user']),
+
         currentUser(){
-            return this.$store.state.current_user
+            return this.current_user
         }
     },
     methods: {

@@ -1,5 +1,6 @@
 <template>
     <div class="w-full h-full">
+        <!-- <div class="w-full h-48" :style="{'background-image': `url(${image_url})`}"></div> -->
         <ul class="w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0">
             <div class="">
                 <li class="mt-5 ml-5">
@@ -7,22 +8,19 @@
                 </li>
             </div>
         </ul>
-        <div class="p-2 mx-auto w-4/5 " v-for="article in article" :key="article.id">
-        <div class="w-full h-32">
-            <p class="text-2xl font-bold">
-                {{article.title}}
-            </p>
-            <p class=" font-semibold text-sm tracking-wider">
-                {{article.user.username}}
-            </p>
-            <p class=" font-medium text-xs">
-               <span class="font-bold">Published:</span> {{article.created_at | moment("from")}}
-            </p>
-        </div>
-          
-        <div class="w-full text-lg tracking-wide font-sans font-normal" >
-            {{article.body}}
-        </div>
+        <div class="p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center" v-for="article in article" :key="article.id">
+            <div class="w-2/3">
+                <p class="text-4xl font-serif">
+                    {{article.title}}
+                </p>
+                <p class=" font-medium text-sm">
+                {{article.created_at | moment("Do MMMM YYYY")}}
+                </p>
+            </div>
+            
+            <div class="mt-6 w-2/3 text-lg tracking-wide font-sans font-normal" >
+                {{article.body}}
+            </div>
         </div>
     </div>
 </template>
@@ -33,6 +31,14 @@ export default {
         return {
             article: '',
             articleId: this.$route.params.id,
+        }
+    },
+
+    computed: {
+        image_url(){
+            let url = 'images/landing.jpg'
+
+            return url
         }
     },
 

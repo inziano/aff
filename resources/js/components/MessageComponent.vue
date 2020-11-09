@@ -157,6 +157,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -174,9 +175,7 @@ export default {
         }
     },
     computed: {
-        currentUser(){
-            return this.$store.state.current_user
-        },
+       ...mapGetters('AuthModule',['current_user']),
         year(){
             const year = new Date().getFullYear()
             return Array.from({length: year - 1960}, (value, index)=> 1961 + index).reverse()
@@ -189,7 +188,7 @@ export default {
         ]).then(axios.spread((message,user)=>{
             let that = this
             this.messages = message.data.data.filter((resp)=>{
-                return resp.recepient.includes(that.currentUser.id)
+                return resp.recepient.includes(that.current_user.id)
             })
             // this.messages = message.data.data
             this.memberList = user.data.data
@@ -213,7 +212,7 @@ export default {
             }).then((response)=>{
                 let that = this
                 this.messages = message.data.data.filter((resp)=>{
-                    return resp.recepient.includes(that.currentUser.id)
+                    return resp.recepient.includes(that.current_user.id)
                 })
             }).catch((error)=>{
                 this.$Notice.error({
@@ -224,7 +223,7 @@ export default {
         onSubmit(){
             // 
             let data = this.messageForm
-            data['user_id'] = this.currentUser.id
+            data['user_id'] = this.current_user.id
             this.loading = true
             // Push message
             axios({

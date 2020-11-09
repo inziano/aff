@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
     computed: {
-        ...mapState(['current_user'])
+        ...mapGetters('AuthModule',['current_user'])
     },
     data(){
         return{
@@ -75,7 +75,7 @@ export default {
         }
     },
     methods: {
-         ...mapActions(['createArticle']),
+         ...mapActions('NewsModule',['create']),
         // Cancel
         onCancel(){
             this.$emit('close-modal')
@@ -84,8 +84,9 @@ export default {
         onSubmit(){
             let formdata = this.newsForm
             formdata['user_id'] = this.current_user.id
+            formdata['published'] = 0
             // Push to db
-            this.createArticle(formdata).then((response)=>{
+            this.create(formdata).then((response)=>{
                 this.$Notice.success({
                     title: 'News Created',
                     desc: 'Your news was succesfully created'

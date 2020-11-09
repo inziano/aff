@@ -1,4 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/group-auth.js": "/group-auth.js",
+    "/group-events.js": "/group-events.js",
+    "/group-forum.js": "/group-forum.js",
+    "/group-news.js": "/group-news.js",
+    "/group-profile.js": "/group-profile.js",
+    "/group-publication.js": "/group-publication.js",
+    "/group-vacancy.js": "/group-vacancy.js",
+    "/vendors~group-profile.js": "/vendors~group-profile.js"
 }

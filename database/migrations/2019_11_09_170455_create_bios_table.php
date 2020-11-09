@@ -15,18 +15,18 @@ class CreateBiosTable extends Migration
     {
         Schema::create('bios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->nullable();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('surname');
-            $table->string('gender');
-            $table->string('dob');
-            $table->string('phone');
-            $table->string('address');
+            $table->text('title')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('surname')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('dob')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('altphone')->nullable();
             $table->string('altemail')->nullable();
-            $table->string('citizenship');
-            $table->string('residency');
+            $table->string('citizenship')->nullable();
+            $table->string('residency')->nullable();
             $table->string('qualification')->nullable();
             $table->string('field_of_study')->nullable();
             $table->text('summary')->nullable();

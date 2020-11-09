@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2f5a010c948347684d44aecf8350225",
+    "content-hash": "65e92565f17db5f30fb10b8f773636d3",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -794,6 +794,53 @@
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
+            "name": "gladcodes/keygen",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gladchinda/keygen-php.git",
+                "reference": "8806d4440edd37a5545802a82202098b01bbafb9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gladchinda/keygen-php/zipball/8806d4440edd37a5545802a82202098b01bbafb9",
+                "reference": "8806d4440edd37a5545802a82202098b01bbafb9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Keygen\\": "src/Keygen"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Glad Chinda",
+                    "email": "gladxeqs@gmail.com"
+                }
+            ],
+            "description": "A fluent PHP random key generator.",
+            "keywords": [
+                "generator",
+                "key",
+                "key generator",
+                "keygen",
+                "php",
+                "random"
+            ],
+            "time": "2018-07-15T23:24:35+00:00"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "6.5.0",
             "source": {
@@ -1022,6 +1069,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1068,6 +1116,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -6385,5 +6434,6 @@
     "platform": {
         "php": "^7.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

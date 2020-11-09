@@ -59,4 +59,13 @@ class UserFilters extends QueryFilters
         return $this->builder->whereIn('users.id', $users);
     }
 
+    public function gender($term)
+    {
+        $users = DB::table('bios')->select('user_id')->where('gender','LIKE',"%$term%")->pluck('user_id');
+
+        $users = $users->toArray();
+
+        return $this->builder->whereIn('users.id', $users);
+    }
+
 }

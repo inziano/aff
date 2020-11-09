@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 use App\User;
+use App\Role;
 
 class UserRepository {
 
@@ -34,7 +35,24 @@ class UserRepository {
         // Check if all users exist
         return User::whereIn('id', $ids)->update($request->only('status'));
     }
+    /** 
+     * update user
+     * 
+     * @param Request $request
+     * @return void
+    */
+    public function updateUser(User $user, Request $request)
+    {
+        if ( $request->has('role')) {
+            
+            $roleid = $request->input('role');
 
+            return $user->roles()->attach( $roleid );
+        } else {
+            return $user->update($request->all());
+        }
+        
+    }
     /**
      * searchUsers
      *

@@ -114,6 +114,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\EventStats'=>[
             
+        ],
+        'App\Events\PasswordReset'=>[
+            'App\Listeners\SendResetCode',
         ]
     ];
 

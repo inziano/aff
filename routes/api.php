@@ -17,8 +17,16 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+// / Analytics
+Route::get('stats', 'AnalyticsController@index');
+
 // Login route
 Route::post('user/login', 'UserController@login');
+
+// Reset password
+Route::post('user/reset', 'UserController@resetPassword');
+
+Route::post('user/verify', 'UserController@verifyResetToken');
 
 // Membership route
 Route::patch('user/membership', 'UserController@membership');
@@ -85,3 +93,6 @@ Route::post('vacancyapplication/search', 'VacancyApplicationController@search');
 Route::apiResource('news', 'NewsController');
 
 Route::post('news/search','NewsController@search');
+
+// Gallery
+Route::apiResource('gallery', 'GalleryController');

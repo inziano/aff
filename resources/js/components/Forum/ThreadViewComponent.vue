@@ -7,7 +7,8 @@
                         <div class="w-4/5 mb-3 flex items-baseline">
                             <div class="w-auto lg:flex-grow">
                                 <li class="list-none lg:flex-grow"> 
-                                    <Avatar size="default" class="mx-2"> {{ thread.user.username.slice(0,2)}}</Avatar>
+                                    <Avatar v-if="thread.user.username" size="default" class="mx-2"> {{ thread.user.username.slice(0,2)}}</Avatar>
+                                    <Avatar v-else> -- </Avatar>
                                     <span class="font-sans font-medium tracking-wide text-gray-600 text-lg">{{thread.user.username}}</span>
                                 </li>
                             </div>
@@ -30,30 +31,7 @@
                             <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="reply = true" v-if="!reply"> Reply</a>
                         </div>
                         <div class="w-2/5 mt-5" v-if="reply">
-                            <Form :model="replyForm" label-position="top">
-                                <Row :gutter="16">
-                                    <Col span="24">
-                                        <FormItem label="Reply">
-                                            <!-- <Input v-model="replyForm.body" type="textarea" placeholder="Reply"></Input> -->
-                                            <quill  v-model="replyForm.body" :config="config" output="html"></quill>
-                                        </FormItem>
-                                    </Col>
-                                </Row>
-                                <Row :gutter="16">
-                                    <Col span="24">
-                                        <ButtonGroup>
-                                            <Button @click="reply = false">
-                                                <Icon type="ios-cancel"></Icon>
-                                                Cancel
-                                            </Button>
-                                            <Button type="success" @click="onReply">
-                                                <Icon type="ios-checkmark"></Icon>
-                                                Submit
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Col>
-                                </Row>
-                            </Form>
+                            <new-reply :threadId = thread.id :user = current_user.id></new-reply>
                         </div>
                     </div>
 
@@ -74,8 +52,8 @@
                     </div>
                 </div>
                
-                <div class="w-full overflow-hidden p-2 m-2 bg-gray-100">
-                    <reply class="w-10/12 pl-1 pt-2" :replies="threadReplies"></reply>
+                <div class="w-full overflow-hidden p-2 m-2">
+                    <reply class="w-10/12 pl-1 pt-2" v-for="reply in threadReplies" :key="reply.id" :reply="reply" :user = current_user ></reply>
                 </div>
 
                
@@ -86,68 +64,50 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Reply from './ReplyComponent'
-import { mapState, mapActions } from 'vuex'
+import NewReply from './NewReplyComponent'
 
 export default {
     data() {
         return {
             threadId: this.$route.params.id,
             reply: false,
-            replyForm: {
-                body: ''
-            },
-            config: {
-                placeholder: 'Compose a reply',
-                theme: 'snow'
-            },
-            modules: {
-                toolbar: [
-                ['bold', 'italic', 'underline', 'strike'],
-                ['blockquote', 'code-block'],
-                [{ 'header': 1 }, { 'header': 2 }],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                [{ 'script': 'sub' }, { 'script': 'super' }],
-                [{ 'indent': '-1' }, { 'indent': '+1' }],
-                [{ 'direction': 'rtl' }],
-                [{ 'size': ['small', false, 'large', 'huge'] }],
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                [{ 'font': [] }],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'align': [] }],
-                ['clean'],
-                ],
-                syntax: {
-                highlight: text => hljs.highlightAuto(text).value
-                }
-            }
         }
     },
     components:{
-        'reply': Reply
+        'reply': Reply,
+        'new-reply': NewReply
     },
     mounted(){
         // Thread view count
-        Echo.channel('thread').listen('threadViewCount', (e)=>{
+        Echo.channel('threads').listen('threadViewCount', (e)=>{
             console.log(e)
+            // console.log(this.replies.findIndex( elem => elem.id === e.reply[0].id))
+            // let idx = this.threads.findIndex( elem=> elem.id === e.thread[0].id)
+            // // // Splice and replace array
+            // this.replies.splice(idx, 1, e.thread[0])
         })
         // Reply liked
         Echo.channel('replies').listen('UpdateReplyLikeCount', (e)=>{
             // Find index
+            // console.log(this.replies.findIndex( elem => elem.id === e.reply[0].id))
             let idx = this.replies.findIndex( elem=> elem.id === e.reply[0].id)
-            // Splice and replace array
-            this.replies.splice(idx, 1, e.thread[0])
+            // // Splice and replace array
+            this.replies.splice(idx, 1, e.reply[0])
         })
 
         // Reply
         Echo.channel('replies').listen('ThreadReplied', (e)=>{
-            this.updateThreads(e.thread)
+            this.update(e.thread)
             this.newReply(e.reply)
         })
     },
     computed: {
 
-        ...mapState(['threads', 'replies', 'current_user']),
+        ...mapGetters('ThreadModule',['threads']),
+        ...mapGetters('ReplyModule',['replies']),
+        ...mapGetters('AuthModule',['current_user']),
 
         threadData() {
             return this.threads.filter((threads)=>{
@@ -163,7 +123,8 @@ export default {
 
     },
     methods: {
-        ...mapActions(['updateThreads', 'newReply']),
+        ...mapActions('ThreadModule',['update']),
+        ...mapActions('ReplyModule',['newReply']),
 
         onReply(){
             let formdata = this.replyForm
@@ -171,7 +132,7 @@ export default {
             formdata['user_id'] = this.current_user.id
             formdata['thread_id'] = this.threadId
             // Post reply
-            this.$store.dispatch('createReply', formdata).then((response)=>{
+            this.$store.dispatch('ReplyModule/create', formdata).then((response)=>{
                 // 
                 this.reply = false
                 this.$Notice.success({
@@ -180,25 +141,6 @@ export default {
             }).catch((error)=>{
                 this.$Notice.error({
                     title: 'Cannot reply to thread'
-                })
-            })
-        },
-        likeReply(id){
-            let data = {
-                likes: 1
-            }
-            // axios
-            axios({
-                method: 'patch',
-                url: 'api/reply/'+id,
-                data: data
-            }).then((response)=>{
-                this.$Notice.success({
-                    title: 'You liked this'
-                })
-                }).catch((error)=>{
-                    this.$Notice.error({
-                        title: 'Error'
                 })
             })
         },

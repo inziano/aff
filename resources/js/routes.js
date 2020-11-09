@@ -1,27 +1,51 @@
 import Router from 'vue-router'
 
+
 // Templates
 
-import Register from './components/RegisterComponent';
-import Bio from './components/User/BioComponent';
-import Login from './components/LoginComponent';
-import Profile from './components/User/ProfileComponent';
-import Publication from './components/Publication/PublicationComponent';
-import Gallery from './components/GalleryComponent';
+// Lazy load all non essential components
+
+// Auth components
+const Register = () => import(/* webpackChunkName: "group-auth" */'./components/RegisterComponent')
+const ResetPassword = () => import(/* webpackChunkName: "group-auth" */'./components/ResetPasswordComponent')
+const UpdatePassword = () => import(/* webpackChunkName: "group-auth" */'./components/UpdatePasswordComponent')
+const VerifyEmail  = () => import(/* webpackChunkName: "group-auth" */'./components/VerifyEmailComponent')
+
+// Profile Components
+const Profile = () => import(/* webpackChunkName: "group-profile" */'./components/User/ProfileComponent')
+const ProfilesView = ()=> import(/* webpackChunkName: "group-profile" */'./components/User/ProfilesViewComponent')
+const Invitation = () => import(/* webpackChunkName: "group-profile" */'./components/User/InvitationComponent')
+
+
+// Publication Components
+const PublicationsView = () => import(/* webpackChunkName: "group-publication" */'./components/Publication/PublicationsViewComponent')
+const PublicationView = ()=> import(/* webpackChunkName: "group-publication" */'./components/Publication/PublicationViewComponent')
+
+// Vacancy Components
+const Vacancy = () => import(/* webpackChunkName: "group-vacancy" */'./components/Vacancy/VacancyComponent')
+const VacancyApplication =() => import (/* webpackChunkName: "group-vacancy" */'./components/Vacancy/VacancyApplicationComponent')
+
+// Forum Components
+const Forum = () => import(/* webpackChunkName: "group-forum" */'./components/Forum/ForumComponent')
+const ThreadView = () =>import(/* webpackChunkName: "group-forum" */'./components/Forum/ThreadViewComponent')
+const Topic = () => import(/* webpackChunkName: "group-forum" */'./components/Forum/TopicComponent')
+
+// News Components
+const News = () => import(/* webpackChunkName: "group-news" */'./components/News/NewsComponent')
+const Article = () => import(/* webpackChunkName: "group-news" */'./components/News/ArticleComponent')
+
+// Event Components
+const Event = () => import(/* webpackChunkName: "group-events" */ './components/Events/EventsViewComponent')
+const EventDetails = () => import(/* webpackChunkName: "group-events" */'./components/Events/EventDetailsComponent')
+
+const Gallery = () => import('./components/Gallery/GalleryComponent')
+const Message = () => import('./components/MessageComponent')
+
 import Home from './components/HomeComponent';
-import Message from './components/MessageComponent';
-import Invitation from './components/User/InvitationComponent';
-import ProfilesView from './components/User/ProfilesViewComponent';
-import PublicationsView from './components/Publication/PublicationsViewComponent';
-import PublicationView from './components/Publication/PublicationViewComponent';
-import Event from './components/EventComponent';
-import Vacancy from './components/VacancyComponent';
-import VacancyApplication from './components/VacancyApplicationComponent';
-import Forum from './components/Forum/ForumComponent';
-import ThreadView from './components/Forum/ThreadViewComponent';
-import Topic from './components/Forum/TopicComponent';
-import News from './components/News/NewsComponent';
-import Article from './components/News/ArticleComponent';
+import Login from './components/LoginComponent';
+
+// store
+import store from './store'
 
 // Routes
 const router =  new Router({
@@ -30,100 +54,217 @@ const router =  new Router({
         {
             path: '/',
             component: Home,
-            name: 'home'
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            path: '/dashboard',
+            component: Home,
+            name: 'home',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/register',
             component: Register,
-            name: 'register'
-        },
-        {
-            path: '/bio',
-            component: Bio,
-            name: 'bio'
+            name: 'register',
+            meta: {
+                requiresAuth: false,
+            },
         },
         {
             path: '/login',
             component: Login,
-            name: 'login'
+            name: 'login',
+            meta: {
+                requiresAuth: false,
+            },
+        },
+        {
+            path: '/reset',
+            component: ResetPassword,
+            name: 'reset',
+            meta: {
+                requiresAuth: false,
+            },
+        },
+        {
+            path: '/verify',
+            component: VerifyEmail,
+            name: 'verify',
+            meta: {
+                requiresAuth: false,
+            },
+        },
+        {
+            path: '/updatepassword',
+            component: UpdatePassword,
+            name: 'updatepassword',
+            meta: {
+                requiresAuth: false,
+            },
         },
         {
             path: '/profile',
             component: Profile,
-            name: 'profile'
+            name: 'profile',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/publications',
             component: PublicationsView,
-            name: 'publications'
+            name: 'publications',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/publication',
             component: PublicationView,
-            name: 'publicationview'
+            name: 'publicationview',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/gallery',
             component: Gallery,
-            name: 'gallery'
+            name: 'gallery',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/message',
             component: Message,
-            name: 'message'
+            name: 'message',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/invitation',
             component: Invitation,
-            name: 'invitation'
+            name: 'invitation',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/profiles',
             component: ProfilesView,
-            name: 'profilesviews'
+            name: 'profilesviews',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/events',
             component: Event,
-            name: 'event'
+            name: 'event',
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            path: '/eventdetail',
+            component: EventDetails,
+            name: 'eventdetail',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/vacancies',
             component: Vacancy,
-            name: 'vacancy'
+            name: 'vacancy',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/vacancyapplication',
             component: VacancyApplication,
-            name: 'vacancyapplication'
+            name: 'vacancyapplication',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/forum',
             component: Forum,
-            name: 'forum'
+            name: 'forum',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/thread',
             component: ThreadView,
-            name: 'thread'
+            name: 'thread',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/topic',
             component: Topic,
-            name: 'topic'
+            name: 'topic',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/news',
             component: News,
-            name: 'news'
+            name: 'news',
+            meta: {
+                requiresAuth: true,
+            },
         },
         {
             path: '/article',
             component: Article,
-            name: 'article'
+            name: 'article',
+            meta: {
+                requiresAuth: true,
+            },
         }
     ]
 })
+
+
+function isAuthenticated(){
+    // auth
+    let isAuth = store.state.AuthModule.currentUser
+
+    // Value
+    return !Object.keys(isAuth).length == 0
+}
+
+
+// Logged in
+router.beforeEach((to, from, next)=>{
+    // Requires auth
+    let authed = to.matched.some( record => record.meta.requiresAuth )
+    // Check if route requires auth
+    if ( authed ) {
+        // Is authenticated
+        if ( isAuthenticated() ){
+            next()
+        } else {
+            // not authenticated, redirect to login
+            next({name: 'login'})
+        }
+
+    } else {
+       next()
+    }
+})  
 
 // Export
 export default router

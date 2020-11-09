@@ -9,6 +9,7 @@ use App\Http\Resources\Education as EducationResource;
 use App\Bio;
 use App\Work;
 use App\Education;
+use App\Role;
 
 class User extends JsonResource
 {
@@ -27,6 +28,8 @@ class User extends JsonResource
             'bio' => new BioResource($this->bio),
             'education' => EducationResource::collection(Education::where('user_id',$this->id)->get()),
             'work' => WorkResource::collection( Work::where('user_id',$this->id)->get()),
+            'publications'=> $this->publication->count(),
+            'rights' => $this->roles,
             'status' => $this->status
         ];
     }

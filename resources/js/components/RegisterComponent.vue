@@ -62,6 +62,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -74,6 +75,9 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters('AuthModule', ['current_user'])
+    },
     methods: {
         // validate password match
         validatePasswordMatch(event){
@@ -81,12 +85,13 @@ export default {
             this.registerForm.password === event ? this.disabled = false : this.disabled = true
         },
         onSubmit(){
-            this.$store.dispatch('register', this.registerForm).then(()=>{
+            this.$store.dispatch('AuthModule/register', this.registerForm).then(()=>{
                 this.$Notice.success({
                     title: 'Succesfully registered and Logged in'
                 })
+                let id = this.current_user.id
                 // handle redirect
-                setTimeout(()=>  this.$router.push({name: 'bio'}), 1000)
+                setTimeout(()=>  this.$router.push({name: 'profile', params: {id}}), 300)
               
             }).catch(()=>{
                 this.$Notice.error({

@@ -12,14 +12,14 @@
                         <img class=" w-1/4 h-24 object-contain" src="/images/publications.svg">
                     </div>
                 </div>
-                <div class="w-full p-1 mx-auto flex ">
+                <div class="w-full p-1 mx-auto flex flex-wrap justify-center">
                     <publist-item  v-for="publication in topPubs" :publication = publication :key = publication.id ></publist-item>  
                 </div>
             </div>
           
         </div>
         <div class="w-1/4 h-full p-2">
-            <div class="w-full relative mb-2" style="height: 45%">
+            <div class="w-full relative mb-2" style="height: auto">
                 <div class="w-full bg-teal-100 p-5" style="height: 25%;">
                     <div class="w-full h-full flex">
                         <p class="flex-grow width-3/4 text-xl font-semibold subpixel-antialiased tracking-wide"> Events </p>
@@ -46,7 +46,7 @@
                     
                 </div>
             </div>
-            <div class="w-full relative" style="height: 45%">
+            <div class="w-full relative" style="height: auto">
                 <div class="w-full h-24 bg-teal-100 pt-5 px-5" style="height: 25%;">
                     <div class="w-full flex">
                         <p class="flex-grow width-3/4 text-xl font-semibold subpixel-antialiased tracking-wide"> Vacancies </p>
@@ -78,10 +78,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import PublicationListItem from './Publication/PublicationListItemComponent'
 import NewsItem from './News/NewsItemComponent'
 import NewsListItem from './News/NewsListItemComponent'
+
 export default {
     components: {
         'publist-item' : PublicationListItem,
@@ -90,27 +91,36 @@ export default {
     },
     computed: {
         // Pull values from store
-        ...mapState(['vacancies', 'publications', 'events', 'news']),
+        // ...mapState(['vacancies', 'publications', 'events', 'news']),
+        ...mapGetters('NewsModule', ['news']),
+        ...mapGetters('PublicationModule', ['publications']),
+        ...mapGetters('EventModule', ['events']),
+        ...mapGetters('VacancyModule', ['vacancies']),
 
         // Top news
         topVacancies(){
-            return this.vacancies.slice(0,2)
+            let v = this.vacancies.slice(0,3)
+            return v
         },
 
         topNews(){
-            return this.news.slice(0,1)
+            let v = this.news.slice(0,1) 
+            return v
         },
 
         otherNews(){
-            return this.news.slice(1,4)
+            let v = this.news.slice(1,4) 
+            return v
         },
 
         topPubs(){
-            return this.publications.slice(0,4)
+            let p = this.publications.slice(0,3) 
+            return p
         },
 
         topEvents(){
-            return this.events.slice(0,2)
+            let e = this.events.slice(0,3)
+            return e
         },
     },
     methods:{

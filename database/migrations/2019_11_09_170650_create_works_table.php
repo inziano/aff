@@ -15,10 +15,10 @@ class CreateWorksTable extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('institution');
-            $table->string('title');
-            $table->string('country');
-            $table->date('startdate');
+            $table->text('institution')->nullable();
+            $table->text('title')->nullable();
+            $table->string('country')->nullable();
+            $table->date('startdate')->nullable();
             $table->date('enddate')->nullable();
             $table->text('description')->nullable();
             $table->unsignedInteger('user_id');

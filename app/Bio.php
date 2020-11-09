@@ -17,6 +17,7 @@ class Bio extends Model
         'title',
         'gender',
         'dob',
+        'summary',
         'phone',
         'altphone',
         'altemail',

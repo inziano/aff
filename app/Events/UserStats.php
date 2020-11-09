@@ -9,7 +9,10 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use App\User;
+use App\Bio;
 
 class UserStats implements ShouldBroadcast
 {
@@ -26,13 +29,19 @@ class UserStats implements ShouldBroadcast
     {
         //
         $member = User::where('status','member')->count();
-        $applicant = User::where('status','applicant')->count();
+        $applicant = User::where('status','applicant')->whereHas('bio', function(Builder $query){ 
+                        $query->whereNull('firstname')->whereNull('lastname')->whereNull('surname');
+                    })->count();
+       
         $total = User::count();
+
+        $countries = Bio::select('citizenship', DB::raw('count(*) as total'))->whereNotNull('citizenship')->groupBy('citizenship')->get();
 
         $this->userstats = [
             'members' => $member,
             'applicants' => $applicant,
-            'total' => $total
+            'total' => $total,
+            'countries'=> $countries
         ];
     }
 

@@ -22,6 +22,7 @@ class News extends JsonResource
             'tags'=>$this->tags,
             'category'=>$this->category,
             'published'=> (bool)$this->published,
+            'image_url'=> $this->image_url,
             'user' => User::where('id',$this->user_id)->first(),
             'created_at' => $this->created_at->format('Y-m-d')
         ];

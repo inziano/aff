@@ -25,6 +25,8 @@
                         <FormItem label="Password">
                             <Input v-model="loginForm.password" placeholder="password" type="password"> </Input>
                         </FormItem>
+                        <p class="mb-2 text-xs tracking-wide"> Forgot password? <router-link class="text-xs font-normal text-gray-600" to="/reset"> Reset Password</router-link></p>
+                        <br>
                     </Col>
                 </Row>
                 <Row :gutter="16">
@@ -40,7 +42,6 @@
                             </Button>
                         </ButtonGroup>
                     </Col>
-                   
                 </Row>
             </Form>
         </div>
@@ -48,6 +49,7 @@
 </template>
 <script>
 import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     data() {
@@ -59,17 +61,25 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters('AuthModule',['current_user'])
+    },
     methods: {
+        ...mapActions('AuthModule',['loadUserData']),
+
         onSubmit() {
             this.loading = true
             // Dispatch 
-            this.$store.dispatch('login', this.loginForm).then(()=>{
+            this.$store.dispatch('AuthModule/login', this.loginForm).then(()=>{
                 // response object
                 this.$Notice.info({
                     title: 'Login Succesful'
                 })
+                // Fetch user details
+                this.loadUserData(this.current_user.id)
+                
                 // redirect to dashboard
-                setTimeout(()=>  this.$router.push({name: 'bio'}), 1000)
+                setTimeout(()=>  this.$router.push({name: 'home'}), 300)
             }).catch( ()=>{
                 // error object
                 this.$Notice.error({

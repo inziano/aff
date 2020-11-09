@@ -54,4 +54,26 @@ class ThreadFilters extends QueryFilters
     {
         return $this->builder->where('threads.created_at','LIKE',"%$term%");
     }
+
+    // Popular threads
+    public function popular($term){
+        return $this->builder->orderBy('threads.likes','desc')->limit(50)->get();
+    }
+    // Most viewed
+    public function mostViewed($term){
+        return $this->builder->orderBy('threads.views', 'desc')->limit(50)->get();
+    }
+    // Recent
+    public function recent($term){
+        return $this->builder->latest()->limit(50)->get();
+    }
+    // Currently active
+    public function active($term){
+        $replies = DB::table('replies')->select('thread_id')->distinct()->latest()->pluck('thread_id');
+
+        $thread_id = $replies->toArray();
+
+        return $this->builder->whereIn('threads.id', $thread_id);
+
+    }
 }

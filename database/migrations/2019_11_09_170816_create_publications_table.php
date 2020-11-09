@@ -15,13 +15,13 @@ class CreatePublicationsTable extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('author');
-            $table->text('title');
-            $table->string('publisher');
-            $table->longText('abstract');
-            $table->json('tags')->nullable();
-            $table->date('publication_year');
-            $table->string('pubpath');
+            $table->longText('author')->nullable();
+            $table->text('title')->nullable();
+            $table->string('publisher')->nullable();
+            $table->longText('abstract')->nullable();
+            $table->longText('tags')->nullable();
+            $table->date('publication_year')->nullable();
+            $table->text('pubpath')->nullable();
             $table->integer('downloads')->default(0);
             $table->integer('views')->default(0);
             $table->unsignedInteger('user_id');

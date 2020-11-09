@@ -9,6 +9,7 @@ use App\Bio;
 use App\Education;
 use App\Work;
 use App\Publication;
+use App\Role;
 use App\Filters\Filterable;
 
 class User extends Authenticatable
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'approval_date'
     ];
 
     /**
@@ -62,7 +64,7 @@ class User extends Authenticatable
      */
     public function education()
     {
-        return $this->hasOne(Education::class);
+        return $this->hasMany(Education::class);
     }
 
     /**
@@ -78,5 +80,10 @@ class User extends Authenticatable
     public function publication()
     {
         return $this->hasMany(Publication::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\InvitationSent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendInvitation;
 
 class SendInvitationEmail
 {
@@ -26,6 +28,8 @@ class SendInvitationEmail
      */
     public function handle(InvitationSent $event)
     {
+        $email = json_decode($event->invitation->email);
         //
+        Mail::to($email)->send(new SendInvitation($event->user, $event->invitation));
     }
 }

@@ -1,18 +1,15 @@
 <template>
-    <div class="w-1/4 ">
-        <div class="h-64 overflow-hidden shadow-lg m-1 bg-white rounded-lg" @click="viewPub(publication.id)">
-            <div class="border border-white rounded-sm p-4 flex flex-col justify-between leading-normal">
+    <div class="m-1 h-64" style="width: 30%">
+        <div class="h-full overflow-hidden shadow-lg bg-white rounded" @click="viewPub(publication.id)">
+            <div class="border border-white rounded-sm p-2 flex flex-col justify-between leading-normal">
                 <div class="mb-8">
-                    <p class="text-xs text-gray-600 flex publications-center mb-1">
-                        {{publication.publisher}}
-                    </p>
-                    <div class="text-gray-900 font-medium text-base mb-2 font-serif">{{publication.title | truncate(30)}}</div>
-                    <p class="text-gray-700 font-sans text-sm">{{publication.abstract | truncate(50)}}</p>
+                    <div class="text-gray-900 font-medium text-base mb-2 font-serif capitalize">{{publication.title | truncate(100)}}</div>
+                    <p class="text-gray-700 font-sans text-sm"> <span :inner-html.prop="publication.abstract | truncate(100)"></span></p>
                 </div>
                 <div class="flex publications-center">
-                    <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar of Jonathan Reinink">
+                    <img class="w-10 h-10 rounded-full mr-4" src="/images/publications.svg" alt="Avatar">
                     <div class="text-sm">
-                        <p class="text-gray-900 leading-none mb-1 text-xs font-semibold tracking-wider">{{publication.author}}</p>
+                        <p class="text-gray-900 leading-none mb-1 text-xs font-semibold tracking-wider">{{publication.author | truncate(60)}}</p>
                         <p class="text-gray-600 text-xs font-medium tracking-tight">{{publication.created_at}}</p>
                     </div>
                 </div>
@@ -26,6 +23,9 @@
                     <li class="mr-5">
                         <a class="font-sm tracking-wide font-medium font-sans text-gray-700" @click="downloadPub(publication)"> Download</a>
                     </li>
+                    <li class="mr-5"  v-if="isAdmin">
+                       <a class="text-xs tracking-wide font-medium text-red-700" @click="remove(publication.id)"> <Icon type="ios-trash" :size = 16 /></a>
+                    </li>
                 </ul>
             </div>
         </div>         
@@ -33,12 +33,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-    props: ['publication'],
+    props: ['publication', 'user'],
     data(){
         return{
 
         }
+    },
+    computed: {
+        ...mapGetters('AuthModule',['isAdmin']),
     },
     methods: {
         // make Application

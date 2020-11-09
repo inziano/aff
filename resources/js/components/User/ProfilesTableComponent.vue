@@ -1,11 +1,64 @@
 <template>
-    <div>
-        <Table height="" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList"></Table>
-        <Button class="mt-3" type="success" @click="makeMember" v-if="updateList.length != '0'">Make Member</Button>
+    <div class="flex flex-wrap">
+        <div class="w-full flex bg-white h-16">
+            <div class="flex-grow"></div>
+            <div class="pr-8 pt-4" v-if="isAdmin">
+                <Dropdown trigger="click" class="m-2" style="" @on-click="action($event)">
+                    <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                        <Icon type="ios-checkmark" :size = 16 />
+                        <span class="capitalize"> Approve </span>
+                    </a>
+                    <DropdownMenu slot="list" style="min-height: 30px;" >
+                        <DropdownItem name="approve"> Accept </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                <Dropdown trigger="click" class="m-2" style="" @on-click="action($event)">
+                    <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                        <Icon type="ios-options" :size= 16 />
+                        <span class="capitalize"> Actions </span>
+                    </a>
+                    <DropdownMenu slot="list" style="min-height: 30px;" >
+                        <DropdownItem name="remove"> Delete </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                <Dropdown trigger="click" class="m-2" style="" @on-click="action($event)">
+                    <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                        <Icon type="ios-paper-outline" :size = 16 />
+                        <span class="capitalize"> Export </span>
+                    </a>
+                    <DropdownMenu slot="list" style="min-height: 30px;" >
+                        <DropdownItem name="csv"> CSV </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                
+            </div>
+        </div>
+
+        <div class="w-full">
+            <Table height="" stripe ref="selection" :columns="member" :data="members" @on-select="addToList" @on-select-all="addToList" @on-select-cancel="removeFromList" @on-select-all-cancel="removeFromList">
+                <template slot-scope="{ row, index }" slot="action">
+                    <Dropdown trigger="click" class="m-2 text-left" @on-click="action($event, row.id)">
+                        <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                            <Icon type="ios-more" :size= 24 />
+                        </a>
+                        <DropdownMenu slot="list" style="min-height: 30px;" v-if="isAdmin">
+                            <DropdownItem name="admin"> Make Admin </DropdownItem>
+                            <DropdownItem name="approve"> Approve </DropdownItem>
+                            <DropdownItem name="remove"> Delete </DropdownItem>
+                        </DropdownMenu>
+                        <DropdownMenu slot="list" style="height: 30px;" v-else>
+                            <DropdownItem > View </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <!-- <Button size="small" @click="remove(index)"><Icon type="ios-trash" size="20"/></Button> -->
+                </template>
+            </Table>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
     props: ['members'],
     data(){
@@ -22,8 +75,12 @@ export default {
                     key: 'id'
                 },
                 {
-                    title: 'Username',
-                    key: 'username'
+                    title: 'Names',
+                    render:  (h, params) => {
+                        return h('div', [
+                            h('span', ' '+params.row.bio.surname +' '+params.row.bio.firstname +' ' +params.row.bio.lastname)
+                        ]);
+                    },
                 },
                 {
                     title: 'Email',
@@ -51,14 +108,25 @@ export default {
                             }
                         }
                 },
+                {
+                    title: '',
+                    slot: 'action',
+                    width: 150,
+                    align: 'center'
+                }
             ],
         }
     },
+    computed: {
+        ...mapGetters('AuthModule', ['isAdmin'])
+    },
     methods: {
+        ...mapActions('UserModule',['update']),
         // Make member
-        makeMember(){
+        makeMember(i = 0){
+            let id = i !== 0 ? i : this.updateList
             let formdata = {
-                id: this.updateList,
+                id: id,
                 status: 'member'
             }
             // push to axios
@@ -78,13 +146,50 @@ export default {
                 })
             })
         },
+        // Update member
+        makeAdmin(i = 0){
+            let id = i 
+            let data = {
+                role: 1
+            }
+            // Update
+            this.update({id, data}).then(()=>{
+                this.$Notice.info({
+                    title: 'Success'
+                })
+            }).catch(()=>{
+                this.$Notice.error({
+                    title: 'Unsuccesful'
+                })
+            })
+
+        },
+        // Action
+        action(e, i){
+            switch (e) {
+                case 'admin':
+                    this.makeAdmin(i)
+                    break;
+                case 'approve':
+                    this.makeMember(i)
+                    break;
+                case 'csv':
+                    this.downloadCSV()
+                    break;
+                case 'remove':
+                    this.deleteUser(i)
+                    break;
+            
+                default:
+                    break;
+            }
+        },
         // Select and update status
         addToList (val) {
             const id = val.map((resp)=>{
                 return resp.id
             })
            this.updateList = id
-           console.log(this.updateList)
         },
         removeFromList(val){
             const id = val.map((resp)=>{

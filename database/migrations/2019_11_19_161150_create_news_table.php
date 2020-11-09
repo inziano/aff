@@ -20,6 +20,7 @@ class CreateNewsTable extends Migration
             $table->json('tags')->nullable();
             $table->string('category')->nullable();
             $table->boolean('published')->default(0);
+            $table->longText('image_url')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

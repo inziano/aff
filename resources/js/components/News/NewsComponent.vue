@@ -12,39 +12,20 @@
                     </p> 
                 </div>
                 <div class="w-5/6 flex content-center">
-                    <div class="w-10/24 p-2 ml-3">
-                        <Icon type="ios-search-outline" size="18"/>
-                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
-                    </div>
+                    <search class="w-10/24" :module-name="moduleName" @items-filtered="filtered = true"></search>
                     <div class="flex-grow content-center h-full p-2">
-                        <Dropdown class="ml-4" trigger="click" style="" @on-click="filterMethod('year',$event)">
-                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
-                                <Icon type="ios-calendar-outline" size="20"></Icon>
-                                Year
-                            </a>
-                            <DropdownMenu slot="list" style="height: 100px; overflow-y:scroll;">
-                                <DropdownItem v-for="yr in years" :key="yr" :name="yr">{{yr}}</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                        <filter-a class="ml-4" :module-name="moduleName" :filter-items="years" :filter-type="typeA" @items-filtered="filtered = true" >
+                            <Icon type="ios-calendar-outline" size="16"></Icon>
+                        </filter-a>
                         <a @click="clearFilters()" v-if="filtered" size="small" type="text" class="ml-4 p-0 text-gray-900 focus:text-gray-900 hover:border-0 hover:text-gray-900 active:border-0 active:text-gray-900">
                             <Icon type="ios-close" size="20"></Icon>
                             Clear Filters
                         </a>
-                        <!-- <Dropdown class="ml-4" trigger="click" style="">
-                            <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
-                                <Icon type="ios-book-outline" size="20"></Icon>
-                                Topic
-                            </a>
-                            <DropdownMenu slot="list">
-                                <DropdownItem></DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown> -->
-
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
-                        <Button icon="ios-add" @click="newsModal = true">
-                            New
-                        </Button>
+                        <modal-btn @modalbtn-clicked="newsModal = true">
+                            New Article
+                        </modal-btn>
                     </div>  
                 </div>
                
@@ -59,14 +40,7 @@
                     </li>
                 </div>
                 <div class="w-auto flex content-center">
-                    <div class="m-2 flex flex-wrap">
-                        <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
-                            {{newsstats.articles}}
-                        </p>
-                        <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
-                            Articles
-                        </p>
-                    </div>
+                    <stats :figure="newsstats.articles" :title="statsA"></stats>
                 </div>       
             </div>  
             <div class="w-full h-full" v-if="news.length">
@@ -76,8 +50,8 @@
                 <div class="w-full" v-if="list">
                     <news-table :news = news ></news-table>
                 </div>
-                <div class="w-full flex p-0 mt-5 mb-5 text-center">
-                    <Page class="mx-auto" :current="newsMeta.current_page" :total="newsMeta.total" :page-size="newsMeta.per_page" @on-change="goToPage" />
+                <div class="w-full m-2 p-2 flex justify-center">
+                    <pagination :curr = meta.curr :total = meta.total :size = meta.per_page :module-name="moduleName" ></pagination>
                 </div>
             </div>
             <div class="w-full h-full" v-else>
@@ -91,16 +65,26 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import NewsForm from './NewsFormComponent'
 import NewsListItem from './NewsListItemComponent'
 import NewsTable from './NewsTableComponent'
+import Pagination from '../Widgets/PaginationComponent'
+import Search from '../Widgets/SearchComponent'
+import Filter from '../Widgets/FilterComponent'
+import Stats from '../Widgets/StatsComponent'
+import Modalbtn from '../Widgets/ModalbtnComponent'
 
 export default {
     components:{
         'news-form': NewsForm,
         'newslist-item': NewsListItem,
-        'news-table': NewsTable
+        'news-table': NewsTable,
+        'pagination': Pagination,
+        'search': Search,
+        'filter-a': Filter,
+        'stats': Stats,
+        'modal-btn': Modalbtn,
     },
     data(){
         return{
@@ -109,14 +93,17 @@ export default {
             updateList: [],
             searchTerm: '',
             filtered: false,
-            newsMeta: '',
-            newsData: '',
             newsstats: '',
+            typeA: 'year',
+            statsA: 'articles',
+            moduleName: 'NewsModule'
         }
     },
     computed: {
         // store values
-        ...mapState(['news','current_user']),
+        ...mapGetters('AuthModule',['current_user']),
+        // Members from vuex
+        ...mapGetters('NewsModule',['news', 'meta','links']),
         // Years
         years(){
             const year = new Date().getFullYear()
@@ -146,7 +133,7 @@ export default {
     },
   
     methods: {
-        ...mapActions(['newArticle','filterArticles','fetchNews']),
+        ...mapActions('NewsModule',['newArticle','filter','fetch']),
         // Publish
         publishArticle(){
             let formdata = {
@@ -170,20 +157,6 @@ export default {
                 })
             })
         },
-
-        // goToPage
-        goToPage(number){
-            axios.get(this.newsMeta.path + '?page=' + number).then((response)=>{
-                // response
-                this.news = response.data.data
-                this.newsMeta = response.data.meta
-                // Pub data
-            }).catch((error)=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
         // Cancel
         closeModal(){
             this.newsModal = false
@@ -199,39 +172,8 @@ export default {
         },
           // clear all filters
         clearFilters(){
-            this.fetchNews().then(()=>{
+            this.fetch().then(()=>{
                 this.filtered = false
-            }).catch(()=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
-        // Clear filter
-        filterMethod(criteria, term) {
-            let filter = {
-                criteria: criteria,
-                term: term
-            }
-            // call route based on criteria
-            this.filterArticles(filter).then(()=>{
-                this.filtered = true
-            }).catch(()=>{
-                this.$Notice.error({
-                    title: 'Nothing found'
-                })
-            })
-        },
-        // Search
-        onSearch() {
-             // 
-            let filter = {
-                criteria: 'search',
-                term: this.searchTerm
-            }
-            // Search
-           this.filterArticles(filter).then(()=>{
-                this.filtered = true
             }).catch(()=>{
                 this.$Notice.error({
                     title: 'Nothing found'

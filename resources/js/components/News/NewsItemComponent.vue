@@ -1,6 +1,6 @@
 <template>
     <div>
-       <li @click="viewArticle(article.id)" class="w-full list-none " style="min-height: 400px; background: url(https://picsum.photos/3000/400) no-repeat">
+       <li @click="viewArticle(article.id)" class="w-full list-none " style="min-height: 400px; background-color: teal; background-image: url(article.image_url) no-repeat">
             <div class="relative w-full opacity-50 bg-black p-5" style="min-height: 400px;">
                 <p class="relative ml-20 mt-10 text-3xl font-thin subpixel-antialiased text-white capitalize" style="top: 30%">
                     {{article.title}}

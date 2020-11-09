@@ -50,7 +50,7 @@
             </Row>
             <Row :gutter="16">
                 <Col span="24">
-                    <FormItem label="tags">
+                    <FormItem label="Tags">
                         <Select v-model="pubForm.tags" filterable multiple allow-create>
                             <Option v-for="tag in tags" :value="tag" :key="tag">{{ tag }}</Option>
                         </Select>
@@ -83,10 +83,10 @@
 
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
     computed: {
-        ...mapState(['current_user'])
+        ...mapGetters('AuthModule',['current_user'])
     },
     data(){
         return {

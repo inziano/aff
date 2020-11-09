@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
+
 
 class Gallery extends JsonResource
 {
@@ -14,6 +16,13 @@ class Gallery extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'title' => $this->title,
+            'album' => $this->album,
+            'date' => $this->date,
+            'tags' => $this->tags,
+            'imgpath' => $this->imgpath,
+            'img' => Storage::cloud()->url($this->imgpath)
+        ];
     }
 }

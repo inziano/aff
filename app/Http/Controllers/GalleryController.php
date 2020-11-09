@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Gallery;
+use App\Filters\GalleryFilters;
 use Illuminate\Http\Request;
 use App\Http\Resources\Gallery as GalleryResource;
 use App\Repositories\GalleryRepository;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon; 
+
 
 class GalleryController extends Controller
 {
@@ -20,10 +23,10 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, GalleryFilters $filters)
     {
         //
-        return GalleryResource::collection(Gallery::all()->paginate());
+        return GalleryResource::collection(Gallery::filter($filters)->paginate(12));
     }
 
     /**
@@ -43,10 +46,16 @@ class GalleryController extends Controller
         // Push to storage
         $title = $request->input('title');
         $album = $request->input('album');
+
+        // Publication year
+        $newdate = Carbon::parse(strtotime($request->input('date')))->toDate();
+        
         // Store file
-        $imgpath = Storage::cloud()->putFileAs('gallery/'.$album,$request->file('image'), $title.'.'.$request->file('image')->extension());
+        $imgpath = Storage::cloud()->putFileAs('gallery',$request->file('image'), $title);
 
         $request->request->add(['imgpath'=> $imgpath]);
+
+        $request->merge(['date'=>$newdate]);
 
         // Store
         $gallery = $this->repo->createGallery($request);

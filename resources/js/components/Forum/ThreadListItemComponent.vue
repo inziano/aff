@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-white px-4 py-3 mb-2 flex" @click="viewThread(thread.id)">
-        <div class="w-3/5">
-            <div class="">
+    <div class="bg-white px-4 py-3 mb-2 flex">
+        <div class="w-3/5" @click="viewThread(thread.id)">
+            <div class="" >
                 <p class="font-serif font-medium text-gray-700 tracking-wide text-xl">
                     {{thread.subject}}
                 </p>
@@ -34,11 +34,8 @@
                 <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
                     <Icon type="ios-chatbubbles-outline" /> {{thread.comments}}
                 </li>
-                <!-- <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider">
-                    <a class="text-gray-800" @click="viewThread(thread.id)">View</a>
-                </li> -->
-                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" v-if="thread.user_id === current_user.id">
-                <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteItem(thread.id)"> Remove </a>
+                <li class="m-2 p-2 font-medium font-sans text-gray-700 tracking-wider" v-if="thread.user_id == user.id || isAdmin">
+                    <a class="font-sm tracking-wide font-medium text-red-700" @click="deleteItem(thread.id)">  <Icon type="ios-trash"/> </a>
                 </li>
             </ul>
         </div>
@@ -48,21 +45,27 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
-    props: [ 'thread' ],
+    props: [ 'thread' , 'user'],
     computed: {
-        ...mapState(['current_user']),
+        ...mapGetters('AuthModule', ['isAdmin'])
     },
     methods: {
+        ...mapActions('ThreadModule',['update', 'delete']),
         // view thread
         viewThread(id){
+            let data = {
+                views: 1
+            }
+            // Update
+            this.update({id, data})
             this.$router.push({name: 'thread', params:{id}})
         },
         // Emit methods when clicked
         deleteItem( id ){
             // Delete item
-            this.$store.dispatch('deleteThread', id)
+            this.delete(id)
         },
         // Like thread
         likeItem( id ){
@@ -70,9 +73,8 @@ export default {
                 likes: 1
             }
             // Update
-            this.$store.dispatch('updateThread', {id, data})
-        },
-
+            this.update({id, data})
+        }
     }
 }
 </script>
