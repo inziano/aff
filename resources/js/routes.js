@@ -12,7 +12,7 @@ const UpdatePassword = () => import(/* webpackChunkName: "group-auth" */'./compo
 const VerifyEmail  = () => import(/* webpackChunkName: "group-auth" */'./components/VerifyEmailComponent')
 
 // Profile Components
-const Profile = () => import(/* webpackChunkName: "group-profile" */'./components/User/ProfileComponent')
+const ProfileSettings = () => import(/* webpackChunkName: "group-profile" */ './components/User/ProfileSettingsComponent')
 const ProfilesView = ()=> import(/* webpackChunkName: "group-profile" */'./components/User/ProfilesViewComponent')
 const Invitation = () => import(/* webpackChunkName: "group-profile" */'./components/User/InvitationComponent')
 
@@ -38,11 +38,16 @@ const Article = () => import(/* webpackChunkName: "group-news" */'./components/N
 const Event = () => import(/* webpackChunkName: "group-events" */ './components/Events/EventsViewComponent')
 const EventDetails = () => import(/* webpackChunkName: "group-events" */'./components/Events/EventDetailsComponent')
 
+// Message Components
+const Message = () => import(/* webpackChunkName: "group-messages" */ './components/Messages/MessageComponent')
+
+
+
 const Gallery = () => import('./components/Gallery/GalleryComponent')
-const Message = () => import('./components/MessageComponent')
 
 import Home from './components/HomeComponent';
 import Login from './components/LoginComponent';
+
 
 // store
 import store from './store'
@@ -108,7 +113,7 @@ const router =  new Router({
         },
         {
             path: '/profile',
-            component: Profile,
+            component: ProfileSettings,
             name: 'profile',
             meta: {
                 requiresAuth: true,
@@ -120,6 +125,7 @@ const router =  new Router({
             name: 'publications',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -128,6 +134,7 @@ const router =  new Router({
             name: 'publicationview',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -136,6 +143,7 @@ const router =  new Router({
             name: 'gallery',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -144,6 +152,7 @@ const router =  new Router({
             name: 'message',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -160,6 +169,7 @@ const router =  new Router({
             name: 'profilesviews',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -168,6 +178,7 @@ const router =  new Router({
             name: 'event',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -176,6 +187,7 @@ const router =  new Router({
             name: 'eventdetail',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -184,6 +196,7 @@ const router =  new Router({
             name: 'vacancy',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -192,6 +205,7 @@ const router =  new Router({
             name: 'vacancyapplication',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -200,6 +214,7 @@ const router =  new Router({
             name: 'forum',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -208,6 +223,7 @@ const router =  new Router({
             name: 'thread',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -216,6 +232,7 @@ const router =  new Router({
             name: 'topic',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -224,6 +241,7 @@ const router =  new Router({
             name: 'news',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         },
         {
@@ -232,6 +250,7 @@ const router =  new Router({
             name: 'article',
             meta: {
                 requiresAuth: true,
+                requiresMember: true,
             },
         }
     ]
@@ -244,6 +263,13 @@ function isAuthenticated(){
 
     // Value
     return !Object.keys(isAuth).length == 0
+}
+
+function isMember(){
+    // member
+    let isMember = store.state.AuthModule.currentUser.status == 'Member' ? true : false
+    // 
+    return isMember
 }
 
 
@@ -259,6 +285,25 @@ router.beforeEach((to, from, next)=>{
         } else {
             // not authenticated, redirect to login
             next({name: 'login'})
+        }
+
+    } else {
+       next()
+    }
+})  
+
+//  Logged in
+router.beforeEach((to, from, next)=>{
+    // Requires auth
+    let authed = to.matched.some( record => record.meta.requiresMember )
+    // Check if route requires auth
+    if ( authed ) {
+        // Is authenticated
+        if ( isMember() ){
+            next()
+        } else {
+            // not authenticated, redirect to login
+            next({name: 'home'})
         }
 
     } else {

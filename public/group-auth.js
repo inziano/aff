@@ -453,7 +453,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex w-full h-full pt-20 bg-gray-100" }, [
+  return _c("div", { staticClass: "flex w-full h-screen pt-20 bg-gray-100" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -491,7 +491,7 @@ var render = function() {
                       { attrs: { label: "Username" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "Username" },
+                          attrs: { size: "large", placeholder: "Username" },
                           model: {
                             value: _vm.registerForm.username,
                             callback: function($$v) {
@@ -523,7 +523,10 @@ var render = function() {
                       { attrs: { label: "Email" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "email@address.org" },
+                          attrs: {
+                            size: "large",
+                            placeholder: "email@address.org"
+                          },
                           model: {
                             value: _vm.registerForm.email,
                             callback: function($$v) {
@@ -555,7 +558,11 @@ var render = function() {
                       { attrs: { label: "Password" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "password", type: "password" },
+                          attrs: {
+                            size: "large",
+                            placeholder: "password",
+                            type: "password"
+                          },
                           model: {
                             value: _vm.registerForm.password,
                             callback: function($$v) {
@@ -589,6 +596,7 @@ var render = function() {
                           [
                             _c("Input", {
                               attrs: {
+                                size: "large",
                                 placeholder: "confirm password",
                                 type: "password"
                               },
@@ -760,7 +768,10 @@ var render = function() {
                       { attrs: { label: "Email" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "email@address.org" },
+                          attrs: {
+                            size: "large",
+                            placeholder: "email@address.org"
+                          },
                           model: {
                             value: _vm.resetForm.email,
                             callback: function($$v) {
@@ -923,7 +934,11 @@ var render = function() {
                       { attrs: { label: "Password" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "password", type: "password" },
+                          attrs: {
+                            size: "large",
+                            placeholder: "password",
+                            type: "password"
+                          },
                           model: {
                             value: _vm.updateForm.password,
                             callback: function($$v) {
@@ -957,6 +972,7 @@ var render = function() {
                           [
                             _c("Input", {
                               attrs: {
+                                size: "large",
                                 placeholder: "confirm password",
                                 type: "password"
                               },
@@ -1128,7 +1144,10 @@ var render = function() {
                       { attrs: { label: "Verification Code" } },
                       [
                         _c("Input", {
-                          attrs: { placeholder: "Enter code here" },
+                          attrs: {
+                            size: "large",
+                            placeholder: "Enter code here"
+                          },
                           model: {
                             value: _vm.confirmForm.token,
                             callback: function($$v) {

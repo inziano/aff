@@ -16,7 +16,7 @@
                 <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Verification Code">
-                            <Input v-model="confirmForm.token" placeholder="Enter code here"> </Input>
+                            <Input size="large" v-model="confirmForm.token" placeholder="Enter code here"> </Input>
                         </FormItem>
                     </Col>
                 </Row>

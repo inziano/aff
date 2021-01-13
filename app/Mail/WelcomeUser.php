@@ -31,7 +31,6 @@ class WelcomeUser extends Mailable
      */
     public function build()
     {
-        return $this->from('no-reply@aff.org')
-                    ->view('emails.welcomeemail');
+        return $this->view('emails.welcomeemail');
     }
 }

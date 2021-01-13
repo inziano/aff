@@ -37,7 +37,7 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //check request
+        //Check request
         $this->validate(request(),[
             'title'=>'required',
             'date'=>'required',

@@ -41,20 +41,15 @@ class EducationController extends Controller
             'field_of_study'=> 'string',
             'description'=> 'string'
         ]);
+    
+        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
 
-        foreach( $request->all() as $req ){
+        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
 
-            $r = new Request((array)$req);
+        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
 
-            $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
-
-            $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
-
-            $r->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
-
-            $edu = $this->repo->createEducation($r);
-        }
-       
+        $edu = $this->repo->createEducation($request);
+      
         return $edu;
     }
 
@@ -90,9 +85,16 @@ class EducationController extends Controller
      * @param  \App\Education  $education
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Education $education)
+    public function update(Request $request,Education $education )
     {
         //
+        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+
+        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+
+        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
+
+        $this->repo->updateEducation($education,$request);
     }
 
     /**
@@ -104,5 +106,6 @@ class EducationController extends Controller
     public function destroy(Education $education)
     {
         //
+        $this->repo->deleteEducation($education);
     }
 }

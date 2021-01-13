@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'aff@intranet.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'affintranet@kensters.com'),
         'name' => env('MAIL_FROM_NAME', 'Africa Forest Forum'),
     ],
 

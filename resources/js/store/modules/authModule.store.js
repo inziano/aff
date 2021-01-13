@@ -88,6 +88,8 @@ export default {
         isAuthenticated: state => !Object.keys(state.currentUser).length == 0,
         // Is admin
         isAdmin: state => state.currentUser.roles.map( right => { return right.name == 'Administrator' ? true : false } ).shift(),
+        // Is member
+        isMember: state => state.currentUser.status == 'Member' ? true : false,
         // Status
         authStatus: state => state.status,
         // Current user

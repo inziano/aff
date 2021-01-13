@@ -56,7 +56,7 @@
                 <div class="w-5/6 flex content-center">
                     <div class="w-10/24 p-2 ml-3">
                         <Icon type="ios-search-outline" size="18"/>
-                        <input v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
+                        <Input size="large" v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
                     </div>
                     <div class="flex-grow content-center h-full p-2">
                        

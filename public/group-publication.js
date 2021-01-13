@@ -549,6 +549,7 @@ var render = function() {
                     [
                       _c("Input", {
                         attrs: {
+                          size: "large",
                           type: "text",
                           placeholder: "Publication Title"
                         },
@@ -609,7 +610,11 @@ var render = function() {
                     { attrs: { label: "Author" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Author" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Author"
+                        },
                         model: {
                           value: _vm.pubForm.author,
                           callback: function($$v) {
@@ -634,7 +639,11 @@ var render = function() {
                     { attrs: { label: "Publisher" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Publisher" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Publisher"
+                        },
                         model: {
                           value: _vm.pubForm.publisher,
                           callback: function($$v) {
@@ -666,7 +675,11 @@ var render = function() {
                     { attrs: { label: "Abstract" } },
                     [
                       _c("Input", {
-                        attrs: { type: "textarea", placeholder: "Abstract" },
+                        attrs: {
+                          size: "large",
+                          type: "textarea",
+                          placeholder: "Abstract"
+                        },
                         model: {
                           value: _vm.pubForm.abstract,
                           callback: function($$v) {
@@ -1019,7 +1032,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("Button", { attrs: { type: "" } }, [
                     _vm._v(
-                      "\n                        View\n                    "
+                      "\n                        Download\n                    "
                     )
                   ])
                 ],

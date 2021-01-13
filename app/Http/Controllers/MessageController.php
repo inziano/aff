@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Message;
 use App\Filters\MessageFilters;
 use Illuminate\Http\Request;
+use App\Events\MessageReplied;
+use App\Notifications\NewMessageNotification;
 use App\Http\Resources\Message as MessageResource;
 use App\Repositories\MessageRepository;
+use App\User; 
 
 class MessageController extends Controller
 {
@@ -20,10 +23,10 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, MessageFilters $filters)
     {
         //
-        return MessageResource::collection(Message::filter($filters)->all());
+        return MessageResource::collection(Message::filter($filters)->paginate(25));
     }
 
     /**
@@ -36,21 +39,24 @@ class MessageController extends Controller
     {
         //Validate request
         $this->validate(request(),[
-            'subject' => 'required',
-            'body' => 'required',
-            'recepient' => 'required'
+            'content' => 'required',
+            'recipient' => 'required'
         ]);
-
-        // Json encode array
-        $recepient = json_encode($request->input('recepient'));
-
-        $request->merge(['recepient'=> $recepient]);
 
         // Push to repo
         $msg = $this->repo->createMessage($request);
 
+        // Get recipient
+        $rec = User::find($request->recipient);
+
+        $sen = User::find($request->sender);
+
+        // Send notification
+        $rec->notify( new NewMessageNotification( $sen));
+
         // Event here
-        
+        event( new MessageReplied($msg) );
+
         return $msg;
     }
 

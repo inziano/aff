@@ -26,9 +26,9 @@
                         </a>
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
-                        <modal-btn @modalbtn-clicked="vacancyModal = true">
+                        <!-- <modal-btn @modalbtn-clicked="vacancyModal = true">
                             New
-                        </modal-btn>
+                        </modal-btn> -->
                     </div>  
                 </div>
                

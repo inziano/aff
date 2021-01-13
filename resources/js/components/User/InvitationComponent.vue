@@ -8,21 +8,21 @@
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Email">
-                        <Input type="text" v-model="invitationForm.email" placeholder="Email addresses"></Input>
+                        <Input size="large" type="text" v-model="invitationForm.email" placeholder="Email addresses"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Subject">
-                        <Input type="text" v-model="invitationForm.subject" placeholder="Subject" disabled></Input>
+                        <Input size="large" type="text" v-model="invitationForm.subject" placeholder="Subject" disabled></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Message">
-                        <Input type="textarea" v-model="invitationForm.message" placeholder="Message"></Input>
+                        <Input size="large" type="textarea" v-model="invitationForm.message" placeholder="Message"></Input>
                     </FormItem>
                 </Col>
             </Row>

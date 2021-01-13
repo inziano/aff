@@ -967,23 +967,15 @@ var render = function() {
                   attrs: { type: "ios-search-outline", size: "18" }
                 }),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.searchTerm,
-                      expression: "searchTerm"
-                    }
-                  ],
+                _c("Input", {
                   staticClass:
                     "appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white",
                   attrs: {
+                    size: "large",
                     prefix: "ios-search-outline",
                     placeholder: "Search",
                     type: "text"
                   },
-                  domProps: { value: _vm.searchTerm },
                   on: {
                     keyup: function($event) {
                       if (
@@ -993,13 +985,14 @@ var render = function() {
                         return null
                       }
                       return _vm.onSearch($event)
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.searchTerm = $event.target.value
                     }
+                  },
+                  model: {
+                    value: _vm.searchTerm,
+                    callback: function($$v) {
+                      _vm.searchTerm = $$v
+                    },
+                    expression: "searchTerm"
                   }
                 })
               ],
@@ -1478,28 +1471,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "w-2/24 content-center h-full p-2" },
-                [
-                  _c(
-                    "modal-btn",
-                    {
-                      on: {
-                        "modalbtn-clicked": function($event) {
-                          _vm.vacancyModal = true
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        New\n                    "
-                      )
-                    ]
-                  )
-                ],
-                1
-              )
+              _c("div", { staticClass: "w-2/24 content-center h-full p-2" })
             ],
             1
           )
@@ -1721,7 +1693,11 @@ var render = function() {
                     { attrs: { label: "Title" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Title" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Title"
+                        },
                         model: {
                           value: _vm.vacancyForm.title,
                           callback: function($$v) {
@@ -1780,6 +1756,7 @@ var render = function() {
                     [
                       _c("Input", {
                         attrs: {
+                          size: "large",
                           type: "number",
                           placeholder: "Number of Positions"
                         }
@@ -1807,7 +1784,11 @@ var render = function() {
                     { attrs: { label: "Location" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Location" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Location"
+                        },
                         model: {
                           value: _vm.vacancyForm.location,
                           callback: function($$v) {

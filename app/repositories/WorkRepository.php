@@ -22,6 +22,16 @@ class WorkRepository {
     }
 
     /**
+     * updateWork
+     *
+     * @param mixed $work
+     * @return void
+     */
+    public function updateWork( Work $work, Request $request)
+    {
+        return $work->update( $request->all());
+    }
+    /**
      * findWork
      *
      * @param mixed $work
@@ -33,5 +43,16 @@ class WorkRepository {
         $work = Work::where('user_id', $work)->get();
 
         return $work;
+    }
+
+    /**
+     * deleteWork
+     *
+     * @param mixed $work
+     * @return void
+     */
+    public function deleteWork( Work $work )
+    {
+        return $work->delete();
     }
 }

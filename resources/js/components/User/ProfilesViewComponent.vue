@@ -62,7 +62,7 @@
                 </div>       
             </div>
             <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list && !charts">
-               <profilelist-item class="sm:w-1/2 md:w-1/3 lg:w-1/4" v-for="member in profiles" :key="member.id" :member = member ></profilelist-item>
+               <profilelist-item class="w-full md:w-1/2 lg:w-1/4" v-for="member in profiles" :key="member.id" :member = member ></profilelist-item>
             </div>
             <div class="w-full h-auto p-2 bg-gray-100" v-if="list">
                <profiles-table :members = profiles ></profiles-table>
@@ -122,11 +122,12 @@ export default {
     },
     computed: {
         // Members from vuex
-        ...mapGetters('UserModule',['members', 'meta','links']),
+        ...mapGetters('UserModule',['meta','links']),
         ...mapGetters('AnalyticsModule', ['memberstats']),
+        ...mapState('UserModule',['members']),
 
         profiles(){
-            return this.members
+            return this.members.data
         },
         years(){
             const year = new Date().getFullYear()
@@ -153,11 +154,6 @@ export default {
             this.members = e.users
             // console.log(e)
         })
-        // // Stats
-        // Echo.channel('stats').listen('UserStats', (e)=>{
-        //     this.memberstats = e.userstats
-        //     // console.log(e)
-        // })
     },
     methods: {
         ...mapActions('UserModule',['fetch']),

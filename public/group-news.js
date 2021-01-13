@@ -463,9 +463,11 @@ __webpack_require__.r(__webpack_exports__);
         align: 'center'
       }, {
         title: 'ID',
+        width: 60,
         key: 'id'
       }, {
         title: 'Title',
+        width: 1000,
         key: 'title'
       }, {
         title: 'Posted',
@@ -499,6 +501,11 @@ var render = function() {
     "div",
     { staticClass: "w-full h-full" },
     [
+      _c("div", {
+        staticClass: "w-full h-48",
+        style: { "background-image": "url(" + _vm.article.image_url + ")" }
+      }),
+      _vm._v(" "),
       _c(
         "ul",
         { staticClass: "w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0" },
@@ -558,7 +565,7 @@ var render = function() {
                 staticClass:
                   "mt-6 w-2/3 text-lg tracking-wide font-sans font-normal"
               },
-              [_vm._v("\n            " + _vm._s(article.body) + "\n        ")]
+              [_c("span", { domProps: { innerHTML: _vm._s(article.body) } })]
             )
           ]
         )
@@ -692,28 +699,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "w-2/24 content-center h-full p-2" },
-                [
-                  _c(
-                    "modal-btn",
-                    {
-                      on: {
-                        "modalbtn-clicked": function($event) {
-                          _vm.newsModal = true
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        New Article\n                    "
-                      )
-                    ]
-                  )
-                ],
-                1
-              )
+              _c("div", { staticClass: "w-2/24 content-center h-full p-2" })
             ],
             1
           )
@@ -784,7 +770,7 @@ var render = function() {
                     _vm._l(_vm.news, function(article) {
                       return _c("newslist-item", {
                         key: article.id,
-                        staticClass: "w-1/4",
+                        staticStyle: { width: "30%" },
                         attrs: { article: article }
                       })
                     }),
@@ -911,7 +897,11 @@ var render = function() {
                     { attrs: { label: "Title" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "News Title" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "News Title"
+                        },
                         model: {
                           value: _vm.newsForm.title,
                           callback: function($$v) {

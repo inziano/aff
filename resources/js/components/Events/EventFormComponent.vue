@@ -18,21 +18,21 @@
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Event Name">
-                        <Input v-model="eventForm.name" type="text" placeholder="Event Name"></Input>
+                        <Input size="large" v-model="eventForm.name" type="text" placeholder="Event Name"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Event Location">
-                        <Input v-model="eventForm.location" type="text" placeholder="Event Location"></Input>
+                        <Input size="large" v-model="eventForm.location" type="text" placeholder="Event Location"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Event Description">
-                        <Input v-model="eventForm.description" type="textarea" placeholder="Event Description"></Input>
+                        <Input size="large" v-model="eventForm.description" type="textarea" placeholder="Event Description"></Input>
                     </FormItem>
                 </Col>
             </Row>

@@ -17,6 +17,7 @@ class CreateTopicsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description');
+            $table->boolean('public')->default(true);
             $table->timestamps();
         });
     }

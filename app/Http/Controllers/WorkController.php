@@ -42,18 +42,13 @@ class WorkController extends Controller
             'enddate'=> 'date'
         ]);
 
-        foreach( $request->all() as $req ){
+        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
 
-            $r = new Request((array)$req);
+        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
 
-            $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
 
-            $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
-
-            $r->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
-
-            $wrk = $this->repo->createWork($r);
-        }
+        $wrk = $this->repo->createWork($request);
 
         return $wrk;
     }
@@ -81,7 +76,13 @@ class WorkController extends Controller
      */
     public function update(Request $request, Work $work)
     {
+        $newstartdate = Carbon::parse($request->input('startdate'))->toDateTimeString();
+
+        $newenddate = Carbon::parse($request->input('enddate'))->toDateTimeString();
+
+        $request->merge(['startdate'=>$newstartdate, 'enddate'=>$newenddate]);
         //
+        $this->repo->updateWork($work, $request);
     }
 
     /**
@@ -93,5 +94,6 @@ class WorkController extends Controller
     public function destroy(Work $work)
     {
         //
+        $this->repo->deleteWork($work);
     }
 }

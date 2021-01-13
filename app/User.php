@@ -26,7 +26,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'approval_date'
+        'approval_date',
+        'image'
     ];
 
     /**
@@ -85,5 +86,25 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    // Topics a user is subscribed to
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'subscriptions');
+    }
+
+    // User is administrator
+    public function isAdministrator()
+    {
+        foreach ( $this->roles()->get() as $role)
+        {
+            if ( $role->id == 1) 
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -17,7 +17,7 @@ class CreateNewsTable extends Migration
             $table->bigIncrements('id');
             $table->text('title');
             $table->text('body');
-            $table->json('tags')->nullable();
+            $table->text('tags')->nullable();
             $table->string('category')->nullable();
             $table->boolean('published')->default(0);
             $table->longText('image_url')->nullable();

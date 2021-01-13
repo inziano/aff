@@ -99,7 +99,8 @@ class BioController extends Controller
      */
     public function update(Request $request, Bio $bio)
     {
-        //
+        // 
+        $this->repo->updateBio($bio, $request);
     }
 
     /**

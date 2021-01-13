@@ -8,7 +8,7 @@
             <Row :gutter="16">
                 <Col span="16">
                     <FormItem label="Title">
-                        <Input type="text" v-model="pubForm.title" placeholder="Publication Title"></Input>
+                        <Input size="large" type="text" v-model="pubForm.title" placeholder="Publication Title"></Input>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -20,19 +20,19 @@
             <Row :gutter="16">
                 <Col span="12">
                     <FormItem label="Author">
-                        <Input type="text" v-model="pubForm.author" placeholder="Author"></Input>
+                        <Input size="large" type="text" v-model="pubForm.author" placeholder="Author"></Input>
                     </FormItem>
                 </Col>
                 <Col span="12">
                     <FormItem label="Publisher">
-                        <Input type="text" v-model="pubForm.publisher" placeholder="Publisher"></Input>
+                        <Input size="large" type="text" v-model="pubForm.publisher" placeholder="Publisher"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Abstract">
-                        <Input type="textarea" v-model="pubForm.abstract" placeholder="Abstract"></Input>
+                        <Input size="large" type="textarea" v-model="pubForm.abstract" placeholder="Abstract"></Input>
                     </FormItem>
                 </Col>
             </Row>

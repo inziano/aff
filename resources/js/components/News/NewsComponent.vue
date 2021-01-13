@@ -23,9 +23,9 @@
                         </a>
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
-                        <modal-btn @modalbtn-clicked="newsModal = true">
+                        <!-- <modal-btn @modalbtn-clicked="newsModal = true">
                             New Article
-                        </modal-btn>
+                        </modal-btn> -->
                     </div>  
                 </div>
                
@@ -45,7 +45,7 @@
             </div>  
             <div class="w-full h-full" v-if="news.length">
                 <div class="w-full flex flex-wrap p-2 bg-gray-200 justify-center" v-if="!list">
-                   <newslist-item class="w-1/4" v-for="article in news" :key="article.id"  :article = article ></newslist-item>
+                   <newslist-item style="width: 30%" v-for="article in news" :key="article.id"  :article = article ></newslist-item>
                 </div>
                 <div class="w-full" v-if="list">
                     <news-table :news = news ></news-table>

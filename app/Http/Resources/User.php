@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Bio as BioResource;
 use App\Http\Resources\Work as WorkResource;
 use App\Http\Resources\Education as EducationResource;
@@ -30,7 +31,8 @@ class User extends JsonResource
             'work' => WorkResource::collection( Work::where('user_id',$this->id)->get()),
             'publications'=> $this->publication->count(),
             'rights' => $this->roles,
-            'status' => $this->status
+            'status' => $this->status,
+            'image' => is_null($this->image) ? null :  Storage::cloud()->url($this->image),
         ];
     }
 }

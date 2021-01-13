@@ -6,7 +6,7 @@
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Title">
-                        <Input v-model="vacancyForm.title" type="text" placeholder="Title"></Input>
+                        <Input size="large" v-model="vacancyForm.title" type="text" placeholder="Title"></Input>
                     </FormItem>
                 </Col>
             </Row>
@@ -18,14 +18,14 @@
                 </Col>
                 <Col span="12">
                     <FormItem label="Number of Positions">
-                        <Input type="number" placeholder="Number of Positions"></Input>
+                        <Input size="large" type="number" placeholder="Number of Positions"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Location">
-                        <Input  v-model="vacancyForm.location" type="text" placeholder="Location"></Input>
+                        <Input size="large"  v-model="vacancyForm.location" type="text" placeholder="Location"></Input>
                     </FormItem>
                 </Col>
             </Row>
@@ -33,7 +33,7 @@
                 <Col span="24">
                     <FormItem label="Description">
                         <quill  v-model="vacancyForm.description" :config="config" output="html"></quill>
-                        <!-- <Input  v-model="vacancyForm.description" type="textarea" placeholder="Description"></Input> -->
+                        <!-- <Input size="large"  v-model="vacancyForm.description" type="textarea" placeholder="Description"></Input> -->
                     </FormItem>
                 </Col>
             </Row>

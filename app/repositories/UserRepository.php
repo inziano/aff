@@ -32,6 +32,10 @@ class UserRepository {
     public function updateStatus(Request $request)
     {
         $ids = $request->input('id');
+
+        // make array if single
+        $ids = (is_array($ids)) ? $ids : array($ids);
+
         // Check if all users exist
         return User::whereIn('id', $ids)->update($request->only('status'));
     }
@@ -49,6 +53,7 @@ class UserRepository {
 
             return $user->roles()->attach( $roleid );
         } else {
+            // dd($user);
             return $user->update($request->all());
         }
         

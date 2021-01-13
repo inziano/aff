@@ -11,13 +11,18 @@ use App\Events\UserRegistered;
 use App\Events\SearchUsers;
 use App\Events\UserModified;
 use App\Events\PasswordReset;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 
 class UserController extends Controller
 {
+    use AuthenticatesUsers;
 
     public function __construct(UserRepository $repo)
     {
@@ -43,22 +48,28 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        // Check if account exists
-        if ( User::where('email',$request->input('email'))->exists() )
+        $credentials = $request->only('email', 'password');
+
+        // Attempt auth
+        if (Auth::attempt($credentials))
         {
-            // Get the user
-            $user = User::with('roles:name')->where('email', $request->input('email'))->first();
-            $userDets = UserResource::collection(User::where('email', $request->input('email'))->get());
-            
-            // Check password
-            $pwd= Hash::check($request->input('password'), $user->password) ? $user: \abort(400, 'Password mismatch');
+            $user = Auth::user();
 
-            return strval($pwd);
+            Auth::login( $user );
+            // $user = User::with('roles:name')->where('email', $request->input('email'))->first();
 
-        }else {
-            // abort
-            return abort(404,'User does not exist');
+            return $user;
         }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
     }
 
     /**
@@ -125,26 +136,47 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //Validate 
-        $this->validate(request(),[
-            'username'=> 'required',
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+        if ( $request->has('image') ) {
 
-        // Hash password
-        $pswd = Hash::make($request->input('password'));
+            $user = User::where('id', $request->id)->first();
+            
+            $title = 'title2';
+            // Store image to cloud
+            $imgpath = Storage::cloud()->putFileAs('profile', $request->file('image'), $title);
 
-        $request->merge(['password'=>$pswd]);
+            // Create new request
+            $req = new Request();
 
-        // Validation passes
-        $user = $this->repo->createUser($request);
+            $req->replace(['image'=> $imgpath]);
 
-        // Fire event
-        event( new UserRegistered($user));
 
-        // Return 
-        return User::with('roles:name')->where('email', $user->email)->first();
+            $this->repo->updateUser($user, $req);
+
+        } else {
+
+            //Validate 
+            $this->validate(request(),[
+                'username'=> 'required',
+                'email' => 'required',
+                'password' => 'required',
+            ]);
+
+            // Hash password
+            $pswd = Hash::make($request->input('password'));
+
+            $request->merge(['password'=>$pswd]);
+
+            // Validation passes
+            $user = $this->repo->createUser($request);
+
+            // Fire event
+            event( new UserRegistered($user));
+
+            // Return login user
+            return $this->login($request);
+            // return User::with('roles:name')->where('email', $user->email)->first();
+        }
+        
     }
 
     /**
@@ -161,24 +193,6 @@ class UserController extends Controller
         return $user;
     }
 
-      
-    /**
-     * search
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function search(Request $request)
-    {
-        $results = $this->repo->searchUsers($request->input('search'));
-
-        // TODO: Fail gracefully incase of error
-        // Fire event
-        event( new SearchUsers($results));
-
-        // 
-        return $results;
-    }
 
     public function statistics()
     {
@@ -210,21 +224,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // Password
-        if ( $request->has('password') ){
+        if ( $request->has('password')){
             // Hash password
             $pswd = Hash::make($request->input('password'));
-
+            // Merge
             $request->merge(['password'=>$pswd]);
 
-            // Update
             $this->repo->updateUser($user, $request);
 
-            return 'okay';
         } else {
-            $this->repo->updateUser($user, $request);
 
-            return 'okay';
+            $this->repo->updateUser($user, $request);
         }
     }
 

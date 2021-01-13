@@ -23,6 +23,10 @@ Route::get('stats', 'AnalyticsController@index');
 // Login route
 Route::post('user/login', 'UserController@login');
 
+// Login route
+Route::get('user/logout', 'UserController@logout');
+
+
 // Reset password
 Route::post('user/reset', 'UserController@resetPassword');
 
@@ -37,8 +41,8 @@ Route::get('publication/download/{id}','PublicationController@download');
 // User route
 Route::apiResource('user','UserController');
 
-Route::post('user/search', 'UserController@search');
-
+// User notifications
+Route::get('usernotification', 'UserNotificationController@index');
 
 // Education route
 Route::apiResource('education', 'EducationController');
@@ -52,8 +56,6 @@ Route::apiResource('work', 'WorkController');
 // Publication route
 Route::apiResource('publication', 'PublicationController');
 
-Route::post('publication/search', 'PublicationController@search');
-
 // Messages route
 Route::apiResource('message','MessageController');
 
@@ -63,15 +65,8 @@ Route::apiResource('invitation', 'InvitationController');
 // Event routes
 Route::apiResource('event', 'EventController');
 
-Route::post('event/search', 'EventController@search');
-
-
 // Thread routes
 Route::apiResource('thread', 'ThreadController');
-
-Route::post('thread/filter', 'ThreadController@filter');
-
-Route::post('thread/search', 'ThreadController@search');
 
 // Reply routes
 Route::apiResource('reply', 'ReplyController');
@@ -79,20 +74,18 @@ Route::apiResource('reply', 'ReplyController');
 // Topic routes
 Route::apiResource('topic', 'TopicController');
 
+Route::post('topic/subscribe/{id}', 'TopicController@subscribe');
+
+Route::post('topic/unsubscribe/{id}', 'TopicController@unsubscribe');
+
 // Vacancy routes
 Route::apiResource('vacancy', 'VacancyController');
-
-Route::post('vacancy/search', 'VacancyController@search');
 
 // Vacancy Application routes
 Route::apiResource('vacancyapplication', 'VacancyApplicationController');
 
-Route::post('vacancyapplication/search', 'VacancyApplicationController@search');
-
 // News routes
 Route::apiResource('news', 'NewsController');
-
-Route::post('news/search','NewsController@search');
 
 // Gallery
 Route::apiResource('gallery', 'GalleryController');

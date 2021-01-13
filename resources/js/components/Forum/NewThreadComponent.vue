@@ -14,7 +14,7 @@
         <Row :gutter="16">
             <Col span="24">
                 <FormItem label="Topic">
-                    <Input v-model="threadForm.subject" type="text" placeholder="Thread Title"></Input>
+                    <Input size="large" v-model="threadForm.subject" type="text" placeholder="Thread Title"></Input>
                 </FormItem>
             </Col>
         </Row>

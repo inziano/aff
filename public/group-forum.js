@@ -1507,7 +1507,11 @@ var render = function() {
                 { attrs: { label: "Topic" } },
                 [
                   _c("Input", {
-                    attrs: { type: "text", placeholder: "Thread Title" },
+                    attrs: {
+                      size: "large",
+                      type: "text",
+                      placeholder: "Thread Title"
+                    },
                     model: {
                       value: _vm.threadForm.subject,
                       callback: function($$v) {
@@ -2231,7 +2235,11 @@ var render = function() {
                     { attrs: { label: "Category" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Title" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Title"
+                        },
                         model: {
                           value: _vm.topicForm.title,
                           callback: function($$v) {
@@ -2263,7 +2271,11 @@ var render = function() {
                     { attrs: { label: "Topic" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Description" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Description"
+                        },
                         model: {
                           value: _vm.topicForm.description,
                           callback: function($$v) {

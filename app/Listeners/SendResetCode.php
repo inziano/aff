@@ -28,7 +28,6 @@ class SendResetCode
      */
     public function handle(PasswordReset $event)
     {
-        //
         Mail::to($event->user)->send(new ResetPassword($event->user, $event->resetcode));
     }
 }

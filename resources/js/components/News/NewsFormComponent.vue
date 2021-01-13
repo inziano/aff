@@ -6,7 +6,7 @@
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Title">
-                        <Input v-model="newsForm.title" type="text" placeholder="News Title"></Input>
+                        <Input size="large" v-model="newsForm.title" type="text" placeholder="News Title"></Input>
                     </FormItem>
                 </Col>
             </Row>

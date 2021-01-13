@@ -21,6 +21,17 @@ class BioRepository {
         return $bio;
     }
 
+    /**
+     * updateEducation
+     *
+     * @param mixed $Education
+     * @return void
+     */
+    public function updateBio( Bio $bio, Request $request)
+    {
+        return $bio->update( $request->all());
+    }
+
     public function findBio( $bio )
     {
         // Find bio

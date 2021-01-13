@@ -4,6 +4,7 @@
     "/group-auth.js": "/group-auth.js",
     "/group-events.js": "/group-events.js",
     "/group-forum.js": "/group-forum.js",
+    "/group-messages.js": "/group-messages.js",
     "/group-news.js": "/group-news.js",
     "/group-profile.js": "/group-profile.js",
     "/group-publication.js": "/group-publication.js",

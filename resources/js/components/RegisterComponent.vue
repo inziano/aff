@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full h-full pt-20 bg-gray-100">
+    <div class="flex w-full h-screen pt-20 bg-gray-100">
         <div class="w-1/3 ml-auto">
             <div class="bg-green-300 w-full bg-cover" style="height: 80%; background-image: url('/images/landing.jpg')">
 
@@ -14,28 +14,28 @@
                  <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Username">
-                            <Input v-model="registerForm.username" placeholder="Username"> </Input>
+                            <Input size="large" v-model="registerForm.username" placeholder="Username"> </Input>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Email">
-                            <Input v-model="registerForm.email" placeholder="email@address.org"> </Input>
+                            <Input size="large" v-model="registerForm.email" placeholder="email@address.org"> </Input>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Password">
-                            <Input v-model="registerForm.password" placeholder="password" type="password"> </Input>
+                            <Input size="large" v-model="registerForm.password" placeholder="password" type="password"> </Input>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="16" v-if="registerForm.password">
                     <Col span="24">
                         <FormItem label="Confirm Password">
-                            <Input v-model="confirmPassword" placeholder="confirm password" type="password" @input="validatePasswordMatch"> </Input>
+                            <Input size="large" v-model="confirmPassword" placeholder="confirm password" type="password" @input="validatePasswordMatch"> </Input>
     
                         </FormItem>
                     </Col>

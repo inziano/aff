@@ -36,6 +36,11 @@ class UserFilters extends QueryFilters
         return $this->builder->where('users.username','LIKE', "%.$term.%");
     }
 
+    public function user($term)
+    {
+        return $this->builder->where('users.id', '=', $term);
+    }
+
     public function email($term)
     {
         return $this->builder->where('users.email', 'LIKE', "%$term%");
@@ -61,11 +66,16 @@ class UserFilters extends QueryFilters
 
     public function gender($term)
     {
-        $users = DB::table('bios')->select('user_id')->where('gender','LIKE',"%$term%")->pluck('user_id');
+        $users = DB::table('bios')->select('user_id')->where('gender','=',"$term")->pluck('user_id');
 
         $users = $users->toArray();
 
         return $this->builder->whereIn('users.id', $users);
+    }
+
+    public function status($term)
+    {
+        return $this->builder->where('users.status', '=', $term)->latest();
     }
 
 }

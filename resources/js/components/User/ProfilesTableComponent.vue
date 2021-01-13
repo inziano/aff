@@ -5,6 +5,16 @@
             <div class="pr-8 pt-4" v-if="isAdmin">
                 <Dropdown trigger="click" class="m-2" style="" @on-click="action($event)">
                     <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
+                        <Icon type="ios-contacts" :size = 16 />
+                        <span class="capitalize"> Status </span>
+                    </a>
+                    <DropdownMenu slot="list" style="min-height: 30px;" >
+                        <DropdownItem name="app"> Applicants </DropdownItem>
+                        <DropdownItem name="mem"> Members </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                <Dropdown trigger="click" class="m-2" style="" @on-click="action($event)">
+                    <a href="javascript:void(0)" class="font-sans tracking-wider text-gray-900 hover:text-gray-900">
                         <Icon type="ios-checkmark" :size = 16 />
                         <span class="capitalize"> Approve </span>
                     </a>
@@ -121,7 +131,7 @@ export default {
         ...mapGetters('AuthModule', ['isAdmin'])
     },
     methods: {
-        ...mapActions('UserModule',['update']),
+        ...mapActions('UserModule',['update', 'filter', 'approve']),
         // Make member
         makeMember(i = 0){
             let id = i !== 0 ? i : this.updateList
@@ -129,12 +139,8 @@ export default {
                 id: id,
                 status: 'member'
             }
-            // push to axios
-            axios({
-                method:'patch',
-                url: 'api/user/membership',
-                data: formdata
-            }).then((response)=>{
+            // Approve Member
+            this.approve( formdata ).then((response)=>{
                 this.$Notice.success({
                     title: 'Members Updated',
                     desc: 'Membership updated'
@@ -164,6 +170,16 @@ export default {
             })
 
         },
+
+        // Re-fetch members
+        refetch({criteria, term}){
+            this.filter({criteria, term}).then( (response)=>{
+                // return okay
+            }).catch((error)=>{
+                // fail gracefully
+            })
+        },
+
         // Action
         action(e, i){
             switch (e) {
@@ -178,6 +194,12 @@ export default {
                     break;
                 case 'remove':
                     this.deleteUser(i)
+                    break;
+                case 'app':
+                    this.refetch({'criteria': 'status', 'term': 'Applicant'})
+                    break;
+                case 'mem':
+                    this.refetch({'criteria': 'status', 'term': 'Member'})
                     break;
             
                 default:

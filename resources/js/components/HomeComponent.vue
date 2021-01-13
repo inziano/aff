@@ -5,14 +5,14 @@
             <div class="w-full flex mb-5">
                 <newslist-item class="w-1/3" v-for="article in otherNews" :key="article.id" :article = article ></newslist-item>
             </div>
-            <div class="w-full">
+            <div class="w-full h-auto">
                 <div class="w-full bg-teal-100 p-5" style="">
-                    <div class="w-full flex">
+                    <div class="w-full flex mb-2">
                         <p class="flex-grow width-3/4 text-xl font-semibold subpixel-antialiased tracking-wide"> Publications </p>
                         <img class=" w-1/4 h-24 object-contain" src="/images/publications.svg">
                     </div>
                 </div>
-                <div class="w-full p-1 mx-auto flex flex-wrap justify-center">
+                <div class="w-full p-1 mx-auto mb-2 flex flex-wrap justify-center">
                     <publist-item  v-for="publication in topPubs" :publication = publication :key = publication.id ></publist-item>  
                 </div>
             </div>
@@ -29,6 +29,15 @@
                 <div class="w-full bg-gray-100" style="height: 73%">
                     <ul class="w-full p-1" v-if="topEvents.length">
                         <li class="mb-2 mt-1 p-2 border-b border-gray-400" v-for="event in topEvents" :key="event.id" >
+                            <!-- <div class="flex">
+                                <div class="w-20 h-20 bg-teal-500 flex justify-center items-center flex-col text-white font-bold text-center">
+                                    <p class="text-sm">{{event.startdate | moment('D') }}</p>
+                                    <p class="uppercase -mt-1">{{event.startdate | moment('MMM') }}</p>
+                                </div>
+                                <div class="bg-white h-20 items-center px-4">
+                                    <p class="font-normal text-sm">{{event.name}}</p>
+                                </div>
+                            </div> -->
                             <p class="mb-1 text-sm font-medium tracking-wider"> {{event.name}} </p>
                             <p class="mb-1 text-xs font-thin tracking-wider"> {{event.location}} </p>
                             <p class="mt-1  w-2/3 text-xs font-medium text-gray">

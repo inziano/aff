@@ -1,5 +1,5 @@
 <template>
-    <div class="m-1 h-64" style="width: 30%">
+    <div class="m-1 h-auto md:h-72 w-full md:w-1/2 lg:w-1/4">
         <div class="h-full overflow-hidden shadow-lg bg-white rounded" @click="viewPub(publication.id)">
             <div class="border border-white rounded-sm p-2 flex flex-col justify-between leading-normal">
                 <div class="mb-8">

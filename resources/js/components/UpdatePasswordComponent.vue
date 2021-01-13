@@ -16,14 +16,14 @@
                 <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Password">
-                            <Input v-model="updateForm.password" placeholder="password" type="password"> </Input>
+                            <Input size="large" v-model="updateForm.password" placeholder="password" type="password"> </Input>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="16" v-if="updateForm.password">
                     <Col span="24">
                         <FormItem label="Confirm Password">
-                            <Input v-model="confirmPassword" placeholder="confirm password" type="password" @input="validatePasswordMatch"> </Input>
+                            <Input size="large" v-model="confirmPassword" placeholder="confirm password" type="password" @input="validatePasswordMatch"> </Input>
     
                         </FormItem>
                     </Col>

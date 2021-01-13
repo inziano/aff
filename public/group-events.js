@@ -229,6 +229,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['event', 'user'],
@@ -718,7 +737,11 @@ var render = function() {
                     { attrs: { label: "Event Name" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Event Name" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Event Name"
+                        },
                         model: {
                           value: _vm.eventForm.name,
                           callback: function($$v) {
@@ -750,7 +773,11 @@ var render = function() {
                     { attrs: { label: "Event Location" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "Event Location" },
+                        attrs: {
+                          size: "large",
+                          type: "text",
+                          placeholder: "Event Location"
+                        },
                         model: {
                           value: _vm.eventForm.location,
                           callback: function($$v) {
@@ -783,6 +810,7 @@ var render = function() {
                     [
                       _c("Input", {
                         attrs: {
+                          size: "large",
                           type: "textarea",
                           placeholder: "Event Description"
                         },
@@ -885,7 +913,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-1/4" }, [
+  return _c("div", { staticClass: "w-full md:w-1/2 lg:w-1/4" }, [
     _c(
       "div",
       { staticClass: "h-64 overflow-hidden shadow-sm p-3 m-1 bg-white" },

@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full">
-        <!-- <div class="w-full h-48" :style="{'background-image': `url(${image_url})`}"></div> -->
+        <div class="w-full h-48" :style="{'background-image': `url(${article.image_url})`}"></div>
         <ul class="w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0">
             <div class="">
                 <li class="mt-5 ml-5">
@@ -19,7 +19,7 @@
             </div>
             
             <div class="mt-6 w-2/3 text-lg tracking-wide font-sans font-normal" >
-                {{article.body}}
+                <span v-html="article.body"></span>
             </div>
         </div>
     </div>

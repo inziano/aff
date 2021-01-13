@@ -329,6 +329,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['image', 'user'],
@@ -752,7 +760,11 @@ var render = function() {
                 { attrs: { label: "Title" } },
                 [
                   _c("Input", {
-                    attrs: { type: "text", placeholder: "Image Title" },
+                    attrs: {
+                      size: "large",
+                      type: "text",
+                      placeholder: "Image Title"
+                    },
                     model: {
                       value: _vm.galleryForm.title,
                       callback: function($$v) {
@@ -784,7 +796,11 @@ var render = function() {
                 { attrs: { label: "tags" } },
                 [
                   _c("Input", {
-                    attrs: { type: "text", placeholder: "Image tags" },
+                    attrs: {
+                      size: "large",
+                      type: "text",
+                      placeholder: "Image tags"
+                    },
                     model: {
                       value: _vm.galleryForm.tags,
                       callback: function($$v) {
@@ -931,19 +947,41 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "max-w-sm rounded overflow-hidden shadow-lg" },
-    [
-      _c("img", { staticClass: "w-full", attrs: { src: _vm.path, alt: "" } }),
+  return _c("div", { staticClass: "bg-gray-100 p-4" }, [
+    _c("div", { staticClass: "bg-white border rounded-sm max-w-md" }, [
+      _c("img", { attrs: { src: _vm.path, alt: "" } }),
       _vm._v(" "),
-      _c("div", { staticClass: "px-6 py-4" }, [
-        _c("div", { staticClass: "font-bold text-xl mb-2" }, [
-          _vm._v(_vm._s(_vm.image.title))
-        ])
+      _c(
+        "div",
+        { staticClass: "flex items-center justify-between mx-4 mt-3 mb-2" },
+        [
+          _c("div", { staticClass: "flex items-center px-4 py-3" }, [
+            _c("img", {
+              staticClass: "h-8 w-8 rounded-full",
+              attrs: { src: _vm.path, alt: "" }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "ml-3 " }, [
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "text-sm font-semibold antialiased block leading-tight"
+                },
+                [_vm._v(_vm._s(_vm.image.title))]
+              ),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-gray-600 text-xs block" })
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-xs mx-4 mt-2 mb-4" }, [
+        _vm._v(_vm._s(_vm._f("moment")(_vm.image.date, "from")))
       ])
-    ]
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

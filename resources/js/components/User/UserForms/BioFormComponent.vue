@@ -1,96 +1,130 @@
 <template>
-    <div>
+    <div class="mb-2 py-2">
+        
         <Form :model='bioForm' label-position="top">
-            <Divider orientation="left">Personal Information</Divider>
+            <div class="w-full flex my-4 p-2 bg-gray-100" >
+                <div class="w-1/3">
+                    <p class="text-base"> Basic Information</p>
+                </div>
+            </div>
             <Row :gutter="16">
                 <Col span="12">
-                    <FormItem label = "Title">
-                        <Input v-model="bioForm.title" placeholder="Title e.g Mr, Ms..."></Input>
-                    </FormItem>
-                </Col>
-                <Col span="12">
                     <FormItem label="Surname">
-                        <Input v-model="bioForm.surname" placeholder="Surname"></Input>
+                       <Input size="large"  v-model="bioForm.surname" placeholder="Surname"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
+                
                 <Col span="12">
                     <FormItem label="First Name">
-                        <Input v-model="bioForm.firstname" placeholder="First Name"></Input>
+                       <Input size="large"  v-model="bioForm.firstname" placeholder="First Name"></Input>
                     </FormItem>
                 </Col>
                 <Col span="12">
                     <FormItem label="Other Name">
-                        <Input v-model="bioForm.lastname" placeholder="Other Name"></Input>
+                       <Input size="large"  v-model="bioForm.lastname" placeholder="Other Name"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="12">
                     <FormItem label="Date of Birth">
-                        <DatePicker v-model="bioForm.dob" type="date" placeholder="Select date" style=""></DatePicker>
+                        <DatePicker size="large" v-model="bioForm.dob" type="date" placeholder="Select date" style="width: 100%"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="12">
                     <FormItem label="Gender">
-                        <!-- <Input v-model="bioForm.gender" type="text"></Input> -->
-                        <RadioGroup v-model="bioForm.gender" type="button">
+                        <RadioGroup v-model="bioForm.gender" type="button" size="large" style="width: 100%">
                             <Radio label="male">Male</Radio>
                             <Radio label="female">Female</Radio>
                         </RadioGroup>
                     </FormItem>
                 </Col>
+               
             </Row>
+
+            <div class="w-full flex my-4 p-2 bg-gray-100" >
+                <div class="w-1/3">
+                    <p class="text-base"> About you </p>
+                </div>
+            </div>
+            
             <Row :gutter="16">
                 <Col span="12">
-                    <FormItem label="Residency">
-                        <Input v-model="bioForm.residency" type="text" placeholder="Residency"></Input>
+                    <FormItem label="Expertise">
+                        <Select size="large" v-model="bioForm.title" placeholder="Expertise" filterable allow-create>
+                            <Option v-for="title in titles" :value="title" :key="title">{{ title }}</Option>
+                        </Select>
                     </FormItem>
+                    <!-- <FormItem label = "Expertise">
+                       <Input size="large"  v-model="bioForm.title" placeholder="Expertise"></Input>
+                    </FormItem> -->
                 </Col>
-                <Col span="12">
-                    <FormItem label="Citizenship">
-                        <Input v-model="bioForm.citizenship" type="text" placeholder="Citizenship"></Input>
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="16">
                 <Col span="12">
                     <FormItem label="Field of Study">
-                        <Input v-model="bioForm.field_of_study" type="text" placeholder="Field of Study"></Input>
+                       <Input size="large"  v-model="bioForm.field_of_study" type="text" placeholder="Field of Study"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Divider orientation="left">Contact Information</Divider>
             <Row :gutter="16">
-                <Col span="12">
+                <Col span="24">
+                    <FormItem label="Summary">
+                        <Input size="large"  v-model="bioForm.summary" placeholder="Summary" type="textarea"></Input>
+                    </FormItem>
+                </Col>
+            </Row>
+
+            <div class="w-full flex my-4 p-2 bg-gray-100" >
+                <div class="w-1/3">
+                    <p class="text-base"> Contacts </p>
+                </div>
+            </div>
+            <Row :gutter="16">
+                <Col span="24">
                     <FormItem label="Secondary Email">
-                        <Input v-model="bioForm.altemail" type="email" placeholder="email@sth.org"></Input>
+                       <Input size="large"  v-model="bioForm.altemail" type="email" placeholder="email@sth.org"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="12">
                     <FormItem label="Phone">
-                        <Input v-model="bioForm.phone" type="text" placeholder="+254 712 334455"></Input>
+                       <Input size="large"  v-model="bioForm.phone" type="text" placeholder="+254 712 334455"></Input>
                     </FormItem>
                 </Col>
                 <Col span="12">
                     <FormItem label="Address">
-                        <Input v-model="bioForm.address" type="text" placeholder="1123 -Something Street"></Input>
+                       <Input size="large"  v-model="bioForm.address" type="text" placeholder="1123 -Something Street"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
+                <Col span="12">
+                    <FormItem label="Residency">
+                       <Input size="large"  v-model="bioForm.residency" type="text" placeholder="Residency"></Input>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="Citizenship">
+                       <Input size="large"  v-model="bioForm.citizenship" type="text" placeholder="Citizenship"></Input>
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row class="py-4 my-2" :gutter="16">
                 <Col span="10">
                     <ButtonGroup>
                         <Button >
                             <Icon type="ios-cancel"></Icon>
                             Cancel
                         </Button>
-                        <Button type="primary" @click="updateBio">
+                        <Button type="primary" @click="updateBio" v-if="user.id">
                             <Icon type="ios-checkmark"></Icon>
                             Update
+                        </Button>
+                        <Button type="primary" @click="createBio" v-else>
+                            <Icon type="ios-checkmark"></Icon>
+                            Create
                         </Button>
                     </ButtonGroup>
                 </Col> 
@@ -100,50 +134,65 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
+    props: ['user'],
     computed: {
         ...mapState('AuthModule',['currentUser']),
     },
     data(){
         return{
-             bioForm: {
-                title: '',
-                firstname: '',
-                lastname: '',
-                surname: '',
-                gender: '',
-                dob: '',
-                phone: '',
-                altphone: '',
-                altemail: '',
-                address: '',
-                citizenship: '',
-                residency: '',
-                qualification: '',
-                field_of_study: ''
+            titles: ['Forestry', 'Communication'],
+            bioForm: {
+                title: this.user.title,
+                firstname: this.user.firstname,
+                lastname: this.user.lastname,
+                surname: this.user.surname,
+                gender: this.user.gender,
+                dob: this.user.dob,
+                phone: this.user.phone,
+                altphone: this.user.altphone,
+                altemail: this.user.altemail,
+                address: this.user.address,
+                citizenship: this.user.citizenship,
+                residency: this.user.residency,
+                qualification: this.user.qualification,
+                field_of_study: this.user.field_of_study,
+                summary: this.user.summary
             },
         }
     },
     methods: {
-        updateBio(){
+        ...mapActions('BioModule',['create', 'update']),
+        createBio(){
             // Get data
             const formdata = this.bioForm
             formdata['user_id'] = this.currentUser.id
             // Push to api
-            axios({
-                method: 'post',
-                url: '/api/bio',
-                data: formdata
-            }).then((response)=>{
-                // Show response
-                this.$Notice.info({
+            this.create(formdata).then(()=>{
+                this.$Notice.success({
+                    title: 'Created'
+                })
+            }).catch(()=>{
+                this.$Notice.error({
+                    title: 'Error'
+                })
+            })
+        },
+        updateBio(){
+            // 
+            let vals = {
+                id: this.user.id,
+                data: this.bioForm
+            }
+            // Push to api
+            this.update(vals).then(()=>{
+                this.$Notice.success({
                     title: 'Updated'
                 })
-            }).catch((error)=>{
-                // Show error
+            }).catch(()=>{
                 this.$Notice.error({
-                    title: "Unsuccesful",
+                    title: 'Error'
                 })
             })
         }

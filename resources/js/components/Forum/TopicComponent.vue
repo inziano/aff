@@ -6,14 +6,14 @@
             <Row :gutter="16">
                 <Col span="12">
                     <FormItem label="Category">
-                        <Input v-model="topicForm.title" type="text" placeholder="Title"></Input>
+                        <Input size="large" v-model="topicForm.title" type="text" placeholder="Title"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Topic">
-                        <Input v-model="topicForm.description" type="text" placeholder="Description"></Input>
+                        <Input size="large" v-model="topicForm.description" type="text" placeholder="Description"></Input>
                     </FormItem>
                 </Col>
             </Row>

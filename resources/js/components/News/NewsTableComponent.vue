@@ -18,10 +18,12 @@ export default {
                 },
                 {
                     title: 'ID',
+                    width: 60,
                     key: 'id'
                 },
                 {
                     title: 'Title',
+                    width: 1000,
                     key: 'title'
                 },
                 {

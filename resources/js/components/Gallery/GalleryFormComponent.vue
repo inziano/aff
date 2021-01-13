@@ -25,7 +25,7 @@
         <Row :gutter="16">
             <Col span="22">
                 <FormItem label="Title">
-                    <Input type="text" v-model="galleryForm.title" placeholder="Image Title"></Input>
+                    <Input size="large" type="text" v-model="galleryForm.title" placeholder="Image Title"></Input>
                 </FormItem>
             </Col>
             
@@ -33,7 +33,7 @@
         <Row :gutter="16">
             <Col span="12">
                 <FormItem label="tags">
-                    <Input type="text" v-model="galleryForm.tags" placeholder="Image tags"></Input>
+                    <Input size="large" type="text" v-model="galleryForm.tags" placeholder="Image tags"></Input>
                 </FormItem>
             </Col>
             <Col span="12">

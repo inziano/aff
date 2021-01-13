@@ -28,6 +28,8 @@ class TopicController extends Controller
      */
     public function index()
     {
+        dd( auth()->user());
+        // $this->authorize('viewAny', Topic::class);
         //
         return TopicResource::collection(Topic::all());
 
@@ -55,27 +57,33 @@ class TopicController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Topic  $topic
+     * Subscribe to the specified topic
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Topic $topic
      * @return \Illuminate\Http\Response
      */
-    public function show(Topic $topic)
+    public function subscribe(Request $request, Topic $topic)
     {
-        //
+        $topic->users()->attach($request->user_id);
+
+        return 'okay';
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Topic  $topic
+     * Unsubscribe to the specified topic
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Topic $topic
      * @return \Illuminate\Http\Response
      */
-    public function edit(Topic $topic)
+    public function unsubscribe(Request $request, Topic $topic)
     {
-        //
-    }
+        $topic->users()->detach($request->user_id);
 
+        return 'okay';
+    }
+    
     /**
      * Update the specified resource in storage.
      *

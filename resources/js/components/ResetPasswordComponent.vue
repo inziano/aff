@@ -16,7 +16,7 @@
                 <Row :gutter="16">
                     <Col span="24">
                         <FormItem label="Email">
-                            <Input v-model="resetForm.email" placeholder="email@address.org"> </Input>
+                            <Input size="large" v-model="resetForm.email" placeholder="email@address.org"> </Input>
                         </FormItem>
                     </Col>
                 </Row>

@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('status')->default('applicant');
+            $table->text('image')->nullable();
             $table->date('approval_date')->nullable();
             $table->rememberToken();
             $table->timestamps();

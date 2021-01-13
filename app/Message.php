@@ -10,9 +10,8 @@ class Message extends Model
     use Filterable;
     //Fillable
     protected $fillable = [
-        'subject',
-        'body',
-        'recepient',
-        'user_id'
+        'content',
+        'recipient',
+        'sender'
     ];
 }

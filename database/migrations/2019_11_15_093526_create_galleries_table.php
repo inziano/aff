@@ -18,7 +18,7 @@ class CreateGalleriesTable extends Migration
             $table->string('title');
             $table->string('album')->nullable();
             $table->dateTime('date');
-            $table->json('tags')->nullable();
+            $table->text('tags')->nullable();
             $table->string('imgpath');
             $table->timestamps();
         });

@@ -1,69 +1,81 @@
 <template>
     <div>
-        <Form :model="educationForm" label-position="top">
-            <Divider orientation="left">Education</Divider>
+        <Divider orientation="left">Education</Divider>
+        <Table class="my-4" size="small" border :columns="educationColumns" :data="education" v-if="education.length > 0">
+            <template slot-scope="{ row, index }" slot="action">
+                <a class="px-2 text-gray-700 hover:text-teal-900" @click="editItem(row)"> <Icon type="ios-create-outline" size="20"/> </a>
+                <a class="px-2 text-gray-700 hover:text-red-700" @click="deleteItem(row)"><Icon type="ios-trash" size="20"/></a>
+            </template>
+        </Table>
+        <div class="w-full flex mt-4 p-2 bg-gray-100 hover:bg-teal-100" >
+            <div class="w-1/3">
+                <p class="text-base" v-if="!addition" > Add Degree / Certification </p>
+                <p class="text-base" v-else > Degree / Certification </p>
+            </div>
+            <div class="w-2/3">
+                <a class="px-2 text-gray-700 hover:text-gray-900" @click="addition = true" v-if="!addition"> <Icon type="ios-add" size="30"/></a>
+            </div>
+        </div>
+        <Form class="mt-2 py-4" :model="educationForm" label-position="top" v-if="addition">
             <Row :gutter="16">
                 <Col span="12">
-                    <FormItem label = "Institution">
-                        <Input v-model="educationForm.institution" placeholder="Institution"></Input>
+                    <FormItem label = "Name of Institution">
+                       <Input size="large"  v-model="educationForm.institution" placeholder="Name of Institution"></Input>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label = "Institution Location">
+                       <Input size="large"  placeholder="Institution Location"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
-                <Col span="12">
-                    <FormItem label="Start Year">
-                        <DatePicker v-model="educationForm.startdate" type="year" placeholder="Start year" style="width: 100%"></DatePicker>
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="Other Name">
-                        <DatePicker v-model="educationForm.enddate" type="year" placeholder="End year" style="width: 100%"></DatePicker>
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="16">
-                <Col span="12">
+                <Col span="24">
                     <FormItem label = "Degree">
-                        <Input v-model="educationForm.degree" placeholder="Degree"></Input>
+                       <Input size="large"  v-model="educationForm.degree" placeholder="Degree"></Input>
                     </FormItem>
                 </Col>
-                <Col span="12">
+            </Row>
+            <Row :gutter="16">
+                <Col span="24">
                     <FormItem label = "Field of study">
-                        <Input v-model="educationForm.field_of_study" placeholder="Field of Study"></Input>
+                       <Input size="large"  v-model="educationForm.field_of_study" placeholder="Field of Study"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16">
                 <Col span="12">
+                    <FormItem label="Start Date">
+                       <DatePicker size="large"  v-model="educationForm.startdate" type="year" placeholder="Start date" style="width: 100%"></DatePicker>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="End / Graduation Date">
+                       <DatePicker size="large"  v-model="educationForm.enddate" type="year" placeholder="End date" style="width: 100%"></DatePicker>
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row :gutter="16">
+                <Col span="24">
                     <FormItem label = "Description">
-                        <Input v-model="educationForm.description" placeholder="Description" type="textarea"></Input>
+                       <Input size="large"  v-model="educationForm.description" placeholder="Description" type="textarea"></Input>
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="16" class="mb-2">
                 <Col span="12">
                     <ButtonGroup>
-                        <Button type="primary" @click="addEducation">
-                            <Icon type="ios-add"></Icon>
-                            Add
-                        </Button>
-                    </ButtonGroup>
-                </Col> 
-            </Row>
-            <Row :gutter="16" class="mb-2 mt-2" v-if="educations.length > 0">
-                <Table border :columns="educationColumns" :data="educations"></Table>
-            </Row>
-            
-            <Row :gutter="16" v-if="educations.length > 0">
-                <Col span="10">
-                    <ButtonGroup>
-                        <Button >
+                        <Button @click="clear">
                             <Icon type="ios-cancel"></Icon>
                             Cancel
                         </Button>
-                        <Button type="primary" @click="updateEducation">
+                        <Button type="primary" @click="updateEducation" v-if="isUpdating">
                             <Icon type="ios-checkmark"></Icon>
                             Update
+                        </Button>
+                        <Button type="primary" @click="createEducation" v-if="!isUpdating">
+                            <Icon type="ios-checkmark"></Icon>
+                            Create
                         </Button>
                     </ButtonGroup>
                 </Col> 
@@ -73,15 +85,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
+    props: ['education'],
     computed: {
         ...mapState('AuthModule',['currentUser']),
     },
     data(){
         return {
-            educations: [],
+            addition: false,
+            isUpdating: false,
+            editingId: '',
             educationForm: {
                 institution: '',
                 startdate: '',
@@ -93,74 +108,93 @@ export default {
              educationColumns: [
                 {
                     title: 'Institution',
-                    key: 'institution'
+                    key: 'institution',
+                    width: '400'
                 },
                 {
                     title: 'Degree',
                     key: 'degree'
                 },
                 {
-                    title: 'Field',
-                    key: 'field_of_study'
-                },
-                {
                     title: 'Start',
                     key: 'startdate'
                 },
                 {
-                    title: 'Action',
-                    key: 'action',
+                    title: '',
+                    slot: 'action',
                     width: 150,
-                    align: 'center',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    size: 'small',
-                                    shape: 'circle',
-                                    icon: 'ios-close'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.removeEducation(params.index)
-                                    }
-                                }
-                            }, 'Remove')
-                        ]);
-                    }
+                    align: 'center'
                 }
             ],
         }
     },
     methods: {
-        addEducation(){
-            this.educationForm['user_id'] = this.currentUser.id
-            this.educations.push(this.educationForm)
+        ...mapActions('EducationModule', ['create', 'update', 'delete']),
+        editItem(education){
+            const edudata = ({ institution, startdate, enddate, degree, field_of_study,description }) => ({institution, startdate, enddate, degree, field_of_study,description })
+
+            this.educationForm = edudata(education)
+
+            this.editingId = education.id
+
+            this.addition = true
+            this.isUpdating = true
         },
-        removeEducation(idx){
-            this.educations.splice(idx,1)
-        },
-         // Push the data to the db
-        updateEducation(){
-            // Get data
-            let data = this.educations
-            // Push to api
-            axios({
-                method: 'post',
-                url: '/api/education',
-                data: data
-            }).then((response)=>{
-                // Show response
-                this.$Notice.info({
-                    title: 'Updated'
+        deleteItem(education){
+            const id = education.id
+            // Delete
+            this.delete(id).then(()=>{
+                this.$Notice.success({
+                    title: 'Deleted'
                 })
-            }).catch((error)=>{
-                // Show error
+            }).catch(()=>{
                 this.$Notice.error({
-                    title: "Unsuccesful",
+                    title: 'Error'
                 })
             })
-
+        },
+        clear(){
+            this.educationForm = {
+                institution: '',
+                startdate: '',
+                enddate: '',
+                degree: '',
+                field_of_study: '',
+                description: ''
+            }
+            this.addition = false
+        },
+        createEducation(){
+            // Data
+            let formdata = this.educationForm
+            formdata['user_id'] = this.currentUser.id
+            // push to db
+            this.create(formdata).then(()=>{
+                this.$Notice.success({
+                    title: 'Created'
+                })
+            }).catch(()=>{
+                this.$Notice.error({
+                    title: 'Error'
+                })
+            })
+        },
+        updateEducation(){
+            // Data
+            let vals = {
+                id: this.editingId,
+                data: this.educationForm
+            }
+            // Push to db
+            this.update(vals).then(()=>{
+                this.$Notice.success({
+                    title: 'Updated'
+                })
+            }).catch(()=>{
+                this.$Notice.error({
+                    title: 'Not updated'
+                })
+            })
         },
     }
 }

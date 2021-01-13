@@ -21,7 +21,16 @@ class EducationRepository {
 
         return $edu;
     }
-
+    /**
+     * updateEducation
+     *
+     * @param mixed $Education
+     * @return void
+     */
+    public function updateEducation( Education $education, Request $request)
+    {
+        return $education->update( $request->all());
+    }
     /**
      * findEducation
      *
@@ -34,5 +43,15 @@ class EducationRepository {
         $education = EducationResource::collection(Education::where('user_id', $education)->get());
 
         return $education;
+    }
+    /**
+     * deleteEducation
+     *
+     * @param mixed $Education
+     * @return void
+     */
+    public function deleteEducation( Education $education )
+    {
+        return $education->delete();
     }
 }

@@ -33,7 +33,7 @@
                             Views: {{pub.views}}
                         </p>
                         <Button type="">
-                            View
+                            Download
                         </Button>
                     </div>
                 </div>

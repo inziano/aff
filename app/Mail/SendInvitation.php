@@ -35,7 +35,6 @@ class SendInvitation extends Mailable
      */
     public function build()
     {
-        return $this->from('no-reply@aff.org')
-                    ->view('emails.inviteusers');
+        return $this->view('emails.inviteusers');
     }
 }
