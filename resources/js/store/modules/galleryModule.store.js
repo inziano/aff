@@ -22,14 +22,14 @@ export default {
         // Fetch
         async fetch({commit}, page = 1){
             // load images 
-            let response = await axios.get(`api/gallery?page=${page}`)
+            let response = await axios.get(`api/galleries?page=${page}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter images
-            let response = await axios.get(`api/gallery?${criteria}=${term}`)
+            let response = await axios.get(`api/galleries?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },

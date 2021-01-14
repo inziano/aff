@@ -11,7 +11,6 @@ use App\Events\UserRegistered;
 use App\Events\SearchUsers;
 use App\Events\UserModified;
 use App\Events\PasswordReset;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +21,6 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
-    use AuthenticatesUsers;
 
     public function __construct(UserRepository $repo)
     {
@@ -39,94 +37,6 @@ class UserController extends Controller
         //Show all the users
         return UserResource::collection(User::filter($filters)->with(['bio','education','work'])->paginate(24));
     }
-
-    /**
-     * login
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-        // Attempt auth
-        if (Auth::attempt($credentials))
-        {
-            $user = Auth::user();
-
-            Auth::login( $user );
-            // $user = User::with('roles:name')->where('email', $request->input('email'))->first();
-
-            return $user;
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-    }
-
-    /**
-     * Password reset
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-    */
-    public function resetPassword( Request $request )
-    {
-        // Check if account exists 
-        if ( User::where('email', $request->input('email'))->exists() )
-        {
-            // User
-            $user = User::where('email',$request->input('email'))->first();
-
-            // Generate unique reset token.
-            $reset_code = Keygen::alphanum()->generate();
-
-            // Store token in database
-            DB::table('password_resets')->insert(['email'=> $user->email, 'token'=> $reset_code]);
-
-            // Send email notification with token
-            event( new PasswordReset( $user, $reset_code ));
-
-            return 'okay';
-
-        } else {
-            // Abort
-            return abort(404, 'User does not exist');
-        }
-    }
-
-    /**
-     * Match token
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response 
-     * 
-     */
-    public function verifyResetToken( Request $request)
-    {
-        $reset = DB::table('password_resets')->where('token', $request->input('token'))->exists();
-
-        // Check token matches existing reset token
-        if ( $reset )
-        {
-            $email = DB::table('password_resets')->where('token', $request->input('token'))->first()->email;
-
-            // Return okay
-            return User::where('email',$email)->first();
-        } else {
-            // Abort
-            return abort(404, 'Bad token');
-        }
-    }
-
 
     /**
      * Store a newly created resource in storage.

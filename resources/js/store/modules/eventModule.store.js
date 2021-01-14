@@ -34,21 +34,21 @@ export default {
         // Fetch
         async fetch({commit}, page=1){
             // load events
-            let response = await axios.get(`api/event?page=${page}`)
+            let response = await axios.get(`api/events?page=${page}`)
             // commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/event?${criteria}=${term}`)
+            let response = await axios.get(`api/events?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Create
         async create({commit}, data){
             // push dataa
-            await axios.post('api/event', data)
+            await axios.post('api/events', data)
         },
         // Update
         newEvent({commit},data){
@@ -57,7 +57,7 @@ export default {
         },
         // Delete
         async delete({commit},data){
-            let response = await axios.delete(`api/event/${data}`)
+            let response = await axios.delete(`api/events/${data}`)
             // Delete if succesful
             commit('DELETE', data)
         },

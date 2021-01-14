@@ -23,14 +23,14 @@ export default {
         // Fetch
         async fetch({commit}){
             // load replies
-            let response = await axios.get('api/reply')
+            let response = await axios.get('api/replies')
             // commit
             commit('LOAD', response.data.data)
         },
         // Create
         async create({commit},data){
             // Create reply
-            await axios.post('api/reply', data)
+            await axios.post('api/replies', data)
 
         },
         // New reply

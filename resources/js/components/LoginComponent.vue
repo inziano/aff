@@ -92,6 +92,7 @@ export default {
                 // Incase user was logged in before
                 this.$store.dispatch('logout')
             })
+           
         }
     }
 }

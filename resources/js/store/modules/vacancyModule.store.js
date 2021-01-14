@@ -27,21 +27,21 @@ export default {
         // Fetch
         async fetch({commit}){
             // load vacancies
-            let response = await axios.get('api/vacancy')
+            let response = await axios.get('api/vacancies')
             // commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/vacancy?${criteria}=${term}`)
+            let response = await axios.get(`api/vacancies?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
         // create
         async create({commit},data){
             // Create vacancy
-            await axios.post('api/vacancy', data)
+            await axios.post('api/vacancies', data)
 
         },
         // New vacancy

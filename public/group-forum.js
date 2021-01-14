@@ -235,7 +235,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default()({
         method: 'post',
-        url: 'api/thread/filter',
+        url: 'api/threads/filter',
         data: formdata
       }).then(function (response) {// Console response
       })["catch"](function (error) {
@@ -602,7 +602,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios({
         method: 'patch',
-        url: 'api/reply/' + id,
+        url: 'api/replies/' + id,
         data: data
       }).then(function (response) {
         _this.$Notice.success({
@@ -619,7 +619,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios({
         method: 'delete',
-        url: 'api/reply/' + id
+        url: 'api/replies/' + id
       }).then(function (response) {
         _this2.$Notice.success({
           title: 'Reply Deleted'
@@ -974,7 +974,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios({
         method: 'post',
-        url: 'api/topic',
+        url: 'api/topics',
         data: formdata
       }).then(function (response) {
         _this.$Notice.success({

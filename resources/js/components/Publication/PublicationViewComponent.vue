@@ -57,7 +57,7 @@ export default {
         const id = this.pubId
          // add views       
         axios.all([
-            axios.get('api/publication/'+id)
+            axios.get('api/publications/'+id)
         ]).then( axios.spread((pub)=>{
             // 
             this.pubData = pub.data.data

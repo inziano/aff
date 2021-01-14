@@ -201,7 +201,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: 'api/thread/filter',
+                url: 'api/threads/filter',
                 data: formdata
             }).then((response)=>{
                 // Console response

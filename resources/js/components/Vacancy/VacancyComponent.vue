@@ -169,7 +169,7 @@ export default {
         deleteVacancy(id){
             axios({
                 method: 'delete',
-                url: 'api/vacancy/'+id,
+                url: 'api/vacancies/'+id,
             }).then((response)=>{
                 this.$Notice.success({
                     title: 'Vacancy Deleted'

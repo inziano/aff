@@ -57,7 +57,7 @@ export default {
             // axios
             axios({
                 method: 'patch',
-                url: 'api/reply/'+id,
+                url: 'api/replies/'+id,
                 data: data
             }).then((response)=>{
                 this.$Notice.success({
@@ -72,7 +72,7 @@ export default {
         deleteReply(id){
             axios({
                 method: 'delete',
-                url: 'api/reply/'+id,
+                url: 'api/replies/'+id,
             }).then((response)=>{
                 this.$Notice.success({
                     title: 'Reply Deleted'

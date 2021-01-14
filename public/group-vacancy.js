@@ -188,7 +188,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     var _this = this;
 
-    axios.all([axios.get('api/vacancy/' + this.id), axios.get('api/vacancyapplication/' + this.id)]).then(axios.spread(function (vacancy, application) {
+    axios.all([axios.get('api/vacancies/' + this.id), axios.get('api/vacancyapplications/' + this.id)]).then(axios.spread(function (vacancy, application) {
       //    this.vacancy = vacancy.data.data
       _this.applications = application.data.data;
 
@@ -224,7 +224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       formdata.append('res', this.resume);
       axios({
         method: 'post',
-        url: 'api/vacancyapplication',
+        url: 'api/vacancyapplications',
         data: formdata
       }).then(function (response) {
         _this2.$Notice.info({
@@ -455,7 +455,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios__WEBPACK_IMPORTED_MODULE_0___default()({
         method: 'delete',
-        url: 'api/vacancy/' + id
+        url: 'api/vacancies/' + id
       }).then(function (response) {
         _this3.$Notice.success({
           title: 'Vacancy Deleted'

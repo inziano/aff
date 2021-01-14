@@ -136,7 +136,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios({
         method: 'post',
-        url: 'api/publication',
+        url: 'api/publications',
         data: formdata
       }).then(function (response) {
         // Show notice
@@ -278,7 +278,7 @@ __webpack_require__.r(__webpack_exports__);
 
     var id = this.pubId; // add views       
 
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.all([axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/publication/' + id)]).then(axios__WEBPACK_IMPORTED_MODULE_0___default.a.spread(function (pub) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.all([axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/publications/' + id)]).then(axios__WEBPACK_IMPORTED_MODULE_0___default.a.spread(function (pub) {
       // 
       _this.pubData = pub.data.data;
     }))["catch"](function (error) {

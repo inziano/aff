@@ -26,10 +26,9 @@ class TopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        dd( auth()->user());
-        // $this->authorize('viewAny', Topic::class);
+        $this->authorize('viewAny', Topic::class);
         //
         return TopicResource::collection(Topic::all());
 

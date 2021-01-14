@@ -119,7 +119,7 @@ export default {
             // Push to db
             axios({
                 method: 'post',
-                url: 'api/publication',
+                url: 'api/publications',
                 data: formdata
             }).then( (response)=>{
                 // Show notice

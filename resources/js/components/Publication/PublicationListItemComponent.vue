@@ -56,7 +56,7 @@ export default {
             const title = item.title
             axios({
                 method: 'get',
-                url:'api/publication/download/'+id,
+                url:'api/publications/download/'+id,
                 responseType: 'blob'
                 
                 }).then((response)=>{

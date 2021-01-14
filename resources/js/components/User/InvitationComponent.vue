@@ -76,7 +76,7 @@ export default {
             // Post
             axios({
                 method: 'post',
-                url: 'api/invitation',
+                url: 'api/invitations',
                 data: data
             }).then((response)=>{
                 this.$Notice.success({

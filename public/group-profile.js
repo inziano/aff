@@ -94,7 +94,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios__WEBPACK_IMPORTED_MODULE_0___default()({
         method: 'post',
-        url: 'api/invitation',
+        url: 'api/invitations',
         data: data
       }).then(function (response) {
         _this.$Notice.success({

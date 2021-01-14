@@ -272,7 +272,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios({
         method: 'post',
-        url: 'api/gallery',
+        url: 'api/galleries',
         data: formdata
       }).then(function (response) {
         // show notice

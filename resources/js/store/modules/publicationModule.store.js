@@ -22,14 +22,14 @@ export default {
         // Fetch
         async fetch({commit}, page = 1){
             // load publications 
-            let response = await axios.get(`api/publication?page=${page}`)
+            let response = await axios.get(`api/publications?page=${page}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/publication?${criteria}=${term}`)
+            let response = await axios.get(`api/publications?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },

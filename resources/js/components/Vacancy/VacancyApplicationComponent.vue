@@ -175,8 +175,8 @@ export default {
     mounted(){
 
         axios.all([
-            axios.get('api/vacancy/'+this.id),
-            axios.get('api/vacancyapplication/'+this.id)
+            axios.get('api/vacancies/'+this.id),
+            axios.get('api/vacancyapplications/'+this.id)
         ]).then( axios.spread((vacancy, application)=>{
         //    this.vacancy = vacancy.data.data
            this.applications = application.data.data
@@ -212,7 +212,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: 'api/vacancyapplication',
+                url: 'api/vacancyapplications',
                 data: formdata
             }).then((response)=>{
                 this.$Notice.info({

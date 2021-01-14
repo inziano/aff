@@ -104,7 +104,7 @@ export default {
             // Push
             axios({
                 method: 'post',
-                url: 'api/gallery',
+                url: 'api/galleries',
                 data: formdata
             }).then( (response)=>{
                 // show notice

@@ -51,7 +51,7 @@ export default {
             // Push to db
             axios({
                 method: 'post',
-                url: 'api/topic',
+                url: 'api/topics',
                 data: formdata
             }).then((response)=>{
                 this.$Notice.success({

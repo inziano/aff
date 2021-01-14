@@ -30,33 +30,33 @@ export default {
         // Fetch messages
         async fetch({commit}, user = 1){
             // Load messages for user
-            let response = await axios.get(`api/message?all=${user}`)
+            let response = await axios.get(`api/messages?all=${user}`)
             // Commit
             commit('LOAD', response.data)
         },
 
         // Create
         async create({commit}, data){
-            let response = await axios.post('api/message',data)
+            let response = await axios.post('api/messages',data)
         },
 
         // Filter 
         async filter({commit}, {criteria, term}){
-            let response = await axios.get(`api/message?${criteria}=${term}`)
+            let response = await axios.get(`api/messages?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
 
         // Conversation
         async conversation({commit}, {first, second}){
-            let response = await axios.get(`api/message?conversation=${first},${second}`)
+            let response = await axios.get(`api/messages?conversation=${first},${second}`)
             // 
             commit('LOAD_THREAD', response.data.data)
         },
 
         // Search for users
         async search_users({commit},{criteria, term}){
-            let response = await axios.get(`api/user?${criteria}=${term}`)
+            let response = await axios.get(`api/users?${criteria}=${term}`)
             // edit response
             let r = response.data.data
 
@@ -69,8 +69,8 @@ export default {
         // New Conversation
         async newConversation({commit}, data){
             // Get recipient and sender bio's
-            let sender = await axios.get(`api/user?user=${data.sender}`)
-            let recipient = await axios.get(`api/user?user=${data.recipient}`)
+            let sender = await axios.get(`api/users?user=${data.sender}`)
+            let recipient = await axios.get(`api/users?user=${data.recipient}`)
 
             // Sender bio
             sender = sender.data.data

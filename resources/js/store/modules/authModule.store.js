@@ -47,29 +47,36 @@ export default {
     actions: {
         // Login
         async login({commit}, data){
-            let response = await axios.post('api/user/login', data)
-            // commit
+
+            await axios.get('/sanctum/csrf-cookie')
+
+            let response = await axios.post('api/auth/login', data)
+            
             commit('LOGIN', response.data)
+
+            console.log(response)
+
+            return response
         },
         // Register user
         async register({commit}, data){
-            let response = await axios.post('api/user', data)
+            let response = await axios.post('api/auth/register', data)
             // commit
             commit('LOGIN', response.data)
         },
         // User data
         async loadUserData({commit}, id){
-            let response = await axios.get(`api/user/${id}`)
+            let response = await axios.get(`api/users/${id}`)
             // commit
             commit('ADD_LOGGEDIN_USER', response.data.data)
         },
         // Reset password
         async resetPassword({commit},data){
-            let response = await axios.post('api/user/reset', data)
+            let response = await axios.post('api/auth/reset', data)
         },
         // Verify email account
         async verifyAccount({commit},data){
-            let response = await axios.post('api/user/verify', data)
+            let response = await axios.post('api/auth/verify', data)
             // commit
             commit('RESET_USER', response.data)
         },

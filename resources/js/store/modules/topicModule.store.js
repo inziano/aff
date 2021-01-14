@@ -19,7 +19,7 @@ export default {
         // topics
         async fetch({commit}){
             // load topics
-            let response = await axios.get('api/topic')
+            let response = await axios.get('api/topics')
             // commit
             commit('LOAD', response.data.data)
         }
