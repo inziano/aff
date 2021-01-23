@@ -32,6 +32,7 @@ class User extends JsonResource
             'publications'=> $this->publication->count(),
             'rights' => $this->roles,
             'status' => $this->status,
+            'topics' => $this->topics,
             'image' => is_null($this->image) ? null :  Storage::cloud()->url($this->image),
         ];
     }

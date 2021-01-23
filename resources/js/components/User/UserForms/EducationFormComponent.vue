@@ -17,7 +17,7 @@
             </div>
         </div>
         <Form class="mt-2 py-4" :model="educationForm" label-position="top" v-if="addition">
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label = "Name of Institution">
                        <Input size="large"  v-model="educationForm.institution" placeholder="Name of Institution"></Input>
@@ -29,21 +29,21 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Degree">
                        <Input size="large"  v-model="educationForm.degree" placeholder="Degree"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Field of study">
                        <Input size="large"  v-model="educationForm.field_of_study" placeholder="Field of Study"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Start Date">
                        <DatePicker size="large"  v-model="educationForm.startdate" type="year" placeholder="Start date" style="width: 100%"></DatePicker>
@@ -55,14 +55,14 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Description">
                        <Input size="large"  v-model="educationForm.description" placeholder="Description" type="textarea"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16" class="mb-2">
+            <Row :gutter="16" class="px-4 mb-2">
                 <Col span="12">
                     <ButtonGroup>
                         <Button @click="clear">

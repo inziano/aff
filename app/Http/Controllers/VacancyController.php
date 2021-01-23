@@ -24,8 +24,9 @@ class VacancyController extends Controller
      */
     public function index(Request $request, VacancyFilters $filters)
     {
+        $this->authorize('viewAny', Vacancy::class);
         //
-        return VacancyResource::collection( Vacancy::filter($filters)->paginate(12));
+        return VacancyResource::collection( Vacancy::filter($filters)->valid()->paginate(12));
     }
 
     /**
@@ -36,6 +37,7 @@ class VacancyController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Vacancy::class);
         //Store
         $this->validate(request(),[
             'deadline'=> 'required',
@@ -62,31 +64,13 @@ class VacancyController extends Controller
      * @param  \App\Vacancy $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function show($vacancy)
+    public function show(Vacancy $vacancy)
     {
+        $this->authorize('view', $vacancy);
         //
-        //
-        $vacancy= $this->repo->showVacancy($vacancy);
+        $vacancy= $this->repo->showVacancy($vacancy->id);
 
         return $vacancy;
-    }
-
-    /**
-     * search
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function search(Request $request)
-    {
-        $results = $this->repo->searchVacancies($request->input('search'));
-
-        // TODO: Fail gracefully incase of error
-        // Fire vacancy
-        // vacancy( new SearchVacancies($results));
-
-        // 
-        return $results;
     }
 
     /**
@@ -98,7 +82,21 @@ class VacancyController extends Controller
      */
     public function update(Request $request, Vacancy $vacancy)
     {
+        $this->authorize('update',$vacancy);
         //
+        if ( $request->has('deadline') ) {
+
+            $newdeadline = Carbon::parse($request->input('deadline'))->toDateTimeString();
+
+            $request->merge(['deadline'=>$newdeadline]);
+           
+            // Push
+            return $this->repo->updateVacancy($request);
+
+        }else {
+            return $this->repo->updateVacancy($request);
+        }
+
     }
 
     /**
@@ -107,8 +105,9 @@ class VacancyController extends Controller
      * @param  \App\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function destroy($vacancy)
+    public function destroy(Vacancy $vacancy)
     {
+        $this->authorize('delete', $vacancy);
         //
         $vacancy = $this->repo->deleteVacancy($vacancy);
 

@@ -2,7 +2,7 @@
     <div>
        <li @click="viewArticle(article.id)" class="w-full list-none " style="min-height: 400px; background-color: teal;" :style="{'background-image': `url(${article.image_url})`}">
             <div class="relative w-full bg-opacity-50 bg-black p-5" style="min-height: 400px;">
-                <p class="relative ml-20 mt-10 text-3xl font-thin subpixel-antialiased text-white capitalize" style="top: 30%">
+                <p class="relative ml-20 mt-10 text-3xl font-thin subpixel-antialiased text-white capitalize cursor-pointer" style="top: 30%">
                     {{article.title}}
                 </p>
                 <div class="ml-20 w-2/3 text-xl font-hairline text-white" v-html="$options.filters.truncate(article.body)"></div>

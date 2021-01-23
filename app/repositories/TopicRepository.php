@@ -32,6 +32,11 @@ class TopicRepository {
         return Topic::where('id', $id)->first();
     }
 
+    public function updateTopic( $topic, $request)
+    {
+        return $topic->update( $request->all());
+    }
+
     /**
      * deleteTopic
      *

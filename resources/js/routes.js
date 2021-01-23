@@ -27,8 +27,8 @@ const VacancyApplication =() => import (/* webpackChunkName: "group-vacancy" */'
 
 // Forum Components
 const Forum = () => import(/* webpackChunkName: "group-forum" */'./components/Forum/ForumComponent')
-const ThreadView = () =>import(/* webpackChunkName: "group-forum" */'./components/Forum/ThreadViewComponent')
-const Topic = () => import(/* webpackChunkName: "group-forum" */'./components/Forum/TopicComponent')
+const DiscussionView = () => import(/* webpackChunkName: "group-forum"*/'./components/Forum/Discussions/DiscussionViewComponent')
+const TopicView = () => import(/* webpackChunkName: "group-forum" */'./components/Forum/Topics/TopicViewComponent')
 
 // News Components
 const News = () => import(/* webpackChunkName: "group-news" */'./components/News/NewsComponent')
@@ -112,7 +112,16 @@ const router =  new Router({
             },
         },
         {
-            path: '/profile',
+            path: '/profiles',
+            component: ProfilesView,
+            name: 'profilesviews',
+            meta: {
+                requiresAuth: true,
+                requiresMember: true,
+            },
+        },
+        {
+            path: '/profile/:id',
             component: ProfileSettings,
             name: 'profile',
             meta: {
@@ -129,7 +138,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/publication',
+            path: '/publication/:id',
             component: PublicationView,
             name: 'publicationview',
             meta: {
@@ -164,15 +173,6 @@ const router =  new Router({
             },
         },
         {
-            path: '/profiles',
-            component: ProfilesView,
-            name: 'profilesviews',
-            meta: {
-                requiresAuth: true,
-                requiresMember: true,
-            },
-        },
-        {
             path: '/events',
             component: Event,
             name: 'event',
@@ -182,7 +182,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/eventdetail',
+            path: '/event/:id',
             component: EventDetails,
             name: 'eventdetail',
             meta: {
@@ -218,8 +218,8 @@ const router =  new Router({
             },
         },
         {
-            path: '/thread',
-            component: ThreadView,
+            path: '/thread/:id',
+            component: DiscussionView,
             name: 'thread',
             meta: {
                 requiresAuth: true,
@@ -228,7 +228,7 @@ const router =  new Router({
         },
         {
             path: '/topic',
-            component: Topic,
+            component: TopicView,
             name: 'topic',
             meta: {
                 requiresAuth: true,
@@ -245,7 +245,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/article',
+            path: '/article/:id',
             component: Article,
             name: 'article',
             meta: {

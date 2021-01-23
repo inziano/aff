@@ -41,6 +41,16 @@ export default {
         },
         RESET_USER(state, user){
             state.resetUser = user
+        },
+        SUBSCRIBE(state, topic){
+            state.currentUser.topics.push(topic)
+        },
+        UNSUBSCRIBE(state, topic){
+            // Remove the topic from the list
+            state.currentUser.topics = state.currentUser.topics.filter( t=>{
+                // Filter out the topic
+                return t.id !== topic.id
+            })
         }
     },
     // Actions
@@ -81,16 +91,38 @@ export default {
             commit('RESET_USER', response.data)
         },
         // Logout
-        logout({commit}){
-            return new Promise(( resolve, reject)=>{
+        async logout({commit}){
+
+            await axios.get('api/auth/logout').then( response => {
+                
                 commit('LOGOUT')
                 localStorage.removeItem('aff_token')
-                resolve()
+    
+            }).catch( error => {
+                // Log error data
             })
+
+           
+            return response
         },
+
+        // subscribe
+        subscribe( {commit}, topic){
+            
+            // Add topic
+            commit('SUBSCRIBE', topic)
+        },
+
+        // unsubsribe
+        unsubscribe( {commit}, topic){
+            // Remove
+            commit('UNSUBSCRIBE', topic)
+        }
     },
     // Getters
     getters: {
+        // Topics
+        subscriptions: state => state.currentUser.topics.map( (t) => { return t.id }),
         // Is authenticated
         isAuthenticated: state => !Object.keys(state.currentUser).length == 0,
         // Is admin
@@ -105,5 +137,6 @@ export default {
         current_user_details: state => state.currentUserDetails,
         // Reset email
         reset_user: state => state.resetUser,
+
     }
 }

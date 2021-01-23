@@ -20,28 +20,28 @@
         </div>
        
         <Form class="mt-2 py-4" :model="workForm" label-position="top" v-if="addition">
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Company / Institution">
                        <Input size="large"  v-model="workForm.institution" placeholder="Company / Institution"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Job Title">
                        <Input size="large"  v-model="workForm.title" placeholder="Job title"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label = "Location">
                        <Input size="large"  v-model="workForm.country" placeholder="Location"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Start Year">
                        <DatePicker size="large"  v-model="workForm.startdate" type="month" placeholder="Start year" style="width: 100%"></DatePicker>
@@ -53,7 +53,7 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label="Description">
                        <Input size="large"  v-model="workForm.description" placeholder="Description" type="textarea"></Input>
@@ -61,7 +61,7 @@
                 </Col>
             </Row>
            
-            <Row :gutter="16" class="mb-2">
+            <Row :gutter="16" class="px-4 mb-2">
                 <Col span="12">
                     <ButtonGroup>
                         <Button @click="clear">

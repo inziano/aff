@@ -3,16 +3,48 @@
     <div class="w-1/5 bg-white p-2">
         <profile-card :user = dets :account = user :editing = editing v-on:editing="viewProfile"></profile-card>
         <div class="w-full h-auto justify-right" v-if="id === this.currentUser.id">
-            <div class="p-5 mt-2 h-auto">
-                <p class="text-lg  px-2"> Settings </p>
-                <hr class="w-full mt-2 mb-4 text-gray-900" />
-                <ul class="w-full mt-2 px-4">
-                    <li class="my-4 text-gray-700 font-medium"><a class="text-gray-700 text-base font-medium tracking-wider hover:text-gray-900" @click="editProfile"> Profile </a></li>
-                    <li class="my-4 text-gray-700 font-medium"><a class="text-gray-700 text-base font-medium tracking-wider hover:text-gray-900" @click="editEducation"> Education </a></li>
-                    <li class="my-4 text-gray-700 font-medium"><a class="text-gray-700 text-base font-medium tracking-wider hover:text-gray-900" @click="editWork"> Career </a></li>
-                    <li class="my-4 text-gray-700 font-medium"><a class="text-gray-700 text-base font-medium tracking-wider hover:text-gray-900" @click="editAccount"> Account </a></li>
-                </ul>
-            </div>              
+            <div class="flex flex-col sm:flex-row sm:justify-around">
+                <div class="h-auto">
+                    <nav class="mt-10 px-2">
+                        <div>
+                            <p class="text-gray-600 ml-2 w-full border-b-2 pb-2 border-gray-100 mb-4 text-md font-normal">
+                                Settings
+                            </p>
+
+                            <a @click="editProfile" class="hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start" >
+                                <span class="mx-4 text-md font-normal">
+                                    Profile
+                                </span>
+                                <span class="flex-grow text-right">
+                                </span>
+                            </a>
+
+                            <a @click="editEducation" class="hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start" >
+                                <span class="mx-4 text-md font-normal">
+                                    Education
+                                </span>
+                                <span class="flex-grow text-right">
+                                </span>
+                            </a>
+                            <a @click="editWork" class="hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start" >
+                                <span class="mx-4 text-md font-normal">
+                                    Career
+                                </span>
+                                <span class="flex-grow text-right">
+                                </span>
+                            </a>
+                            <a @click="editAccount" class="hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start" >
+                                <span class="mx-4 text-md font-normal">
+                                    Account
+                                </span>
+                                <span class="flex-grow text-right">
+                                </span>
+                            </a>
+                            
+                        </div>
+                    </nav>
+                </div>
+            </div>             
         </div>
     </div>
     <div class="w-4/5">

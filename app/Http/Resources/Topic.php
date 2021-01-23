@@ -18,6 +18,10 @@ class Topic extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'discussions' => $this->threads->count(),
+            'subscribers'=> $this->users->count(),
+            'activity'=> $this->threads->first()->created_at ?? $this->created_at,
+            'public' => $this->public,
         ];
     }
 }

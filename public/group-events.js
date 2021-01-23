@@ -229,25 +229,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['event', 'user'],
@@ -256,7 +237,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // View
     view: function view(id) {
       this.$router.push({
-        name: 'eventdetail',
+        name: 'event',
         params: {
           id: id
         }
@@ -922,7 +903,8 @@ var render = function() {
           _c(
             "p",
             {
-              staticClass: "font-500 tracking-wider text-sm antialiased",
+              staticClass:
+                "font-500 tracking-wider text-sm antialiased cursor-pointer",
               on: {
                 click: function($event) {
                   return _vm.view(_vm.event.id)

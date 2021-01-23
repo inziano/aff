@@ -2,7 +2,7 @@
     <div class="w-full md:w-1/2 lg:w-1/4">
         <div class="h-64 overflow-hidden shadow-sm p-3 m-1 bg-white" >
             <div class="mt-3 mb-2">
-                <p class="font-500 tracking-wider text-sm antialiased" @click="view(event.id)">
+                <p class="font-500 tracking-wider text-sm antialiased cursor-pointer" @click="view(event.id)">
                 {{event.name}}
                 </p>
             </div>
@@ -33,25 +33,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="w-full md:w-1/2 lg:w-1/4 m-2">
-        <div class="relative overflow-hidden pb-60">
-            <img
-              class="absolute h-full w-full object-cover object-center"
-              src="https://collect.criggzdesign.com/wp-content/uploads/2020/07/5c77d8a62417e4405611bb42_3k-color-1-scaled.jpg"
-              alt=""
-            />
-        </div>
-        <div class="flex">
-            <div class="w-20 h-224 bg-teal-500 flex justify-center items-center flex-col text-white font-bold text-center">
-              <p class="text-xl">{{event.startdate | moment('Do') }}</p>
-              <p class="uppercase -mt-1">{{event.startdate | moment('MMM') }}</p>
-            </div>
-            <div class="bg-white h-24 flex-grow flex flex-wrap items-center px-4">
-                <p class="font-bold text-base">{{event.name}}</p>
-            </div>
-        </div>
-    </div> -->
 </template>
 
 <script>
@@ -65,7 +46,7 @@ export default {
         ...mapActions('EventModule', ['delete']),
         // View
         view(id){
-            this.$router.push({name: 'eventdetail', params: {id} })
+            this.$router.push({name: 'event', params: {id} })
         },
         // Delete
         remove(id){

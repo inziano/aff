@@ -3,7 +3,7 @@
         <div class="h-full overflow-hidden shadow-lg bg-white rounded" @click="viewPub(publication.id)">
             <div class="border border-white rounded-sm p-2 flex flex-col justify-between leading-normal">
                 <div class="mb-8">
-                    <div class="text-gray-900 font-medium text-base mb-2 font-serif capitalize">{{publication.title | truncate(100)}}</div>
+                    <div @click="viewPub(publication.id)" class="text-gray-900 font-medium text-base mb-2 font-serif capitalize cursor-pointer">{{publication.title | truncate(100)}}</div>
                     <p class="text-gray-700 font-sans text-sm"> <span :inner-html.prop="publication.abstract | truncate(100)"></span></p>
                 </div>
                 <div class="flex publications-center">

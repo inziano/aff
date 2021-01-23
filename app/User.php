@@ -10,6 +10,7 @@ use App\Education;
 use App\Work;
 use App\Publication;
 use App\Role;
+use App\Thread;
 use App\Filters\Filterable;
 
 class User extends Authenticatable
@@ -94,6 +95,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Topic::class, 'subscriptions');
     }
 
+    // Threads a user ha
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
+
     // User is administrator
     public function isAdministrator()
     {
@@ -103,6 +110,16 @@ class User extends Authenticatable
             {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    // User is a member
+    public function isMember()
+    {
+        if ( $this->status == "Member"){
+            return true;
         }
 
         return false;

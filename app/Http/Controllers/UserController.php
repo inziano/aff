@@ -122,7 +122,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
-        return UserResource::collection(User::where('id', $user->id)->with(['bio','education','work','roles:name'])->get());
+        return UserResource::collection(User::where('id', $user->id)->with(['bio','education','work','roles:name','topics'])->get());
     }
 
     /**

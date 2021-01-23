@@ -14,9 +14,7 @@ class TopicPolicy
     {
         // Allow all administrators to access everything
 
-        if ( $user->isAdministrator() ) {
-            return true;
-        }
+        return $user->isAdministrator();
     }
 
     /**
@@ -28,9 +26,7 @@ class TopicPolicy
     public function viewAny(User $user)
     {
         //
-        if ( $user->isAdministrator() ) {
-            return true;
-        }
+       return $user->isMember();
     }
 
     /**
@@ -43,6 +39,7 @@ class TopicPolicy
     public function view(User $user, Topic $topic)
     {
         //
+        return $user->topics->contains($topic->id);
     }
 
     /**
@@ -54,6 +51,7 @@ class TopicPolicy
     public function create(User $user)
     {
         //
+        return $user->isAdministrator();
     }
 
     /**

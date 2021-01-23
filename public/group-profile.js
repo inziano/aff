@@ -321,6 +321,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1292,9 +1324,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
 //
 //
 //
@@ -2715,63 +2744,118 @@ var render = function() {
         _vm._v(" "),
         _vm.id === this.currentUser.id
           ? _c("div", { staticClass: "w-full h-auto justify-right" }, [
-              _c("div", { staticClass: "p-5 mt-2 h-auto" }, [
-                _c("p", { staticClass: "text-lg  px-2" }, [
-                  _vm._v(" Settings ")
-                ]),
-                _vm._v(" "),
-                _c("hr", { staticClass: "w-full mt-2 mb-4 text-gray-900" }),
-                _vm._v(" "),
-                _c("ul", { staticClass: "w-full mt-2 px-4" }, [
-                  _c("li", { staticClass: "my-4 text-gray-700 font-medium" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "text-gray-700 text-base font-medium tracking-wider hover:text-gray-900",
-                        on: { click: _vm.editProfile }
-                      },
-                      [_vm._v(" Profile ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "my-4 text-gray-700 font-medium" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "text-gray-700 text-base font-medium tracking-wider hover:text-gray-900",
-                        on: { click: _vm.editEducation }
-                      },
-                      [_vm._v(" Education ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "my-4 text-gray-700 font-medium" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "text-gray-700 text-base font-medium tracking-wider hover:text-gray-900",
-                        on: { click: _vm.editWork }
-                      },
-                      [_vm._v(" Career ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "my-4 text-gray-700 font-medium" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "text-gray-700 text-base font-medium tracking-wider hover:text-gray-900",
-                        on: { click: _vm.editAccount }
-                      },
-                      [_vm._v(" Account ")]
-                    )
+              _c(
+                "div",
+                { staticClass: "flex flex-col sm:flex-row sm:justify-around" },
+                [
+                  _c("div", { staticClass: "h-auto" }, [
+                    _c("nav", { staticClass: "mt-10 px-2" }, [
+                      _c("div", [
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "text-gray-600 ml-2 w-full border-b-2 pb-2 border-gray-100 mb-4 text-md font-normal"
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                                Settings\r\n                            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start",
+                            on: { click: _vm.editProfile }
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "mx-4 text-md font-normal" },
+                              [
+                                _vm._v(
+                                  "\r\n                                    Profile\r\n                                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "flex-grow text-right" })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start",
+                            on: { click: _vm.editEducation }
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "mx-4 text-md font-normal" },
+                              [
+                                _vm._v(
+                                  "\r\n                                    Education\r\n                                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "flex-grow text-right" })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start",
+                            on: { click: _vm.editWork }
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "mx-4 text-md font-normal" },
+                              [
+                                _vm._v(
+                                  "\r\n                                    Career\r\n                                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "flex-grow text-right" })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "hover:text-gray-800 font-thin text-gray-500 dark:text-gray-400 hover:bg-gray-100 flex items-center p-2 my-4 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200 justify-start",
+                            on: { click: _vm.editAccount }
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "mx-4 text-md font-normal" },
+                              [
+                                _vm._v(
+                                  "\r\n                                    Account\r\n                                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "flex-grow text-right" })
+                          ]
+                        )
+                      ])
+                    ])
                   ])
-                ])
-              ])
+                ]
+              )
             ])
           : _vm._e()
       ],
@@ -4216,7 +4300,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4248,7 +4332,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4305,7 +4389,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4387,7 +4471,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4464,7 +4548,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4506,7 +4590,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4542,7 +4626,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4607,7 +4691,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { attrs: { gutter: 16 } },
+            { staticClass: "px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4672,7 +4756,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "Row",
-            { staticClass: "py-4 my-2", attrs: { gutter: 16 } },
+            { staticClass: "py-4 my-2 px-4", attrs: { gutter: 16 } },
             [
               _c(
                 "Col",
@@ -4871,7 +4955,7 @@ var render = function() {
             [
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -4927,7 +5011,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -4959,7 +5043,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -4998,7 +5082,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5065,7 +5149,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5101,7 +5185,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { staticClass: "mb-2", attrs: { gutter: 16 } },
+                { staticClass: "px-4 mb-2", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5313,7 +5397,7 @@ var render = function() {
             [
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5348,7 +5432,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5380,7 +5464,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5412,7 +5496,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5479,7 +5563,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { attrs: { gutter: 16 } },
+                { staticClass: "px-4", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",
@@ -5515,7 +5599,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Row",
-                { staticClass: "mb-2", attrs: { gutter: 16 } },
+                { staticClass: "px-4 mb-2", attrs: { gutter: 16 } },
                 [
                   _c(
                     "Col",

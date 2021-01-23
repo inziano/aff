@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Filters\Filterable;
+use Carbon\Carbon;
 
 class Vacancy extends Model
 {
@@ -16,4 +17,13 @@ class Vacancy extends Model
         'deadline',
         'user_id'
     ];
+
+    // Expired vacancies
+    public function scopeValid($query)
+    {
+        $today = today();
+        // Show only that deadline is in the future
+        return $query->whereDate('deadline','>=', $today);
+
+    }
 }

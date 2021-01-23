@@ -7,14 +7,14 @@
                     <p class="text-base"> Basic Information</p>
                 </div>
             </div>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Surname">
                        <Input size="large"  v-model="bioForm.surname" placeholder="Surname"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 
                 <Col span="12">
                     <FormItem label="First Name">
@@ -27,7 +27,7 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Date of Birth">
                         <DatePicker size="large" v-model="bioForm.dob" type="date" placeholder="Select date" style="width: 100%"></DatePicker>
@@ -50,16 +50,13 @@
                 </div>
             </div>
             
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Expertise">
                         <Select size="large" v-model="bioForm.title" placeholder="Expertise" filterable allow-create>
                             <Option v-for="title in titles" :value="title" :key="title">{{ title }}</Option>
                         </Select>
                     </FormItem>
-                    <!-- <FormItem label = "Expertise">
-                       <Input size="large"  v-model="bioForm.title" placeholder="Expertise"></Input>
-                    </FormItem> -->
                 </Col>
                 <Col span="12">
                     <FormItem label="Field of Study">
@@ -67,7 +64,7 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label="Summary">
                         <Input size="large"  v-model="bioForm.summary" placeholder="Summary" type="textarea"></Input>
@@ -80,14 +77,14 @@
                     <p class="text-base"> Contacts </p>
                 </div>
             </div>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="24">
                     <FormItem label="Secondary Email">
                        <Input size="large"  v-model="bioForm.altemail" type="email" placeholder="email@sth.org"></Input>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Phone">
                        <Input size="large"  v-model="bioForm.phone" type="text" placeholder="+254 712 334455"></Input>
@@ -99,7 +96,7 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="16">
+            <Row :gutter="16" class="px-4">
                 <Col span="12">
                     <FormItem label="Residency">
                        <Input size="large"  v-model="bioForm.residency" type="text" placeholder="Residency"></Input>
@@ -111,7 +108,7 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row class="py-4 my-2" :gutter="16">
+            <Row :gutter="16" class="py-4 my-2 px-4">
                 <Col span="10">
                     <ButtonGroup>
                         <Button >

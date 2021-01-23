@@ -22,16 +22,6 @@ class VacancyRepository {
         return $vacancy;
     }
 
-    public function searchVacancies($term)
-    {
-        // Search the thread
-        $vacancys = VacancyResource::collection(
-            Vacancy::where('title','LIKE', '%'.$term.'%')->orWhere('description', 'LIKE', '%'.$term.'%')->paginate(10)
-        );
-
-        return $vacancies;
-    }
-
     /**
      * showVacancyapplication
      *
@@ -43,17 +33,16 @@ class VacancyRepository {
         return VacancyResource::collection(Vacancy::where('id', $id)->get());
     }
 
-    
-    public function deleteVacancy($id)
+    public function updateVacancy( Request $request, $vacancy)
     {
-        if ( Vacancy::where('id',$id)->exists()){
-
-            $vacancy = Vacancy::find($id)->delete();
-        }else{
-            $vacancy = abort(404);
-        }
-
-        return $vacancy;
+        // Update vacancy
+        return $vacancy->update($request->all());
+    }
+    
+    public function deleteVacancy($vacancy)
+    {
+        // Delete vacancy
+        return $vacancy->delete();
     }
 
 }

@@ -14,6 +14,10 @@ class Topic extends Model
         'public',
     ];
 
+    protected $casts = [
+        'public' => 'boolean',
+    ];
+
     // Relationship
     public function threads()
     {
@@ -24,5 +28,11 @@ class Topic extends Model
     public function users()
     {
         return $this->belongsToMany(User::class,'subscriptions');
+    }
+
+    // Is the thread public
+    public function isPublic()
+    {
+       return (boolean) $this->public;
     }
 }

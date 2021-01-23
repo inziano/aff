@@ -76,9 +76,9 @@ Route::apiResource('replies', 'ReplyController');
 // Topic routes
 Route::apiResource('topics', 'TopicController');
 
-Route::post('topics/subscribe/{id}', 'TopicController@subscribe');
+Route::post('topics/subscribe/{topic}', 'TopicController@subscribe');
 
-Route::post('topics/unsubscribe/{id}', 'TopicController@unsubscribe');
+Route::post('topics/unsubscribe/{topic}', 'TopicController@unsubscribe');
 
 // Vacancy routes
 Route::apiResource('vacancies', 'VacancyController');

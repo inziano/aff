@@ -36,8 +36,17 @@ class ThreadController extends Controller
      */
     public function index(Request $request,ThreadFilters $filters)
     {
+        $this->authorize('viewAny', Thread::class);
+
+        $public = Thread::public()->get()->modelKeys();
+
+        $topics = auth()->user()->topics->modelKeys();
+
+        $subscribed = Thread::whereIn('topic_id', $topics)->get()->modelKeys();
+        // dd
+        $t_id = array_unique( array_merge( $subscribed, $public));
         //
-        return ThreadResource::collection(Thread::filter($filters)->public()->whereNotNull('user_id')->paginate(12));
+        return ThreadResource::collection(Thread::filter($filters)->whereIn('id',$t_id)->paginate(12));
     }
 
     /**
@@ -48,6 +57,7 @@ class ThreadController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Thread::class);
         // Store
         $this->validate(request(),[
             'subject',
@@ -89,22 +99,24 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Thread $thread)
     {
+        $this->authorize('update', $thread);
+
         //check if the request has input or like
         if ( $request->has('likes')) {
             // call like updater
-            $likes = $this->repo->likeThread($id);
+            $likes = $this->repo->likeThread($thread->id);
             // Push event
-            event( new UpdateThreadLikeCount($id));
+            event( new UpdateThreadLikeCount($thread->id));
             // Return
             return $likes;
 
         } elseif ($request->has('views')) {
             // call view updater
-            $views = $this->repo->viewThread($id);
+            $views = $this->repo->viewThread($thread->id);
             // Push event
-            event( new UpdateThreadViewCount($id));
+            event( new UpdateThreadViewCount($thread->id));
             // Return
             return $views;
         } else {
@@ -114,57 +126,16 @@ class ThreadController extends Controller
     }
 
     /**
-     * filter
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function filter(Request $request)
-    {
-        if ($request->has('topic')){
-            // filter thread by topic
-            $threads = $this->repo->filterByTopic($request->input('topic'));
-
-        } elseif ($request->has('user')) {
-            // Filter thread by user
-            $threads = $this->repo->filterByUser($request->input('user'));
-        }
-
-        // Fire event
-        event( new FilterThreads($threads));
-
-        return $threads;
-
-    }
-
-    /**
-     * search
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function search(Request $request)
-    {
-        $results = $this->repo->searchThreads($request->input('search'));
-
-        // TODO: Fail gracefully incase of error
-        // Fire event
-        event( new SearchThreads($results));
-
-        // 
-        return $results;
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy($thread)
+    public function destroy(Thread $thread)
     {
+        $this->authorize('delete', $thread);
         //
-        $thread = $this->repo->deleteThread($thread);
+        $thread = $this->repo->deleteThread($thread->id);
 
         event(new ThreadDeleted());
 

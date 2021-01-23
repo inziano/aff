@@ -29,16 +29,7 @@
                 <div class="w-full bg-gray-100" style="height: 73%">
                     <ul class="w-full p-1" v-if="topEvents.length">
                         <li class="mb-2 mt-1 p-2 border-b border-gray-400" v-for="event in topEvents" :key="event.id" >
-                            <!-- <div class="flex">
-                                <div class="w-20 h-20 bg-teal-500 flex justify-center items-center flex-col text-white font-bold text-center">
-                                    <p class="text-sm">{{event.startdate | moment('D') }}</p>
-                                    <p class="uppercase -mt-1">{{event.startdate | moment('MMM') }}</p>
-                                </div>
-                                <div class="bg-white h-20 items-center px-4">
-                                    <p class="font-normal text-sm">{{event.name}}</p>
-                                </div>
-                            </div> -->
-                            <p class="mb-1 text-sm font-medium tracking-wider"> {{event.name}} </p>
+                            <p class="mb-1 text-sm font-medium tracking-wider cursor-pointer"> {{event.name}} </p>
                             <p class="mb-1 text-xs font-thin tracking-wider"> {{event.location}} </p>
                             <p class="mt-1  w-2/3 text-xs font-medium text-gray">
                                 {{ event.startdate | moment("from")}}
@@ -65,7 +56,7 @@
                 <div class="w-full bg-gray-100" style="height: 73%">
                     <ul class="w-full p-1" v-if="topVacancies.length">
                         <li class="mb-2 mt-1 p-2 border-b border-gray-400" v-for="vacancy in topVacancies" :key="vacancy.id">
-                            <p class="mb-1 text-sm font-medium tracking-wider"> {{vacancy.title}} </p>
+                            <p class="mb-1 text-sm font-medium tracking-wider cursor-pointer"> {{vacancy.title}} </p>
                             <p class="mb-1 text-xs font-thin tracking-wider"> {{vacancy.location}} </p>
                             <p class="mb-0  w-2/3 text-xs font-medium text-gray">
                                 {{ vacancy.deadline | moment("from")}}

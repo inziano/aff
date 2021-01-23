@@ -30,7 +30,7 @@ class TopicController extends Controller
     {
         $this->authorize('viewAny', Topic::class);
         //
-        return TopicResource::collection(Topic::all());
+        return TopicResource::collection(Topic::paginate(12));
 
     }
 
@@ -47,7 +47,6 @@ class TopicController extends Controller
             'title'=> 'required|string',
             'description'=> 'required|string'
         ]);
-        // 
 
         $topic = $this->repo->createTopic($request);
 
@@ -64,9 +63,16 @@ class TopicController extends Controller
      */
     public function subscribe(Request $request, Topic $topic)
     {
-        $topic->users()->attach($request->user_id);
+        // Only subscribe to private topics
+        if (!$topic->isPublic() ){
 
-        return 'okay';
+            $topic->users()->attach($request->user);
+            
+            return 'Subscribed';
+        }
+       
+        // Abort
+        return abort(403, 'This topic is public');
     }
 
     /**
@@ -78,7 +84,7 @@ class TopicController extends Controller
      */
     public function unsubscribe(Request $request, Topic $topic)
     {
-        $topic->users()->detach($request->user_id);
+        $topic->users()->detach($request->user);
 
         return 'okay';
     }
@@ -93,6 +99,10 @@ class TopicController extends Controller
     public function update(Request $request, Topic $topic)
     {
         //
+        dd($request);
+        $topic = $this->repo->updateTopic( $topic, $request);
+
+        return $topic;
     }
 
     /**
@@ -101,12 +111,12 @@ class TopicController extends Controller
      * @param  \App\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function destroy($topic)
+    public function destroy(Topic $topic)
     {
         // 
-        $topic = $this->repo->deleteTopic($topic);
+        $topic = $this->repo->deleteTopic($topic->id);
 
-        event(new TopicDeleted());
+        // event(new TopicDeleted());
 
         return $topic;
     }

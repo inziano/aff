@@ -53,45 +53,6 @@ class ThreadRepository {
     }
 
     /**
-     * filterByTopic
-     *
-     * @param mixed $id
-     * @return void
-     */
-    public function filterByTopic($id)
-    {
-        return ThreadResource::collection(Thread::where('topic_id', $id)->get());
-    }
-
-    /**
-     * filterByUser
-     *
-     * @param mixed $id
-     * @return void
-     */
-    public function filterByUser($id)
-    {
-        return ThreadResource::collection(Thread::where('user_id', $id)->get());
-    
-    }
-
-    /**
-     * searchThreads
-     *
-     * @param mixed $term
-     * @return void
-     */
-    public function searchThreads($term)
-    {
-        // Search the thread
-        $threads = ThreadResource::collection(
-            Thread::where('subject','LIKE', '%'.$term.'%')->orWhere('body', 'LIKE', '%'.$term.'%')->get()
-        );
-
-        return $threads;
-    }
-
-    /**
      * viewThread
      *
      * @param mixed $id

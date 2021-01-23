@@ -50,7 +50,7 @@ class AuthController extends Controller
         {
             $request->session()->regenerate();
 
-            $user = User::with('roles:name')->where('email', $request->input('email'))->first();
+            $user = User::with('roles:name', 'topics')->where('email', $request->input('email'))->first();
 
             return $user;
         }
