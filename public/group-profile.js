@@ -239,7 +239,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['member'],
+  props: ['members'],
   methods: {
     // Go
     goToDetail: function goToDetail(id) {
@@ -272,15 +272,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _ProfileWidgets_ProfileDetailsComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileWidgets/ProfileDetailsComponent */ "./resources/js/components/User/ProfileWidgets/ProfileDetailsComponent.vue");
-/* harmony import */ var _ProfileWidgets_ProfileCardComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ProfileWidgets/ProfileCardComponent */ "./resources/js/components/User/ProfileWidgets/ProfileCardComponent.vue");
-/* harmony import */ var _UserForms_BioFormComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./UserForms/BioFormComponent */ "./resources/js/components/User/UserForms/BioFormComponent.vue");
-/* harmony import */ var _UserForms_WorkFormComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UserForms/WorkFormComponent */ "./resources/js/components/User/UserForms/WorkFormComponent.vue");
-/* harmony import */ var _UserForms_EducationFormComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./UserForms/EducationFormComponent */ "./resources/js/components/User/UserForms/EducationFormComponent.vue");
-/* harmony import */ var _UserForms_AccountFormComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./UserForms/AccountFormComponent */ "./resources/js/components/User/UserForms/AccountFormComponent.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _ProfileWidgets_ProfileDetailsComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProfileWidgets/ProfileDetailsComponent */ "./resources/js/components/User/ProfileWidgets/ProfileDetailsComponent.vue");
+/* harmony import */ var _ProfileWidgets_ProfileCardComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileWidgets/ProfileCardComponent */ "./resources/js/components/User/ProfileWidgets/ProfileCardComponent.vue");
+/* harmony import */ var _UserForms_BioFormComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UserForms/BioFormComponent */ "./resources/js/components/User/UserForms/BioFormComponent.vue");
+/* harmony import */ var _UserForms_WorkFormComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./UserForms/WorkFormComponent */ "./resources/js/components/User/UserForms/WorkFormComponent.vue");
+/* harmony import */ var _UserForms_EducationFormComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UserForms/EducationFormComponent */ "./resources/js/components/User/UserForms/EducationFormComponent.vue");
+/* harmony import */ var _UserForms_AccountFormComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./UserForms/AccountFormComponent */ "./resources/js/components/User/UserForms/AccountFormComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -350,10 +348,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-
 
 
 
@@ -363,12 +357,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'profile-details': _ProfileWidgets_ProfileDetailsComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    'profile-card': _ProfileWidgets_ProfileCardComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'bio-form': _UserForms_BioFormComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'work-form': _UserForms_WorkFormComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'education-form': _UserForms_EducationFormComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
-    'account-form': _UserForms_AccountFormComponent__WEBPACK_IMPORTED_MODULE_7__["default"]
+    'profile-details': _ProfileWidgets_ProfileDetailsComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'profile-card': _ProfileWidgets_ProfileCardComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'bio-form': _UserForms_BioFormComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'work-form': _UserForms_WorkFormComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'education-form': _UserForms_EducationFormComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
+    'account-form': _UserForms_AccountFormComponent__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   data: function data() {
     return {
@@ -383,7 +377,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     this.loadUserData(this.currentUser.id);
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('AuthModule', ['currentUser']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('AuthModule', ['current_user_details']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('UserModule', ['members']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('AuthModule', ['currentUser']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['current_user_details']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('UserModule', ['members']), {
     // Member
     profile: function profile() {
       var curr_id = this.$route.params.id;
@@ -437,7 +431,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return false;
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('AuthModule', ['loadUserData']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('AuthModule', ['loadUserData']), {
     viewProfile: function viewProfile() {
       this.editing = this.editprofile = this.editwork = this.editeducation = this.editaccount = false;
     },
@@ -526,7 +520,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['user', 'account', 'editing'],
   computed: {
     path: function path() {
-      return this.account.image !== null ? this.account.image : 'images/landing.jpg';
+      return this.account.image !== null ? this.account.image : "http://affintranet.kensters.com" + "/images/avatar.svg";
     }
   },
   methods: {
@@ -650,7 +644,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'education', 'work']
+  props: ['user', 'education', 'work'],
+  computed: {
+    base: function base() {
+      return "http://affintranet.kensters.com" + "/images/certification.svg";
+    }
+  }
 });
 
 /***/ }),
@@ -913,18 +912,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _InvitationComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InvitationComponent */ "./resources/js/components/User/InvitationComponent.vue");
-/* harmony import */ var _ProfileListItemComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ProfileListItemComponent */ "./resources/js/components/User/ProfileListItemComponent.vue");
-/* harmony import */ var _ProfilesTableComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ProfilesTableComponent */ "./resources/js/components/User/ProfilesTableComponent.vue");
-/* harmony import */ var _MemberAnalyticsComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MemberAnalyticsComponent */ "./resources/js/components/User/MemberAnalyticsComponent.vue");
-/* harmony import */ var _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Widgets/PaginationComponent */ "./resources/js/components/Widgets/PaginationComponent.vue");
-/* harmony import */ var _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Widgets/SearchComponent */ "./resources/js/components/Widgets/SearchComponent.vue");
-/* harmony import */ var _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Widgets/FilterComponent */ "./resources/js/components/Widgets/FilterComponent.vue");
-/* harmony import */ var _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Widgets/StatsComponent */ "./resources/js/components/Widgets/StatsComponent.vue");
-/* harmony import */ var _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Widgets/ModalbtnComponent */ "./resources/js/components/Widgets/ModalbtnComponent.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _InvitationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InvitationComponent */ "./resources/js/components/User/InvitationComponent.vue");
+/* harmony import */ var _ProfileListItemComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileListItemComponent */ "./resources/js/components/User/ProfileListItemComponent.vue");
+/* harmony import */ var _ProfilesTableComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ProfilesTableComponent */ "./resources/js/components/User/ProfilesTableComponent.vue");
+/* harmony import */ var _MemberAnalyticsComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MemberAnalyticsComponent */ "./resources/js/components/User/MemberAnalyticsComponent.vue");
+/* harmony import */ var _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Widgets/PaginationComponent */ "./resources/js/components/Widgets/PaginationComponent.vue");
+/* harmony import */ var _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Widgets/SearchComponent */ "./resources/js/components/Widgets/SearchComponent.vue");
+/* harmony import */ var _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Widgets/FilterComponent */ "./resources/js/components/Widgets/FilterComponent.vue");
+/* harmony import */ var _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Widgets/StatsComponent */ "./resources/js/components/Widgets/StatsComponent.vue");
+/* harmony import */ var _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Widgets/ModalbtnComponent */ "./resources/js/components/Widgets/ModalbtnComponent.vue");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -1028,18 +1025,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'invitation': _InvitationComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    'profilelist-item': _ProfileListItemComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'profiles-table': _ProfilesTableComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'member-analytics': _MemberAnalyticsComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'pagination': _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
-    'search': _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
-    'filter-a': _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
-    'stats': _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_9__["default"],
-    'modal-btn': _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_10__["default"]
+    'invitation': _InvitationComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'profilelist-item': _ProfileListItemComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'profiles-table': _ProfilesTableComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'member-analytics': _MemberAnalyticsComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'pagination': _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
+    'search': _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
+    'filter-a': _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
+    'stats': _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
+    'modal-btn': _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   data: function data() {
     return {
@@ -1059,7 +1055,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       moduleName: 'UserModule'
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('UserModule', ['meta', 'links']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('AnalyticsModule', ['memberstats']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('UserModule', ['members']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('UserModule', ['meta', 'links']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AnalyticsModule', ['memberstats']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('UserModule', ['members']), {
     profiles: function profiles() {
       return this.members.data;
     },
@@ -1094,7 +1090,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this.members = e.users; // console.log(e)
     });
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('UserModule', ['fetch']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('UserModule', ['fetch']), {
     // close modal
     closeModal: function closeModal() {
       this.inviteModal = false;
@@ -2318,7 +2314,8 @@ var render = function() {
                         attrs: {
                           size: "large",
                           type: "text",
-                          placeholder: "Email addresses"
+                          placeholder: "Email address",
+                          multiple: ""
                         },
                         model: {
                           value: _vm.invitationForm.email,
@@ -2580,135 +2577,149 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "h-auto overflow-hidden shadow-sm p-2 m-1 bg-white" },
-      [
-        _c(
-          "div",
-          { staticClass: "w-full text-center mb-3 pt-2" },
-          [
-            _c("Avatar", { style: { background: "#0A8754" } }, [
-              _vm._v(
-                " " +
-                  _vm._s(_vm.member.bio.firstname.slice(0, 1)) +
-                  _vm._s(_vm.member.bio.lastname.slice(0, 1)) +
-                  " "
+  return _c(
+    "div",
+    { staticClass: "w-full flex flex-wrap py-4 px-2 justify-center" },
+    _vm._l(_vm.members, function(member) {
+      return _c(
+        "div",
+        {
+          key: member.id,
+          staticClass:
+            "px-2 py-4 h-auto overflow-hidden shadow-sm m-2 bg-white  w-full md:w-1/2 lg:w-1/4"
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "w-full text-center mb-3 pt-2" },
+            [
+              _c("Avatar", { style: { background: "#0A8754" } }),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "text-base font-medium text-gray-600 px-2" },
+                [
+                  _vm._v(
+                    " " +
+                      _vm._s(member.bio.firstname) +
+                      " " +
+                      _vm._s(member.bio.lastname)
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "text-xs font-medium mt-2 text-gray-600" },
+                [_vm._v(" " + _vm._s(member.bio.title))]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "text-xs font-medium mt-2 text-gray-600" },
+                [_vm._v(" " + _vm._s(member.bio.citizenship))]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "text-xs font-medium mt-2 text-gray-600" },
+                [_vm._v(" " + _vm._s(member.email))]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "text-sm font-medium tracking-wide mt-1 text-gray-600"
+                },
+                [_vm._v(" " + _vm._s(member.status) + " ")]
               )
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-base font-medium text-gray-600" }, [
-              _vm._v(
-                " " +
-                  _vm._s(_vm.member.bio.firstname) +
-                  " " +
-                  _vm._s(_vm.member.bio.lastname)
-              )
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-xs font-medium mt-2 text-gray-600" }, [
-              _vm._v(" " + _vm._s(_vm.member.bio.title))
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-xs font-medium mt-2 text-gray-600" }, [
-              _vm._v(" " + _vm._s(_vm.member.bio.citizenship))
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-xs font-medium mt-2 text-gray-600" }, [
-              _vm._v(" " + _vm._s(_vm.member.email))
-            ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("ul", { staticClass: "flex justify-center w-2/3 mx-auto mb-4" }, [
+            _c(
+              "li",
+              { staticClass: "mx-auto" },
+              [_c("Icon", { attrs: { type: "ios-chatboxes", size: "20" } })],
+              1
+            ),
             _vm._v(" "),
             _c(
-              "p",
-              {
-                staticClass:
-                  "text-sm font-medium tracking-wide mt-1 text-gray-600"
-              },
-              [_vm._v(" " + _vm._s(_vm.member.status) + " ")]
+              "li",
+              { staticClass: "mx-auto" },
+              [
+                _c("Icon", { attrs: { type: "ios-notifications", size: "20" } })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "mx-auto" },
+              [_c("Icon", { attrs: { type: "ios-trash", size: "20" } })],
+              1
             )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("ul", { staticClass: "flex justify-center w-2/3 mx-auto mb-4" }, [
-          _c(
-            "li",
-            { staticClass: "mx-auto" },
-            [_c("Icon", { attrs: { type: "ios-chatboxes", size: "20" } })],
-            1
-          ),
+          ]),
+          _vm._v(" "),
+          _c("Divider"),
           _vm._v(" "),
           _c(
-            "li",
-            { staticClass: "mx-auto" },
-            [_c("Icon", { attrs: { type: "ios-notifications", size: "20" } })],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            { staticClass: "mx-auto" },
-            [_c("Icon", { attrs: { type: "ios-trash", size: "20" } })],
+            "div",
+            { staticClass: "w-full flex p-0 text-center" },
+            [
+              _c("div", { staticClass: "w-1/2" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-gray-600",
+                    on: {
+                      click: function($event) {
+                        return _vm.goToDetail(member.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("Icon", { attrs: { type: "ios-person", size: "18" } }),
+                    _vm._v(" Profile\n                ")
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("Divider", {
+                staticStyle: { height: "auto" },
+                attrs: { type: "vertical" }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-1/2" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-gray-600",
+                    on: {
+                      click: function($event) {
+                        return _vm.goToPub(member.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("Icon", { attrs: { type: "ios-apps", size: "18" } }),
+                    _vm._v(" Publications\n                ")
+                  ],
+                  1
+                )
+              ])
+            ],
             1
           )
-        ]),
-        _vm._v(" "),
-        _c("Divider"),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "w-full flex p-0 pb-3 text-center" },
-          [
-            _c("div", { staticClass: "w-1/2" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "text-gray-600",
-                  on: {
-                    click: function($event) {
-                      return _vm.goToDetail(_vm.member.id)
-                    }
-                  }
-                },
-                [
-                  _c("Icon", { attrs: { type: "ios-person", size: "18" } }),
-                  _vm._v(" Profile\n                ")
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("Divider", {
-              staticStyle: { height: "auto" },
-              attrs: { type: "vertical" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-1/2" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "text-gray-600",
-                  on: {
-                    click: function($event) {
-                      return _vm.goToPub(_vm.member.id)
-                    }
-                  }
-                },
-                [
-                  _c("Icon", { attrs: { type: "ios-apps", size: "18" } }),
-                  _vm._v(" Publications\n                ")
-                ],
-                1
-              )
-            ])
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
+        ],
+        1
+      )
+    }),
+    0
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2863,19 +2874,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "w-4/5" }, [
-      _c(
-        "div",
-        { staticClass: "w-full h-12" },
-        [
-          _c(
-            "Breadcrumb",
-            { staticClass: "p-4" },
-            [_c("BreadcrumbItem", { attrs: { to: "/" } }, [_vm._v("Home")])],
-            1
-          )
-        ],
-        1
-      ),
+      _c("div", { staticClass: "w-full h-12" }),
       _vm._v(" "),
       _c(
         "div",
@@ -2964,21 +2963,21 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
-        _c("p", { staticClass: "text-gray-600 text-xs" }, [
+        _c("p", { staticClass: "py-2 text-gray-600 text-xs" }, [
           _vm._v(_vm._s(_vm.account.email))
         ]),
         _vm._v(" "),
-        _c("p", { staticClass: "mb-5 text-gray-600 text-xs" }, [
+        _c("p", { staticClass: "py-2 mb-4 text-gray-600 text-xs" }, [
           _vm._v(_vm._s(_vm.user.phone))
         ]),
         _vm._v(" "),
-        _c("p", { staticClass: "mb-2 text-gray-600" }, [
+        _c("p", { staticClass: "py-2 mb-2 text-gray-600" }, [
           _vm._v(_vm._s(_vm.user.qualification))
         ]),
         _vm._v(" "),
         _c(
           "p",
-          { staticClass: "text-gray-600 text-xs" },
+          { staticClass: "py-2 text-gray-600 text-xs" },
           [
             _c("Icon", { attrs: { type: "ios-pin" } }),
             _c("span", [_vm._v(_vm._s(_vm.user.residency))])
@@ -3063,11 +3062,30 @@ var render = function() {
                   domProps: { innerHTML: _vm._s(_vm.user.summary) }
                 })
               ])
-            : _c("div", [_vm._m(1)])
+            : _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex flex-wrap content-center justify-center "
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "h-48 w-full mb-4",
+                      attrs: { src: _vm.base }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "font-light text-gray-600" }, [
+                      _vm._v(
+                        "\n                               Tell us more about yourself\n                            "
+                      )
+                    ])
+                  ]
+                )
+              ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "w-full overflow-hidden p-2 m-2 " }, [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _vm.education.length !== 0
             ? _c(
@@ -3120,7 +3138,26 @@ var render = function() {
                 }),
                 0
               )
-            : _c("div", [_vm._m(3)])
+            : _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex flex-wrap content-center justify-center "
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "h-48 w-full mb-4",
+                      attrs: { src: _vm.base }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "font-light text-gray-600" }, [
+                      _vm._v(
+                        "\n                                Tell us about your education background\n                            "
+                      )
+                    ])
+                  ]
+                )
+              ])
         ])
       ])
     ]),
@@ -3128,7 +3165,7 @@ var render = function() {
     _c("div", { staticClass: "w-2/5 pt-0 px-4" }, [
       _c("div", { staticClass: "w-full" }, [
         _c("div", { staticClass: "w-full overflow-hidden p-2 m-2" }, [
-          _vm._m(4),
+          _vm._m(2),
           _vm._v(" "),
           _vm.work.length !== 0
             ? _c(
@@ -3178,7 +3215,26 @@ var render = function() {
                 ],
                 1
               )
-            : _c("div", [_vm._m(5)])
+            : _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex flex-wrap content-center justify-center"
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "h-48 w-full mb-4",
+                      attrs: { src: _vm.base }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "font-light text-gray-600" }, [
+                      _vm._v(
+                        "\n                           Tell us about your work experience\n                        "
+                      )
+                    ])
+                  ]
+                )
+              ])
         ])
       ])
     ])
@@ -3199,27 +3255,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex flex-wrap content-center justify-center " },
-      [
-        _c("img", {
-          staticClass: "h-48 w-full mb-4",
-          attrs: { src: "images/certification.svg" }
-        }),
-        _vm._v(" "),
-        _c("p", { staticClass: "font-light text-gray-600" }, [
-          _vm._v(
-            "\n                               Tell us more about yourself\n                            "
-          )
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "w-full flex my-4 p-2 bg-gray-100" }, [
       _c("div", { staticClass: "w-1/3" }, [
         _c("p", { staticClass: "text-base" }, [_vm._v(" Education ")])
@@ -3230,53 +3265,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex flex-wrap content-center justify-center " },
-      [
-        _c("img", {
-          staticClass: "h-48 w-full mb-4",
-          attrs: { src: "images/certification.svg" }
-        }),
-        _vm._v(" "),
-        _c("p", { staticClass: "font-light text-gray-600" }, [
-          _vm._v(
-            "\n                                Tell us about your education background\n                            "
-          )
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "w-full flex my-4 p-2 bg-gray-100" }, [
       _c("div", { staticClass: "w-1/3" }, [
         _c("p", { staticClass: "text-base" }, [_vm._v(" Work ")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex flex-wrap content-center justify-center" },
-      [
-        _c("img", {
-          staticClass: "h-48 w-full mb-4",
-          attrs: { src: "images/work.svg" }
-        }),
-        _vm._v(" "),
-        _c("p", { staticClass: "font-light text-gray-600" }, [
-          _vm._v(
-            "\n                           Tell us about your work experience\n                        "
-          )
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -3685,6 +3678,14 @@ var render = function() {
                   _c(
                     "filter-a",
                     {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.years,
+                          expression: "years"
+                        }
+                      ],
                       staticClass: "ml-4",
                       attrs: {
                         "module-name": _vm.moduleName,
@@ -3708,6 +3709,14 @@ var render = function() {
                   _c(
                     "filter-a",
                     {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.countries,
+                          expression: "countries"
+                        }
+                      ],
                       staticClass: "ml-4",
                       attrs: {
                         "module-name": _vm.moduleName,
@@ -3731,6 +3740,14 @@ var render = function() {
                   _c(
                     "filter-a",
                     {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.expertise,
+                          expression: "expertise"
+                        }
+                      ],
                       staticClass: "ml-4",
                       attrs: {
                         "module-name": _vm.moduleName,
@@ -3754,6 +3771,14 @@ var render = function() {
                   _c(
                     "filter-a",
                     {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.gender,
+                          expression: "gender"
+                        }
+                      ],
                       staticClass: "ml-4",
                       attrs: {
                         "module-name": _vm.moduleName,
@@ -3829,7 +3854,7 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2 flex " }, [
+        _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2" }, [
           _c(
             "div",
             {
@@ -3929,13 +3954,7 @@ var render = function() {
                 staticClass:
                   "w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center"
               },
-              _vm._l(_vm.profiles, function(member) {
-                return _c("profilelist-item", {
-                  key: member.id,
-                  staticClass: "w-full md:w-1/2 lg:w-1/4",
-                  attrs: { member: member }
-                })
-              }),
+              [_c("profilelist-item", { attrs: { members: _vm.profiles } })],
               1
             )
           : _vm._e(),

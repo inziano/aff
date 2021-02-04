@@ -78,7 +78,7 @@
 <script>
 import axios from 'axios'
 
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Pagination from '../Widgets/PaginationComponent'
 import Search from '../Widgets/SearchComponent'
 import Filter from '../Widgets/FilterComponent'
@@ -110,7 +110,18 @@ export default {
             typeA: 'year',
             typeB: 'location',
             statsA: 'events',
+            loading: true,
+            error: false,
         }
+    },
+    created(){
+        this.fetch().then( response => {
+            // Loading false
+            this.loading = false
+        }).catch( error => {
+            // Show error screen
+            this.error = true
+        })
     },
     computed: {
         // Store values

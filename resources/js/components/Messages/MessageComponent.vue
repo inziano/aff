@@ -21,7 +21,7 @@
                 </div>           
                
             </div>
-            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+            <div class="w-full flex flex-wrap bg-white p-2">
                 <div class="lg:flex-grow items-center  mr-4 flex content-center">
                 </div>
                 <div class="w-auto flex content-center">
@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import MessageListItem from './Widgets/MessageListItemComponent'
 import MessageThreads from './Widgets/MessageThreadsComponent'

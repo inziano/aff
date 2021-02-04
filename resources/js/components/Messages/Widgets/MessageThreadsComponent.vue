@@ -31,8 +31,8 @@
         </div>
         <div v-else>
             <div class="flex flex-wrap content-center justify-center ">
-                <img class="h-48 w-full mb-4" src="images/certification.svg">
-                <p class="font-light text-gray-600">
+                <img class="h-56 w-full mb-4" src="images/messages.svg">
+                <p class="text-sm font-medium font-sans text-gray-700 mx-2">
                     Start a new conversation
                 </p>
             </div>
@@ -52,14 +52,28 @@ export default {
     },
     computed: {
         recipient(){
-            let self = this
-            let set = Array.from( new Set( this.threads.map(e => e.sender.user_id !== self.user.id ? e.sender.user_id : e.recipient.user_id ) ) )
+
+            const id = this.user.id
+            // Get the first message
+            // Assuming that the conversation is only between two people i.e current user and the other guy
+            const single = this.threads.slice(-1).pop()
+
+            // Return the id
+            let set = single.recipient.id === id ? single.sender.user_id : single.recipient.user_id 
+
             return set
         },
         recipientDets(){
-            let self = this
-            let set = Array.from( new Set( this.threads.map(e => e.sender.user_id !== self.user.id ? e.sender : e.recipient ) ) )
-            return set[0]
+            
+            const id = this.user.id
+            // Get the first message
+            // Assuming that the conversation is only between two people i.e current user and the other guy
+            const single = this.threads.slice(-1).pop()
+
+            // Return the id
+            let set = single.recipient.id === id ? single.sender : single.recipient
+
+            return set
         },
     },
     components: {

@@ -1,13 +1,13 @@
 <template>
     <div class="w-full md:w-1/2 lg:w-1/4">
-        <div class="h-64 overflow-hidden shadow-sm p-3 m-1 bg-white" >
+        <div class="h-64 overflow-hidden shadow-sm px-4 py-4 m-1 bg-white" >
             <div class="mt-3 mb-2">
-                <p class="font-500 tracking-wider text-sm antialiased cursor-pointer" @click="view(event.id)">
+                <p class="font-medium font-sans text-gray-700 mb-2 cursor-pointer" @click="view(event.id, event.name)">
                 {{event.name}}
                 </p>
             </div>
             <div class="mb-2">
-                <p class="font-hairline text-sm tracking-widest capitalize text-gray-700">
+                <p class="text-xs text-gray-500">
                 {{event.description | truncate(50) }}
                 </p>
             </div>
@@ -45,8 +45,8 @@ export default {
     methods:{
         ...mapActions('EventModule', ['delete']),
         // View
-        view(id){
-            this.$router.push({name: 'event', params: {id} })
+        view(id,title){
+            this.$router.push({name: 'eventdetail', params: {id, title} })
         },
         // Delete
         remove(id){

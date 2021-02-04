@@ -38,7 +38,7 @@
                 </div>
                
             </div>
-            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+            <div class="w-full flex flex-wrap bg-white p-2">
                 <div class="lg:flex-grow items-center  mr-4 flex content-center">
                     <li class="list-none h-10 content-center" @click="changeView()">   
                         <span class="">
@@ -54,8 +54,8 @@
                 </div>       
             </div>
             <div class="w-full" v-if="publications">
-                <div class="w-full h-auto flex flex-wrap pt-5 bg-gray-100 justify-center" v-if="!list">
-                    <publist-item  v-for="publication in publications" :publication = publication :key = publication.id ></publist-item>  
+                <div class="w-full" v-if="!list">
+                    <publist-item  :publications = publications ></publist-item>  
                 </div>
                 <div class="w-full" v-if="list">
                     <publication-table :publications = "publications" :user = "current_user" ></publication-table>
@@ -75,8 +75,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import {mapActions, mapGetters } from 'vuex'
 import PublicationForm from './PublicationFormComponent'
 import PublicationListItem from './PublicationListItemComponent'
 import PublicationTable from './PublicationTableComponent'

@@ -13,7 +13,7 @@
                         </div>
                         <div v-else>
                             <div class="flex flex-wrap content-center justify-center ">
-                                <img class="h-48 w-full mb-4" src="images/certification.svg">
+                                <img class="h-48 w-full mb-4" :src=base>
                                 <p class="font-light text-gray-600">
                                    Tell us more about yourself
                                 </p>
@@ -39,7 +39,7 @@
                         </div>
                         <div v-else>
                             <div class="flex flex-wrap content-center justify-center ">
-                                <img class="h-48 w-full mb-4" src="images/certification.svg">
+                                <img class="h-48 w-full mb-4" :src=base>
                                 <p class="font-light text-gray-600">
                                     Tell us about your education background
                                 </p>
@@ -72,7 +72,7 @@
                     </div>
                     <div v-else>
                         <div class="flex flex-wrap content-center justify-center">
-                            <img class="h-48 w-full mb-4" src="images/work.svg">
+                            <img class="h-48 w-full mb-4" :src=base >
                             <p class="font-light text-gray-600">
                                Tell us about your work experience
                             </p>
@@ -87,5 +87,10 @@
 <script>
 export default {
     props: ['user','education','work'],
+    computed: {
+        base(){
+            return process.env.MIX_APP_URL + "/images/certification.svg"
+        }
+    },
 }
 </script>

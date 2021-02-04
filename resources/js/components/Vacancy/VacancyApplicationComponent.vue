@@ -55,24 +55,22 @@
                 </div>
                 <div class="w-5/6 flex content-center">
                     <div class="w-10/24 p-2 ml-3">
-                        <Icon type="ios-search-outline" size="18"/>
-                        <Input size="large" v-on:keyup.enter="onSearch" v-model="searchTerm" prefix="ios-search-outline" placeholder="Search" class="appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white" type="text" />
                     </div>
                     <div class="flex-grow content-center h-full p-2">
                        
                     </div>
                     <div class="w-2/24 content-center h-full p-2">
                         <Button icon="ios-add" @click="changeView()">
-                            View Applications
+                            <span v-if="!list"> View Applicants</span>
+                            <span v-if="list"> View Vacancy </span>
                         </Button>
                         <Button icon="ios-add" @click="vacancyApplicationModal = true">
                             Apply
                         </Button>
                     </div>  
                 </div>
-               
             </div>
-            <div class="w-full flex flex-wrap bg-white p-2 flex ">
+            <div class="w-full flex flex-wrap bg-white p-2">
                 <div class="lg:flex-grow items-center  mr-4 flex content-center">
                     <li class="list-none h-10 content-center" @click="changeView()">   
                         <span class="">
@@ -84,7 +82,7 @@
                 <div class="w-auto flex content-center">
                     <div class="m-2 flex flex-wrap">
                         <p class="text-center w-full font-sans text-2xl font-semibold tracking-widest">
-                            4
+                            -
                         </p>
                         <p class="text-center w-full font-sans font-medium tracking-wider text-xs text-gray-500">
                             Applications
@@ -142,7 +140,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import VacancyView from './VacancyViewComponent'
 
 export default {
@@ -157,11 +155,11 @@ export default {
             searchTerm: '',
             resume: '',
             cover: '',
-            applications:''
+            error: '',
         }
     },
     computed:{
-        ...mapGetters('VacancyModule',['vacancies']),
+        ...mapGetters('VacancyModule',['vacancies', 'applications']),
         ...mapGetters('AuthModule', ['currentUser']),
 
         vacancy() {
@@ -173,17 +171,10 @@ export default {
         }
     },
     mounted(){
-
-        axios.all([
-            axios.get('api/vacancies/'+this.id),
-            axios.get('api/vacancyapplications/'+this.id)
-        ]).then( axios.spread((vacancy, application)=>{
-        //    this.vacancy = vacancy.data.data
-           this.applications = application.data.data
-
-           this.$Modal.remove()
-        })).catch((error)=>{
-            // show error
+        this.fetchApplications( this.id).then((response)=>{
+            // Response
+        }).catch( (error)=>{
+            // Display error
             this.$Notice.error({
                 title: 'Error occurred',
             })
@@ -195,6 +186,7 @@ export default {
         })
     },
     methods: {
+        ...mapActions('VacancyModule', ['fetchApplications']),
         changeView(){
            if ( this.list === true ){
                this.list = false

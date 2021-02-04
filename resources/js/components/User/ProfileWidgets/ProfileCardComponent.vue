@@ -7,10 +7,10 @@
                     <span  v-if="user.firstname !== null"> {{user.firstname}} </span>
                     <span  v-if="user.lasttname !== null"> {{ user.lastname}} </span> 
                 </h2>
-                <p class="text-gray-600 text-xs">{{account.email}}</p>
-                <p class="mb-5 text-gray-600 text-xs">{{user.phone}}</p>
-                <p class="mb-2 text-gray-600">{{user.qualification}}</p>
-                <p class="text-gray-600 text-xs">
+                <p class="py-2 text-gray-600 text-xs">{{account.email}}</p>
+                <p class="py-2 mb-4 text-gray-600 text-xs">{{user.phone}}</p>
+                <p class="py-2 mb-2 text-gray-600">{{user.qualification}}</p>
+                <p class="py-2 text-gray-600 text-xs">
                     <Icon type="ios-pin" /><span>{{user.residency}}</span> 
                 </p>
             </div>
@@ -35,7 +35,7 @@ export default {
     props: ['user','account', 'editing'],
     computed: {
         path(){
-            return this.account.image !== null ? this.account.image : 'images/landing.jpg'
+            return this.account.image !== null ? this.account.image : process.env.MIX_APP_URL + "/images/avatar.svg"
         }
     },
     methods: {

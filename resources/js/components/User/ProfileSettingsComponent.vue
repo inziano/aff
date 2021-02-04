@@ -49,9 +49,6 @@
     </div>
     <div class="w-4/5">
         <div class="w-full h-12">
-            <Breadcrumb class="p-4">
-                <BreadcrumbItem to="/">Home</BreadcrumbItem>
-            </Breadcrumb>
         </div>
         <div class="w-full p-4 h-auto">
             <profile-details :user = dets :education = education :work = work v-if="!editing"></profile-details>
@@ -65,7 +62,6 @@
     
 </template>
 <script>
-import axios from 'axios'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import ProfileDetails from './ProfileWidgets/ProfileDetailsComponent'
 import ProfileCard from './ProfileWidgets/ProfileCardComponent'

@@ -7,7 +7,7 @@
                 </li>
             </div>
         </ul>
-        <div class="p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center" v-for="event in event" :key="event.id">
+        <div class="p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center">
             <div class="w-2/3">
                 <p class="text-4xl font-serif">
                     {{event.name}}
@@ -39,10 +39,12 @@ export default {
     computed: {
         ...mapGetters('EventModule', ['events']),
         event(){
-            let id = this.eventId
-            return this.events.filter(ev => {
-                return ev.id === id
+            
+            const ev = this.events.filter(ev => {
+                return ev.id == this.eventId
             })
+
+            return ev[0]
         }
     },
     

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
     // State
@@ -23,14 +25,14 @@ export default {
         // Fetch
         async fetch({commit}){
             // load replies
-            let response = await axios.get('api/replies')
+            let response = await axios.get(`${baseURL}/replies`)
             // commit
             commit('LOAD', response.data.data)
         },
         // Create
         async create({commit},data){
             // Create reply
-            await axios.post('api/replies', data)
+            await axios.post(`${baseURL}/replies`, data)
 
         },
         // New reply

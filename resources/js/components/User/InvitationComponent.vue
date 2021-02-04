@@ -8,7 +8,7 @@
             <Row :gutter="16">
                 <Col span="24">
                     <FormItem label="Email">
-                        <Input size="large" type="text" v-model="invitationForm.email" placeholder="Email addresses"></Input>
+                        <Input size="large" type="text" v-model="invitationForm.email" placeholder="Email address" multiple></Input>
                     </FormItem>
                 </Col>
             </Row>

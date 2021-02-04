@@ -54,10 +54,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('EventModule', ['events']), {
     event: function event() {
-      var id = this.eventId;
-      return this.events.filter(function (ev) {
-        return ev.id === id;
+      var _this = this;
+
+      var ev = this.events.filter(function (ev) {
+        return ev.id == _this.eventId;
       });
+      return ev[0];
     }
   })
 });
@@ -235,11 +237,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['isAdmin'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('EventModule', ['delete']), {
     // View
-    view: function view(id) {
+    view: function view(id, title) {
       this.$router.push({
-        name: 'event',
+        name: 'eventdetail',
         params: {
-          id: id
+          id: id,
+          title: title
         }
       });
     },
@@ -521,87 +524,79 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "w-full h-full" },
-    [
-      _c(
-        "ul",
-        { staticClass: "w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0" },
-        [
-          _c("div", {}, [
-            _c(
-              "li",
-              { staticClass: "mt-5 ml-5" },
-              [
-                _c("Icon", {
-                  attrs: { type: "ios-arrow-round-back", size: "44" },
-                  on: {
-                    click: function($event) {
-                      return _vm.$router.go(-1)
-                    }
+  return _c("div", { staticClass: "w-full h-full" }, [
+    _c(
+      "ul",
+      { staticClass: "w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0" },
+      [
+        _c("div", {}, [
+          _c(
+            "li",
+            { staticClass: "mt-5 ml-5" },
+            [
+              _c("Icon", {
+                attrs: { type: "ios-arrow-round-back", size: "44" },
+                on: {
+                  click: function($event) {
+                    return _vm.$router.go(-1)
                   }
-                })
-              ],
-              1
+                }
+              })
+            ],
+            1
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center"
+      },
+      [
+        _c("div", { staticClass: "w-2/3" }, [
+          _c("p", { staticClass: "text-4xl font-serif" }, [
+            _vm._v(
+              "\n                " + _vm._s(_vm.event.name) + "\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: " font-medium text-sm" }, [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.event.location) +
+                "\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: " font-medium text-sm" }, [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.event.startdate) +
+                " - " +
+                _vm._s(_vm.event.enddate) +
+                "\n            "
             )
           ])
-        ]
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.event, function(event) {
-        return _c(
+        ]),
+        _vm._v(" "),
+        _c(
           "div",
           {
-            key: event.id,
             staticClass:
-              "p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center"
+              "mt-6 w-2/3 text-lg tracking-wide font-sans font-normal"
           },
           [
-            _c("div", { staticClass: "w-2/3" }, [
-              _c("p", { staticClass: "text-4xl font-serif" }, [
-                _vm._v(
-                  "\n                " + _vm._s(event.name) + "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: " font-medium text-sm" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(event.location) +
-                    "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: " font-medium text-sm" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(event.startdate) +
-                    " - " +
-                    _vm._s(event.enddate) +
-                    "\n            "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "mt-6 w-2/3 text-lg tracking-wide font-sans font-normal"
-              },
-              [
-                _vm._v(
-                  "\n            " + _vm._s(event.description) + "\n        "
-                )
-              ]
+            _vm._v(
+              "\n            " + _vm._s(_vm.event.description) + "\n        "
             )
           ]
         )
-      })
-    ],
-    2
-  )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -897,17 +892,17 @@ var render = function() {
   return _c("div", { staticClass: "w-full md:w-1/2 lg:w-1/4" }, [
     _c(
       "div",
-      { staticClass: "h-64 overflow-hidden shadow-sm p-3 m-1 bg-white" },
+      { staticClass: "h-64 overflow-hidden shadow-sm px-4 py-4 m-1 bg-white" },
       [
         _c("div", { staticClass: "mt-3 mb-2" }, [
           _c(
             "p",
             {
               staticClass:
-                "font-500 tracking-wider text-sm antialiased cursor-pointer",
+                "font-medium font-sans text-gray-700 mb-2 cursor-pointer",
               on: {
                 click: function($event) {
-                  return _vm.view(_vm.event.id)
+                  return _vm.view(_vm.event.id, _vm.event.name)
                 }
               }
             },
@@ -920,20 +915,13 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "mb-2" }, [
-          _c(
-            "p",
-            {
-              staticClass:
-                "font-hairline text-sm tracking-widest capitalize text-gray-700"
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm._f("truncate")(_vm.event.description, 50)) +
-                  "\n            "
-              )
-            ]
-          )
+          _c("p", { staticClass: "text-xs text-gray-500" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm._f("truncate")(_vm.event.description, 50)) +
+                "\n            "
+            )
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "mb-2" }, [

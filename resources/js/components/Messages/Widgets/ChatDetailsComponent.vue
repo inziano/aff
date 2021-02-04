@@ -10,8 +10,8 @@
     </div>
     <div v-else>
       <div class="flex flex-wrap content-center justify-center ">
-        <img class="h-48 w-full mb-4" src="images/certification.svg">
-        <p class="font-light text-gray-600">
+        <img class="h-56 w-full mb-4" src="images/messages.svg">
+        <p class="text-sm font-medium font-sans text-gray-700 mx-2">
             Start a new conversation
         </p>
       </div>
@@ -35,20 +35,43 @@ export default {
       return this.member.data[0]
     },
     path(){
-          return this.mem.image !== null ? this.mem.image : 'images/landing.jpg'
+      if ( typeof this.mem !== 'undefined') {
+         return this.mem.image !== null ? this.mem.image : 'images/avatar.svg'
+      } else {
+        return 'images/avatar.svg'
+      }
+       
     },
     recipientDets() {
-      let self = this
-      let set = Array.from( new Set( this.threads.map((e) => e.sender.user_id !== self.user.id ? e.sender.user_id : e.recipient.user_id )))
-      return set[0]
+      let seti 
+
+      const uid = typeof this.user.id != 'undefined' ? this.user.id : " 1"
+      // Get the first message
+
+      // Assuming that the conversation is only between two people i.e current user and the other guy
+      const single = typeof this.threads != 'undefined' ? this.threads.slice(-1).pop() : { }
+      
+      // Return the id
+      if ( typeof single != 'undefined') {
+        seti = single.recipient.id === uid ? single.sender.user_id : single.recipient.user_id
+      } else {
+        seti = 1
+      }
+
+      // return set     
+      return seti
     },
   },
   methods: {
     ...mapActions("UserModule", ["fetchMember"]),
   },
   watch: {
-    recipientDets() {
-      this.fetchMember( this.recipientDets)
+    recipientDets: {
+      deep: true,
+      handler( newval ) {
+        this.fetchMember( newval )
+      }
+      
     }
   },
 }

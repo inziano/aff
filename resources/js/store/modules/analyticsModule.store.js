@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
 
@@ -14,7 +16,7 @@ export default {
     },
     actions: {
         async fetch({commit}){
-            let response = await axios.get('api/stats')
+            let response = await axios.get(`${baseURL}/stats`)
 
             commit('LOAD', response.data)
         }

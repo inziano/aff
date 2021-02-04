@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
     // State
@@ -22,14 +24,14 @@ export default {
         // Fetch
         async fetch({commit}, page = 1){
             // load publications 
-            let response = await axios.get(`api/publications?page=${page}`)
+            let response = await axios.get(`${baseURL}/publications?page=${page}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/publications?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/publications?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },

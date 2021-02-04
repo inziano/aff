@@ -9,17 +9,15 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _Widgets_MessageListItemComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Widgets/MessageListItemComponent */ "./resources/js/components/Messages/Widgets/MessageListItemComponent.vue");
-/* harmony import */ var _Widgets_MessageThreadsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Widgets/MessageThreadsComponent */ "./resources/js/components/Messages/Widgets/MessageThreadsComponent.vue");
-/* harmony import */ var _Widgets_ChatDetailsComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Widgets/ChatDetailsComponent */ "./resources/js/components/Messages/Widgets/ChatDetailsComponent.vue");
-/* harmony import */ var _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Widgets/PaginationComponent */ "./resources/js/components/Widgets/PaginationComponent.vue");
-/* harmony import */ var _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Widgets/SearchComponent */ "./resources/js/components/Widgets/SearchComponent.vue");
-/* harmony import */ var _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Widgets/FilterComponent */ "./resources/js/components/Widgets/FilterComponent.vue");
-/* harmony import */ var _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Widgets/StatsComponent */ "./resources/js/components/Widgets/StatsComponent.vue");
-/* harmony import */ var _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Widgets/ModalbtnComponent */ "./resources/js/components/Widgets/ModalbtnComponent.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Widgets_MessageListItemComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Widgets/MessageListItemComponent */ "./resources/js/components/Messages/Widgets/MessageListItemComponent.vue");
+/* harmony import */ var _Widgets_MessageThreadsComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Widgets/MessageThreadsComponent */ "./resources/js/components/Messages/Widgets/MessageThreadsComponent.vue");
+/* harmony import */ var _Widgets_ChatDetailsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Widgets/ChatDetailsComponent */ "./resources/js/components/Messages/Widgets/ChatDetailsComponent.vue");
+/* harmony import */ var _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Widgets/PaginationComponent */ "./resources/js/components/Widgets/PaginationComponent.vue");
+/* harmony import */ var _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Widgets/SearchComponent */ "./resources/js/components/Widgets/SearchComponent.vue");
+/* harmony import */ var _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Widgets/FilterComponent */ "./resources/js/components/Widgets/FilterComponent.vue");
+/* harmony import */ var _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Widgets/StatsComponent */ "./resources/js/components/Widgets/StatsComponent.vue");
+/* harmony import */ var _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Widgets/ModalbtnComponent */ "./resources/js/components/Widgets/ModalbtnComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -83,17 +81,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'messagelist-item': _Widgets_MessageListItemComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    'message-thread': _Widgets_MessageThreadsComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'chat-details': _Widgets_ChatDetailsComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'pagination': _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'search': _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
-    'filter-a': _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
-    'stats': _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
-    'modal-btn': _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_9__["default"]
+    'messagelist-item': _Widgets_MessageListItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'message-thread': _Widgets_MessageThreadsComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'chat-details': _Widgets_ChatDetailsComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'pagination': _Widgets_PaginationComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'search': _Widgets_SearchComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
+    'filter-a': _Widgets_FilterComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
+    'stats': _Widgets_StatsComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
+    'modal-btn': _Widgets_ModalbtnComponent__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   data: function data() {
     return {
@@ -109,7 +106,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       messagestats: ''
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('AuthModule', ['current_user']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('UserModule', ['members']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('MessageModule', ['messages', 'thread']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['current_user']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('UserModule', ['members']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('MessageModule', ['messages', 'thread']), {
     years: function years() {
       var year = new Date().getFullYear();
       return Array.from({
@@ -136,7 +133,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.fetch(this.current_user.id);
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('MessageModule', ['fetch', 'conversation', 'newMessage', 'newConversation']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('MessageModule', ['fetch', 'conversation', 'newMessage', 'newConversation']), {
     // Change view
     changeView: function changeView() {
       if (this.list === true) {
@@ -216,7 +213,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // 
       var data = this.messageForm;
       data['sender'] = this.user.id;
-      data['recipient'] = this.recipient[0]; // Push message
+      data['recipient'] = this.recipient; // Push message
 
       this.create(data).then(function (response) {
         // Notice
@@ -226,7 +223,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         _this.loading = false;
-        _this.messageModal = false;
+        _this.messageForm.content = '';
       })["catch"](function (error) {
         _this.loading = false;
 
@@ -290,20 +287,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.member.data[0];
     },
     path: function path() {
-      return this.mem.image !== null ? this.mem.image : 'images/landing.jpg';
+      if (typeof this.mem !== 'undefined') {
+        return this.mem.image !== null ? this.mem.image : 'images/avatar.svg';
+      } else {
+        return 'images/avatar.svg';
+      }
     },
     recipientDets: function recipientDets() {
-      var self = this;
-      var set = Array.from(new Set(this.threads.map(function (e) {
-        return e.sender.user_id !== self.user.id ? e.sender.user_id : e.recipient.user_id;
-      })));
-      return set[0];
+      var seti;
+      var uid = typeof this.user.id != 'undefined' ? this.user.id : " 1"; // Get the first message
+      // Assuming that the conversation is only between two people i.e current user and the other guy
+
+      var single = typeof this.threads != 'undefined' ? this.threads.slice(-1).pop() : {}; // Return the id
+
+      if (typeof single != 'undefined') {
+        seti = single.recipient.id === uid ? single.sender.user_id : single.recipient.user_id;
+      } else {
+        seti = 1;
+      } // return set     
+
+
+      return seti;
     }
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])("UserModule", ["fetchMember"])),
   watch: {
-    recipientDets: function recipientDets() {
-      this.fetchMember(this.recipientDets);
+    recipientDets: {
+      deep: true,
+      handler: function handler(newval) {
+        this.fetchMember(newval);
+      }
     }
   }
 });
@@ -431,7 +444,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['current_user']), {
     path: function path() {
-      return this.user.image !== null ? this.user.image : 'images/landing.jpg';
+      return this.user.image !== null ? this.user.image : "http://affintranet.kensters.com" + "/images/avatar.svg";
+    },
+    avatar: function avatar() {
+      return "http://affintranet.kensters.com" + "/images/messages.svg";
     },
     message: function message() {
       var result = [];
@@ -588,18 +604,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     recipient: function recipient() {
-      var self = this;
-      var set = Array.from(new Set(this.threads.map(function (e) {
-        return e.sender.user_id !== self.user.id ? e.sender.user_id : e.recipient.user_id;
-      })));
+      var id = this.user.id; // Get the first message
+      // Assuming that the conversation is only between two people i.e current user and the other guy
+
+      var single = this.threads.slice(-1).pop(); // Return the id
+
+      var set = single.recipient.id === id ? single.sender.user_id : single.recipient.user_id;
       return set;
     },
     recipientDets: function recipientDets() {
-      var self = this;
-      var set = Array.from(new Set(this.threads.map(function (e) {
-        return e.sender.user_id !== self.user.id ? e.sender : e.recipient;
-      })));
-      return set[0];
+      var id = this.user.id; // Get the first message
+      // Assuming that the conversation is only between two people i.e current user and the other guy
+
+      var single = this.threads.slice(-1).pop(); // Return the id
+
+      var set = single.recipient.id === id ? single.sender : single.recipient;
+      return set;
     }
   }
 }, "components", {
@@ -701,7 +721,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2 flex " }, [
+      _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2" }, [
         _c("div", {
           staticClass: "lg:flex-grow items-center  mr-4 flex content-center"
         }),
@@ -847,7 +867,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "block inline-flex items-center justify-center h-10 w-10 transition duration-500 ease-in-out text-white bg-gray-200 hover:bg-teal-400 focus:outline-none",
+                    " inline-flex items-center justify-center h-10 w-10 transition duration-500 ease-in-out text-white bg-gray-200 hover:bg-teal-400 focus:outline-none",
                   attrs: { type: "button" },
                   on: { click: _vm.onSubmit }
                 },
@@ -937,13 +957,15 @@ var staticRenderFns = [
       { staticClass: "flex flex-wrap content-center justify-center " },
       [
         _c("img", {
-          staticClass: "h-48 w-full mb-4",
-          attrs: { src: "images/certification.svg" }
+          staticClass: "h-56 w-full mb-4",
+          attrs: { src: "images/messages.svg" }
         }),
         _vm._v(" "),
-        _c("p", { staticClass: "font-light text-gray-600" }, [
-          _vm._v("\n          Start a new conversation\n      ")
-        ])
+        _c(
+          "p",
+          { staticClass: "text-sm font-medium font-sans text-gray-700 mx-2" },
+          [_vm._v("\n          Start a new conversation\n      ")]
+        )
       ]
     )
   }
@@ -1196,11 +1218,7 @@ var render = function() {
             _c("div", { staticClass: "flex items-center space-x-4 " }, [
               _c("img", {
                 staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src:
-                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "My profile"
-                }
+                attrs: { src: _vm.avatar, alt: "My profile" }
               }),
               _vm._v(" "),
               _c("div", { staticClass: "flex flex-1 flex-col leading-tight" }, [
@@ -1410,13 +1428,15 @@ var staticRenderFns = [
       { staticClass: "flex flex-wrap content-center justify-center " },
       [
         _c("img", {
-          staticClass: "h-48 w-full mb-4",
-          attrs: { src: "images/certification.svg" }
+          staticClass: "h-56 w-full mb-4",
+          attrs: { src: "images/messages.svg" }
         }),
         _vm._v(" "),
-        _c("p", { staticClass: "font-light text-gray-600" }, [
-          _vm._v("\n                Start a new conversation\n            ")
-        ])
+        _c(
+          "p",
+          { staticClass: "text-sm font-medium font-sans text-gray-700 mx-2" },
+          [_vm._v("\n                Start a new conversation\n            ")]
+        )
       ]
     )
   }

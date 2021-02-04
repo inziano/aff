@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="h-auto overflow-hidden shadow-sm p-2 m-1 bg-white">
+    <div class="w-full flex flex-wrap py-4 px-2 justify-center">
+        <div class="px-2 py-4 h-auto overflow-hidden shadow-sm m-2 bg-white  w-full md:w-1/2 lg:w-1/4" v-for="member in members" :key="member.id" >
             <div class="w-full text-center mb-3 pt-2">
-                <Avatar :style="{background: '#0A8754'}"> {{member.bio.firstname.slice(0,1)}}{{member.bio.lastname.slice(0,1)}} </Avatar>
-                <p class="text-base font-medium text-gray-600"> {{member.bio.firstname}} {{member.bio.lastname}}</p>
+                <Avatar :style="{background: '#0A8754'}"></Avatar>
+                <p class="text-base font-medium text-gray-600 px-2"> {{member.bio.firstname}} {{member.bio.lastname}}</p>
                 <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.title}}</p>
                 <p class="text-xs font-medium mt-2 text-gray-600"> {{member.bio.citizenship}}</p>
                 <p class="text-xs font-medium mt-2 text-gray-600"> {{member.email}}</p>
@@ -21,7 +21,7 @@
                 </li>
             </ul>
             <Divider></Divider>
-            <div class="w-full flex p-0 pb-3 text-center">
+            <div class="w-full flex p-0 text-center">
                 <div class="w-1/2">
                     <a class="text-gray-600" @click="goToDetail(member.id)" >
                         <Icon type="ios-person" size="18"/> Profile
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-    props: ['member'],
+    props: ['members'],
     methods: {
          // Go
         goToDetail(id){

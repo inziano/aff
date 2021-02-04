@@ -51,7 +51,7 @@
                                 <a v-if="following(topic.id)" @click="unfollowTopic(topic)" class="font-normal font-sans text-gray-700 tracking-wider cursor-pointer"> <Icon size="18" color="red" type="ios-heart"/> Following </a>
                                 <a v-else @click="followTopic(topic)" class="font-normal font-sans text-gray-700 tracking-wider cursor-pointer">  <Icon size="18" type="ios-heart-outline"/> Follow </a>
                             </li>
-                            <li @click="editTopic(topic)" v-show="isAdmin" class="text-xs m-2 p-2 font-normal font-sans text-gray-700 tracking-wider cursor-pointer">
+                            <li @click="editTopic(topic.id, topic.title)" v-show="isAdmin" class="text-xs m-2 p-2 font-normal font-sans text-gray-700 tracking-wider cursor-pointer">
                                 <Icon size="18" type="ios-eye"/> Edit
                             </li> 
                             <li @click="deleteTopic(topic.id)" v-show="isAdmin"  class="text-xs m-2 p-2 font-normal font-sans text-gray-700 tracking-wider cursor-pointer">
@@ -130,9 +130,8 @@ export default {
             this.$emit('showTopicThread', title)
         },
 
-        editTopic(topic){
-            const id = topic.id
-            this.$router.push({name: 'topic', params:{id}})
+        editTopic(id, title){
+            this.$router.push({name: 'topic', params:{id,title}})
         },
 
         deleteTopic( id){

@@ -158,8 +158,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -174,10 +172,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       searchTerm: '',
       resume: '',
       cover: '',
-      applications: ''
+      error: ''
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('VacancyModule', ['vacancies']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['currentUser']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('VacancyModule', ['vacancies', 'applications']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['currentUser']), {
     vacancy: function vacancy() {
       var curr_id = this.$route.params.id;
       return this.vacancies.filter(function (vacancy) {
@@ -188,13 +186,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     var _this = this;
 
-    axios.all([axios.get('api/vacancies/' + this.id), axios.get('api/vacancyapplications/' + this.id)]).then(axios.spread(function (vacancy, application) {
-      //    this.vacancy = vacancy.data.data
-      _this.applications = application.data.data;
-
-      _this.$Modal.remove();
-    }))["catch"](function (error) {
-      // show error
+    this.fetchApplications(this.id).then(function (response) {// Response
+    })["catch"](function (error) {
+      // Display error
       _this.$Notice.error({
         title: 'Error occurred'
       });
@@ -205,7 +199,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(e.submissions);
     });
   },
-  methods: {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('VacancyModule', ['fetchApplications']), {
     changeView: function changeView() {
       if (this.list === true) {
         this.list = false;
@@ -246,7 +240,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.cover = file;
       return false;
     }
-  }
+  })
 });
 
 /***/ }),
@@ -394,8 +388,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       filtered: false,
       typeA: 'year',
       typeB: 'location',
-      statsA: 'events'
+      statsA: 'events',
+      loading: true,
+      error: false
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.fetch().then(function (response) {
+      // Loading false
+      _this.loading = false;
+    })["catch"](function (error) {
+      // Show error screen
+      _this.error = true;
+    });
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('AuthModule', ['current_user']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('VacancyModule', ['vacancies', 'meta', 'links']), {
     // Year
@@ -414,29 +421,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     // 
     Echo.channel('vacancies').listen('VacancyCreated', function (e) {
-      _this.newVacancy(e.vacancies);
+      _this2.newVacancy(e.vacancies);
     }); // Update
 
     Echo.channel('vacancies').listen('VacancyDeleted', function (e) {
-      _this.vacancies = e.vacancies;
+      _this2.vacancies = e.vacancies;
     });
     Echo.channel('stats').listen('VacancyStats', function (e) {
-      _this.vacancystats = e.vacancystats;
+      _this2.vacancystats = e.vacancystats;
     });
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('VacancyModule', ['newVacancy', 'fetch', 'filter']), {
     // clear all filters
     clearFilters: function clearFilters() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.fetch().then(function (response) {
-        _this2.filtered = false;
+        _this3.filtered = false;
       })["catch"](function (error) {
-        _this2.$Notice.error({
+        _this3.$Notice.error({
           title: 'Nothing found'
         });
       });
@@ -451,17 +458,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     // Delete
     deleteVacancy: function deleteVacancy(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default()({
         method: 'delete',
         url: 'api/vacancies/' + id
       }).then(function (response) {
-        _this3.$Notice.success({
+        _this4.$Notice.success({
           title: 'Vacancy Deleted'
         });
       })["catch"](function (error) {
-        _this3.$Notice.error({
+        _this4.$Notice.error({
           title: 'Vacancy not deleted'
         });
       });
@@ -666,11 +673,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['isAdmin'])),
   methods: {
     // make Application
-    makeApplication: function makeApplication(id) {
+    makeApplication: function makeApplication(id, title) {
       this.$router.push({
-        name: 'vacancyapplication',
+        name: 'vacancy',
         params: {
-          id: id
+          id: id,
+          title: title
         }
       });
     }
@@ -959,45 +967,7 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "w-5/6 flex content-center" }, [
-            _c(
-              "div",
-              { staticClass: "w-10/24 p-2 ml-3" },
-              [
-                _c("Icon", {
-                  attrs: { type: "ios-search-outline", size: "18" }
-                }),
-                _vm._v(" "),
-                _c("Input", {
-                  staticClass:
-                    "appearance-none bg-transparent border-none w-3/4 font-sans tracking-wider mr-3 py-1 px-2 leading-tight focus:outline-none focus:bg-white",
-                  attrs: {
-                    size: "large",
-                    prefix: "ios-search-outline",
-                    placeholder: "Search",
-                    type: "text"
-                  },
-                  on: {
-                    keyup: function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.onSearch($event)
-                    }
-                  },
-                  model: {
-                    value: _vm.searchTerm,
-                    callback: function($$v) {
-                      _vm.searchTerm = $$v
-                    },
-                    expression: "searchTerm"
-                  }
-                })
-              ],
-              1
-            ),
+            _c("div", { staticClass: "w-10/24 p-2 ml-3" }),
             _vm._v(" "),
             _c("div", { staticClass: "flex-grow content-center h-full p-2" }),
             _vm._v(" "),
@@ -1016,9 +986,11 @@ var render = function() {
                     }
                   },
                   [
-                    _vm._v(
-                      "\n                        View Applications\n                    "
-                    )
+                    !_vm.list
+                      ? _c("span", [_vm._v(" View Applicants")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.list ? _c("span", [_vm._v(" View Vacancy ")]) : _vm._e()
                   ]
                 ),
                 _vm._v(" "),
@@ -1044,7 +1016,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2 flex " }, [
+        _c("div", { staticClass: "w-full flex flex-wrap bg-white p-2" }, [
           _c(
             "div",
             {
@@ -1282,7 +1254,7 @@ var staticRenderFns = [
             staticClass:
               "text-center w-full font-sans text-2xl font-semibold tracking-widest"
           },
-          [_vm._v("\n                        4\n                    ")]
+          [_vm._v("\n                        -\n                    ")]
         ),
         _vm._v(" "),
         _c(
@@ -1925,10 +1897,10 @@ var render = function() {
       "div",
       {
         staticClass:
-          "overflow-hidden shadow-lg p-2 px-5 h-64 bg-white m-2 rounded-lg text-gray-700 hover:text-gray-900",
+          "overflow-hidden shadow-lg p-2 px-4 py-4 h-64 bg-white m-2 rounded-lg text-gray-700 hover:text-gray-900",
         on: {
           click: function($event) {
-            return _vm.makeApplication(_vm.vacancy.id)
+            return _vm.makeApplication(_vm.vacancy.id, _vm.vacancy.title)
           }
         }
       },
@@ -1936,7 +1908,10 @@ var render = function() {
         _c("div", { staticClass: "mt-3 mb-2" }, [
           _c(
             "p",
-            { staticClass: "font-500 tracking-wider text-sm antialiased" },
+            {
+              staticClass:
+                "font-medium font-sans text-gray-700 mb-2 cursor-pointer"
+            },
             [
               _vm._v(
                 "\n                " +
@@ -1950,10 +1925,7 @@ var render = function() {
         _c("div", { staticClass: "mb-2" }, [
           _c(
             "p",
-            {
-              staticClass:
-                "font-hairline text-xs tracking-widest capitalize text-gray-600"
-            },
+            { staticClass: "text-xs text-gray-500" },
             [
               _c("Icon", { attrs: { type: "ios-pin-outline", size: "18" } }),
               _vm._v(":" + _vm._s(_vm.vacancy.location) + "\n            ")
@@ -1965,10 +1937,7 @@ var render = function() {
         _c("div", { staticClass: "w-full mt-3 " }, [
           _c(
             "p",
-            {
-              staticClass:
-                "font-hairline text-xs tracking-widest capitalize text-gray-500"
-            },
+            { staticClass: "text-xs text-gray-500" },
             [
               _c("Icon", {
                 attrs: { type: "ios-calendar-outline", size: "18" }
@@ -1994,61 +1963,40 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "w-full mt-3 mb-0" }, [
           _c("ul", { staticClass: "w-full flex" }, [
-            _c(
-              "li",
-              {
-                staticClass:
-                  " list-none mr-5 font-hairline text-xs tracking-widest capitalize text-gray-500"
-              },
-              [
-                _vm._v("\n                    Posted: "),
-                _c(
-                  "span",
-                  {
-                    staticClass:
-                      "font-thin text-xs tracking-wide capitalize text-gray-400"
-                  },
-                  [_vm._v(" " + _vm._s(_vm.vacancy.created_at))]
-                )
-              ]
-            ),
+            _c("li", { staticClass: "list-none mr-5 text-xs text-gray-500" }, [
+              _vm._v("\n                    Posted: "),
+              _c("span", { staticClass: "text-xs text-gray-500" }, [
+                _vm._v(" " + _vm._s(_vm.vacancy.created_at))
+              ])
+            ]),
             _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass:
-                  " list-none mr-5 font-hairline text-xs tracking-widest capitalize text-gray-500"
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "text-xs tracking-wide font-medium text-green-700",
-                    on: {
-                      click: function($event) {
-                        return _vm.makeApplication(_vm.vacancy.id)
-                      }
+            _c("li", { staticClass: " list-none mr-5 text-xs text-gray-500" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "text-xs text-green-500",
+                  on: {
+                    click: function($event) {
+                      return _vm.makeApplication(
+                        _vm.vacancy.id,
+                        _vm.vacancy.title
+                      )
                     }
-                  },
-                  [_vm._v("Apply")]
-                )
-              ]
-            ),
+                  }
+                },
+                [_vm._v("Apply")]
+              )
+            ]),
             _vm._v(" "),
             _vm.vacancy.user.id === _vm.user.id || _vm.isAdmin
               ? _c(
                   "li",
-                  {
-                    staticClass:
-                      " list-none mr-5 font-hairline text-xs tracking-widest capitalize text-gray-500"
-                  },
+                  { staticClass: " list-none mr-5 text-xs text-gray-500" },
                   [
                     _c(
                       "a",
                       {
-                        staticClass:
-                          "text-xs tracking-wide font-medium text-red-700",
+                        staticClass: "text-xs text-red-500",
                         on: {
                           click: function($event) {
                             return _vm.deleteVacancy(_vm.vacancy.id)

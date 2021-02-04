@@ -26,7 +26,7 @@ class VacancyController extends Controller
     {
         $this->authorize('viewAny', Vacancy::class);
         //
-        return VacancyResource::collection( Vacancy::filter($filters)->valid()->paginate(12));
+        return VacancyResource::collection( Vacancy::filter($filters)->paginate(12));
     }
 
     /**

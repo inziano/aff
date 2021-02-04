@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
     // State
@@ -42,21 +44,21 @@ export default {
         // Fetch 
         async fetch({commit}, page = 1){
             // load threads
-            let response = await axios.get(`api/threads?page=${page}`)
+            let response = await axios.get(`${baseURL}/threads?page=${page}`)
             // commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/threads?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/threads?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Create
         async create({commit}, data){
             // create the thread
-            await axios.post('api/threads', data)
+            await axios.post(`${baseURL}/threads`, data)
         },
         // New thread
         newThread({commit}, data){
@@ -66,7 +68,7 @@ export default {
         // Update
         async update({commit},{id, data}){
             // Push patch
-            let response = await axios.patch(`api/threads/${id}`, data)
+            let response = await axios.patch(`${baseURL}/threads/${id}`, data)
             // commit
             commit('UPDATE', response.data.data)
         },
@@ -77,7 +79,7 @@ export default {
         // Delete 
         async delete({commit},payload){
             // Delete the thread
-            let response = await axios.delete(`api/threads/${payload}`)
+            let response = await axios.delete(`${baseURL}/threads/${payload}`)
             // Commit
             commit('DELETE', payload)
         },

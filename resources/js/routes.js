@@ -114,7 +114,7 @@ const router =  new Router({
         {
             path: '/profiles',
             component: ProfilesView,
-            name: 'profilesviews',
+            name: 'profilesview',
             meta: {
                 requiresAuth: true,
                 requiresMember: true,
@@ -138,7 +138,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/publication/:id',
+            path: '/publication/:title',
             component: PublicationView,
             name: 'publicationview',
             meta: {
@@ -182,7 +182,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/event/:id',
+            path: '/event/:title',
             component: EventDetails,
             name: 'eventdetail',
             meta: {
@@ -193,16 +193,16 @@ const router =  new Router({
         {
             path: '/vacancies',
             component: Vacancy,
-            name: 'vacancy',
+            name: 'vacancies',
             meta: {
                 requiresAuth: true,
                 requiresMember: true,
             },
         },
         {
-            path: '/vacancyapplication',
+            path: '/vacancy/:title',
             component: VacancyApplication,
-            name: 'vacancyapplication',
+            name: 'vacancy',
             meta: {
                 requiresAuth: true,
                 requiresMember: true,
@@ -218,7 +218,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/thread/:id',
+            path: '/thread/:title',
             component: DiscussionView,
             name: 'thread',
             meta: {
@@ -227,7 +227,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/topic',
+            path: '/topic/:title',
             component: TopicView,
             name: 'topic',
             meta: {
@@ -245,7 +245,7 @@ const router =  new Router({
             },
         },
         {
-            path: '/article/:id',
+            path: '/article/:title',
             component: Article,
             name: 'article',
             meta: {

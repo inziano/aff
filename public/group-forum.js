@@ -218,7 +218,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthModule', ['isAdmin'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('ThreadModule', ['update', 'delete']), {
     // view thread
-    viewThread: function viewThread(id) {
+    viewThread: function viewThread(id, title) {
       var data = {
         views: 1
       }; // Update
@@ -230,7 +230,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$router.push({
         name: 'thread',
         params: {
-          id: id
+          id: id,
+          title: title
         }
       });
     },
@@ -1312,12 +1313,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     showTopicThreads: function showTopicThreads(title) {
       this.$emit('showTopicThread', title);
     },
-    editTopic: function editTopic(topic) {
-      var id = topic.id;
+    editTopic: function editTopic(id, title) {
       this.$router.push({
         name: 'topic',
         params: {
-          id: id
+          id: id,
+          title: title
         }
       });
     },
@@ -1759,7 +1760,7 @@ var render = function() {
                   "text-gray-700 font-sans font-medium hover:text-gray-600 cursor-pointer",
                 on: {
                   click: function($event) {
-                    return _vm.viewThread(thread.id)
+                    return _vm.viewThread(thread.id, thread.subject)
                   }
                 }
               },
@@ -3421,7 +3422,7 @@ var render = function() {
                         "text-xs m-2 p-2 font-normal font-sans text-gray-700 tracking-wider cursor-pointer",
                       on: {
                         click: function($event) {
-                          return _vm.editTopic(topic)
+                          return _vm.editTopic(topic.id, topic.title)
                         }
                       }
                     },

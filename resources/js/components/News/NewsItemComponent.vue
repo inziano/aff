@@ -1,6 +1,6 @@
 <template>
     <div>
-       <li @click="viewArticle(article.id)" class="w-full list-none " style="min-height: 400px; background-color: teal;" :style="{'background-image': `url(${article.image_url})`}">
+       <li @click="viewArticle(article.id, article.title)" class="w-full list-none " style="min-height: 400px; background-color: teal;" :style="{'background-image': `url(${article.image_url})`}">
             <div class="relative w-full bg-opacity-50 bg-black p-5" style="min-height: 400px;">
                 <p class="relative ml-20 mt-10 text-3xl font-thin subpixel-antialiased text-white capitalize cursor-pointer" style="top: 30%">
                     {{article.title}}
@@ -19,8 +19,8 @@ export default {
     props: ['article'],
     methods: {
         // View article
-        viewArticle(id){
-            this.$router.push({name: 'article', params:{id}})
+        viewArticle(id, title){
+            this.$router.push({name: 'article', params:{id, title}})
         },
     }
 }

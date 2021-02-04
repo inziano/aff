@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
     // State
@@ -33,20 +35,20 @@ export default {
         // Fetch
         async fetch({commit}, page=1){
             // load news
-            let response = await axios.get(`api/news?page=${page}`)
+            let response = await axios.get(`${baseURL}/news?page=${page}`)
             // commit
             commit('LOAD', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/news?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/news?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Create
         async create({commit},data){
-            await axios.post('api/news', data)
+            await axios.post(`${baseURL}/news`, data)
         },
         // Add
         newArticle({commit}, data){
@@ -54,7 +56,7 @@ export default {
         },
         // Delete 
         async delete({commit}, data){
-            let response = await axios.delete(`api/news/${data}`)
+            let response = await axios.delete(`${baseURL}/news/${data}`)
             // commit
             commit('DELETE',data)
         },

@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { create } from 'lodash'
+
+const baseURL = process.env.MIX_API_URL
 
 export default {
     namespaced: true,
@@ -47,42 +48,42 @@ export default {
         // Fetch
         async fetch({commit},page=1){
             // load the members
-            let response = await axios.get(`api/users?page=${page}`)
+            let response = await axios.get(`${baseURL}/users?page=${page}`)
             // Comit
             commit('LOAD', response.data)
         },
         // 
         async fetchMember({commit},user=1){
-            let response = await axios.get(`api/users?user=${user}`)
+            let response = await axios.get(`${baseURL}/users?user=${user}`)
 
             commit('LOAD_MEMBER', response.data)
         },
         // Filter
         async filter({commit},{criteria, term}){
             // filter publications
-            let response = await axios.get(`api/users?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/users?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
         // Create
         async create({commit}, data){
-            let response = await axios.post('api/users', data)
+            let response = await axios.post(`${baseURL}/users`, data)
         },
         // Update
         async update({commit}, {id, data}){
             // Push patch
-            let response = await axios.patch(`api/users/${id}`, data)
+            let response = await axios.patch(`${baseURL}/users/${id}`, data)
         },
         // Make member
         async approve({commit}, data){
-            let response = await axios.patch( 'api/users/membership', data)
+            let response = await axios.patch( `${baseURL}/users/membership`, data)
 
             return response
         },
         // Get notifications
         async fetchNotifications({commit}, user){
             // Get the notifications for a particular user
-            let response = await axios.get(`api/usernotifications?user=${user}`)
+            let response = await axios.get(`${baseURL}/usernotifications?user=${user}`)
             // 
             response = response.data.map( e => {
                 return e.data

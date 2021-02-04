@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="w-full p-1 mx-auto mb-2 flex flex-wrap justify-center">
-                    <publist-item  v-for="publication in topPubs" :publication = publication :key = publication.id ></publist-item>  
+                    <publist-item  :publications = topPubs></publist-item>  
                 </div>
             </div>
           

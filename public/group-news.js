@@ -9,6 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -35,39 +42,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      article: '',
       articleId: this.$route.params.id
     };
   },
-  computed: {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('NewsModule', ['news']), {
+    article: function article() {
+      var _this = this;
+
+      var art = this.news.filter(function (article) {
+        return article.id == _this.articleId;
+      });
+      return art[0];
+    },
     image_url: function image_url() {
       var url = 'images/landing.jpg';
       return url;
     }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    var id = this.articleId;
-    axios({
-      method: 'get',
-      url: 'api/news/' + id
-    }).then(function (response) {
-      _this.article = response.data.data;
-      console.log(_this.article);
-    })["catch"](function (error) {
-      console.log(error);
-
-      _this.$Notice.info({
-        title: 'News',
-        desc: 'No news currently'
-      });
-    });
-  }
+  })
 });
 
 /***/ }),
@@ -497,82 +492,69 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "w-full h-full" },
-    [
-      _c("div", {
-        staticClass: "w-full h-48",
-        style: { "background-image": "url(" + _vm.article.image_url + ")" }
-      }),
-      _vm._v(" "),
-      _c(
-        "ul",
-        { staticClass: "w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0" },
-        [
-          _c("div", {}, [
-            _c(
-              "li",
-              { staticClass: "mt-5 ml-5" },
-              [
-                _c("Icon", {
-                  attrs: { type: "ios-arrow-round-back", size: "44" },
-                  on: {
-                    click: function($event) {
-                      return _vm.$router.go(-1)
-                    }
+  return _c("div", { staticClass: "w-full h-full" }, [
+    _c(
+      "ul",
+      { staticClass: "w-full flex flex-wrap bg-white h-8 m-0 mb-5 p-0" },
+      [
+        _c("div", {}, [
+          _c(
+            "li",
+            { staticClass: "mt-5 ml-5" },
+            [
+              _c("Icon", {
+                attrs: { type: "ios-arrow-round-back", size: "44" },
+                on: {
+                  click: function($event) {
+                    return _vm.$router.go(-1)
                   }
-                })
-              ],
-              1
+                }
+              })
+            ],
+            1
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center"
+      },
+      [
+        _c("div", { staticClass: "w-2/3" }, [
+          _c("p", { staticClass: "text-4xl font-serif" }, [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.article.title) +
+                "\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: " font-medium text-sm" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(
+                  _vm._f("moment")(_vm.article.created_at, "Do MMMM YYYY")
+                ) +
+                "\n            "
             )
           ])
-        ]
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.article, function(article) {
-        return _c(
+        ]),
+        _vm._v(" "),
+        _c(
           "div",
           {
-            key: article.id,
             staticClass:
-              "p-2 mx-auto w-4/5 flex flex-wrap content-center justify-center"
+              "mt-6 w-2/3 text-lg tracking-wide font-sans font-normal"
           },
-          [
-            _c("div", { staticClass: "w-2/3" }, [
-              _c("p", { staticClass: "text-4xl font-serif" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(article.title) +
-                    "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: " font-medium text-sm" }, [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(
-                      _vm._f("moment")(article.created_at, "Do MMMM YYYY")
-                    ) +
-                    "\n            "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "mt-6 w-2/3 text-lg tracking-wide font-sans font-normal"
-              },
-              [_c("span", { domProps: { innerHTML: _vm._s(article.body) } })]
-            )
-          ]
+          [_c("span", { domProps: { innerHTML: _vm._s(_vm.article.body) } })]
         )
-      })
-    ],
-    2
-  )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 // Store module object
 export default {
     namespaced: true,
@@ -60,7 +62,7 @@ export default {
 
             await axios.get('/sanctum/csrf-cookie')
 
-            let response = await axios.post('api/auth/login', data)
+            let response = await axios.post(`${baseURL}/auth/login`, data)
             
             commit('LOGIN', response.data)
 
@@ -70,30 +72,30 @@ export default {
         },
         // Register user
         async register({commit}, data){
-            let response = await axios.post('api/auth/register', data)
+            let response = await axios.post(`${baseURL}/auth/register`, data)
             // commit
             commit('LOGIN', response.data)
         },
         // User data
         async loadUserData({commit}, id){
-            let response = await axios.get(`api/users/${id}`)
+            let response = await axios.get(`${baseURL}/users/${id}`)
             // commit
             commit('ADD_LOGGEDIN_USER', response.data.data)
         },
         // Reset password
         async resetPassword({commit},data){
-            let response = await axios.post('api/auth/reset', data)
+            let response = await axios.post(`${baseURL}/auth/reset`, data)
         },
         // Verify email account
         async verifyAccount({commit},data){
-            let response = await axios.post('api/auth/verify', data)
+            let response = await axios.post(`${baseURL}/auth/verify`, data)
             // commit
             commit('RESET_USER', response.data)
         },
         // Logout
         async logout({commit}){
 
-            await axios.get('api/auth/logout').then( response => {
+            await axios.get(`${baseURL}/auth/logout`).then( response => {
                 
                 commit('LOGOUT')
                 localStorage.removeItem('aff_token')

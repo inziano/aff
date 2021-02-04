@@ -43,23 +43,25 @@
                                 leave-class="transform opacity-100 scale-100"
                                 leave-to-class="transform opacity-0 scale-95"
                         />
-                        <div v-show ="showNotifications" style="width:20rem;" class="origin-top-right absolute z-40 right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                            <div class="py-2">
-                                <div v-if="notifications" class="px-2">
-                                    <a v-for="notif in notifications" :key="notif" href="#" class="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2">
-                                        <p class="text-gray-600 text-sm mx-2">
-                                            <span class="font-bold" v-for="n in notif" :key="n" >{{ n.firstname }} {{ n.lastname }} </span>sent you a message
+                        <div v-show ="showNotifications" style="width:20rem; min-height:20rem" class="px-2 py-4 origin-top-right absolute z-40 right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                            <div class="py-4 px-2 relative justify-center flex flex-wrap">
+                                <p class="w-full font-medium font-sans text-gray-700 mb-2 text-center"> Notifications </p>
+
+                                <div v-if="notifications.length > 0 " class="w-full py-2 flex justify-center">
+                                    <div v-for="notif in notifications" :key="notif" class="w-4/5 hover:bg-gray-100 py-2 mb-2">
+                                        <p class="text-sm font-medium font-sans text-gray-700 text-center">
+                                           <span class="font-bold" v-for="n in notif" :key="n" >{{ n.firstname }} {{ n.lastname }} </span> sent you a message
                                         </p>
-                                    </a>
+                                    </div>
                                 </div>
                                 <div v-else class="flex flex-wrap content-center justify-center ">
-                                    <img class="h-24 w-full mb-4" src="images/notifications.svg">
-                                    <p class="font-light text-gray-600">
-                                       No notifications
+                                    <img class="w-full mb-4 h-40" src="images/notifications.svg">
+                                    <p class="text-xs font-medium font-sans text-gray-700 mx-2 ">
+                                       No new notifications
                                     </p>
                                 </div>
                                
-                             </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -73,16 +75,6 @@
                             <Avatar v-else> -- </Avatar>
                             </button>
                         </div>
-                        <!--
-                            Profile dropdown panel, show/hide based on dropdown state.
-
-                            Entering: "transition ease-out duration-100"
-                            From: "transform opacity-0 scale-95"
-                            To: "transform opacity-100 scale-100"
-                            Leaving: "transition ease-in duration-75"
-                            From: "transform opacity-100 scale-100"
-                            To: "transform opacity-0 scale-95"
-                        -->
                         <transition
                             enter-active-class="transition ease-out duration-100"
                             enter-class="transform opacity-0 scale-95"
@@ -91,7 +83,7 @@
                             leave-class="transform opacity-100 scale-100"
                             leave-to-class="transform opacity-0 scale-95"
                         />
-                        <div v-show ="isOpen" class="origin-top-right absolute z-40 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                        <div v-show ="isOpen" style="width:12rem; min-height:6rem" class="origin-top-right absolute z-40 right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                             <router-link :to="{name: 'profile', params: {id: currentUser.id}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-100" role="menuitem">Your Profile</router-link>
                             <a  @click="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-100" role="menuitem">Logout</a>
                         </div>

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = process.env.MIX_API_URL
+
 export default {
     namespaced: true,
     // State
@@ -18,7 +20,7 @@ export default {
             state.messages = messages
         },
         LOAD_THREAD( state, thread){
-            state.thread = thread
+            state.thread = thread 
         },
         ADD(state, thread){
             thread = thread[0]
@@ -30,33 +32,33 @@ export default {
         // Fetch messages
         async fetch({commit}, user = 1){
             // Load messages for user
-            let response = await axios.get(`api/messages?all=${user}`)
+            let response = await axios.get(`${baseURL}/messages?all=${user}`)
             // Commit
             commit('LOAD', response.data)
         },
 
         // Create
         async create({commit}, data){
-            let response = await axios.post('api/messages',data)
+            let response = await axios.post(`${baseURL}/messages`,data)
         },
 
         // Filter 
         async filter({commit}, {criteria, term}){
-            let response = await axios.get(`api/messages?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/messages?${criteria}=${term}`)
             // Commit
             commit('LOAD', response.data)
         },
 
         // Conversation
         async conversation({commit}, {first, second}){
-            let response = await axios.get(`api/messages?conversation=${first},${second}`)
+            let response = await axios.get(`${baseURL}/messages?conversation=${first},${second}`)
             // 
             commit('LOAD_THREAD', response.data.data)
         },
 
         // Search for users
         async search_users({commit},{criteria, term}){
-            let response = await axios.get(`api/users?${criteria}=${term}`)
+            let response = await axios.get(`${baseURL}/users?${criteria}=${term}`)
             // edit response
             let r = response.data.data
 
@@ -69,8 +71,8 @@ export default {
         // New Conversation
         async newConversation({commit}, data){
             // Get recipient and sender bio's
-            let sender = await axios.get(`api/users?user=${data.sender}`)
-            let recipient = await axios.get(`api/users?user=${data.recipient}`)
+            let sender = await axios.get(`${baseURL}/users?user=${data.sender}`)
+            let recipient = await axios.get(`${baseURL}/users?user=${data.recipient}`)
 
             // Sender bio
             sender = sender.data.data
@@ -95,8 +97,9 @@ export default {
                 sender: sender[0]
             }
 
-            let messages = new Array(msg)
-            commit('LOAD_THREAD', messages)
+            const mg = new Array( msg )
+
+            commit('LOAD_THREAD', mg)
         },
 
         // 

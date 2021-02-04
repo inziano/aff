@@ -67,6 +67,7 @@ export default {
     methods: {
         ...mapActions('AuthModule',['loadUserData']),
         ...mapActions('UserModule',['fetchNotifications']),
+        ...mapActions('VacancyModule',['fetch']),
 
         onSubmit() {
             this.loading = true

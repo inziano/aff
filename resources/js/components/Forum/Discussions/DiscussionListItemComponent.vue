@@ -6,7 +6,7 @@
                 <a @click="showTopic(thread.topic.title)" class="px-2 py-1 bg-gray-600 text-gray-100 font-medium rounded hover:bg-gray-500 text-xs">{{thread.topic.title}}</a>
             </div>
             <div class="mt-2">
-                <a @click="viewThread(thread.id)" class="text-gray-700 font-sans font-medium hover:text-gray-600 cursor-pointer">{{thread.subject}}</a>
+                <a @click="viewThread(thread.id, thread.subject)" class="text-gray-700 font-sans font-medium hover:text-gray-600 cursor-pointer">{{thread.subject}}</a>
                 <!-- <p v-html="thread.body" class="mt-2 text-gray-600 text-xs"></p> -->
             </div>
             <div class="flex justify-between items-center mt-2">
@@ -53,13 +53,13 @@ export default {
     methods: {
         ...mapActions('ThreadModule',['update', 'delete']),
         // view thread
-        viewThread(id){
+        viewThread(id, title){
             let data = {
                 views: 1
             }
             // Update
             this.update({id, data})
-            this.$router.push({name: 'thread', params:{id}})
+            this.$router.push({name: 'thread', params:{id, title}})
         },
         // Emit methods when clicked
         deleteItem( id ){

@@ -21,7 +21,7 @@
 
         <div class="px-4 mt-5 space-y-6" v-for="m in message" :key="m.user_id">
             <div class="flex items-center space-x-4 ">
-                <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144" alt="My profile">
+                <img class="w-10 h-10 rounded-full" :src=avatar alt="My profile">
                 <div class="flex flex-1 flex-col leading-tight">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-normal text-teal-600">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ContactResults from './ContactResultsComponent'
 export default {
     components: {
@@ -58,11 +58,13 @@ export default {
     },
 
     computed:{
-        // ...mapState('MessageModule', ['messages']),
         ...mapGetters('AuthModule',['current_user']),
 
         path(){
-            return this.user.image !== null ? this.user.image : 'images/landing.jpg'
+            return this.user.image !== null ? this.user.image : process.env.MIX_APP_URL + "/images/avatar.svg"
+        },
+        avatar(){
+            return process.env.MIX_APP_URL + "/images/messages.svg"
         },
 
         message(){

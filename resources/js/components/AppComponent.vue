@@ -34,7 +34,6 @@ export default {
     created(){
         // fetch news and publications
         this.fetchPublications(),
-        this.fetchVacancies(),
         this.fetchNews(),
         this.fetchEvents(),
         this.fetchMembers({'criteria': 'status', 'term': 'Member' }),
@@ -48,7 +47,6 @@ export default {
         ...mapActions('PublicationModule', { fetchPublications : 'fetch' }),
         ...mapActions('NewsModule', { fetchNews : 'fetch' }),
         ...mapActions('EventModule', { fetchEvents : 'fetch' }),
-        ...mapActions('VacancyModule', { fetchVacancies : 'fetch' }),
         ...mapActions('AnalyticsModule', { fetchAnalytics : 'fetch' }),
         ...mapActions('GalleryModule', { fetchImages : 'fetch' }),
 
